@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Yuki · a helper that lives on your PC</title>
+<meta name="description" content="Yuki is a personal assistant for Windows. It sees your screen, remembers your day and does things for you. Your memory stays on your PC.">
+<meta name="theme-color" content="#0B0B0C">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/landing.css">
+</head>
+<body class="landing">
+
+<!-- ============================ NAV ============================ -->
+<header class="topnav" id="topnav">
+  <a class="brand" href="index.html" aria-label="Yuki home"><span data-ymark></span><span class="doto">yuki</span></a>
+  <nav class="links" aria-label="Sections">
+    <a href="#sees"><i>01</i>Sees</a><a href="#remembers"><i>02</i>Remembers</a><a href="#acts"><i>03</i>Acts</a>
+    <a href="#talks"><i>04</i>Talks</a><a href="#brain"><i>05</i>Your PC</a><a href="#ai"><i>06</i>Any AI</a>
+  </nav>
+  <div class="right">
+    <a class="key ghost sm" href="login.html">Sign in</a>
+    <a class="key pri sm" href="#download">Download</a>
+  </div>
+</header>
+
+<!-- ============================ HERO ============================ -->
+<section class="hero" id="top">
+  <canvas class="hero-cv" aria-hidden="true"></canvas>
+  <div class="hero-mark" aria-hidden="true"></div>
+  <div class="hero-orb" aria-hidden="true"></div>
+  <div class="hero-copy">
+    <p class="lbl">YK&ndash;01 &nbsp;/&nbsp; personal assistant for Windows</p>
+    <h1><span class="sr">Yuki. </span>A helper that lives on your PC.</h1>
+    <p class="sub">It sees your screen, remembers your day and does things when you ask. Your memory stays on your PC.</p>
+    <div class="cta">
+      <a class="key pri lg" href="#download"><span data-dic="arrow"></span>Download for Windows</a>
+      <a class="key lg" href="login.html">Use it from the web</a>
+    </div>
+  </div>
+  <div class="hero-meta">
+    <div class="lbl"><b>v0.9.2</b> &middot; 86 MB &middot; Windows 11</div>
+    <div class="lbl hide-s">fig. 00 &mdash; the field, live</div>
+  </div>
+  <div class="hero-scroll lbl" aria-hidden="true"><span>Scroll</span><i></i></div>
+  <ol class="hero-strip" aria-hidden="true">
+    <li><b>01</b>sees</li><li><b>02</b>remembers</li><li><b>03</b>acts</li><li><b>04</b>talks</li>
+  </ol>
+</section>
+
+<!-- ticker -->
+<div class="ticker" aria-hidden="true"><div class="ticker-track">
+  <span>Sees your screen</span><i></i><span>Remembers your day</span><i></i><span>Acts on your PC</span><i></i><span>Talks back</span><i></i><span>Memory stays on your PC</span><i></i><span>Bring your own AI</span><i></i>
+  <span>Sees your screen</span><i></i><span>Remembers your day</span><i></i><span>Acts on your PC</span><i></i><span>Talks back</span><i></i><span>Memory stays on your PC</span><i></i><span>Bring your own AI</span><i></i>
+</div></div>
+
+<!-- ============================ CONTENTS ============================ -->
+<section class="contents wrap" aria-labelledby="contents-h">
+  <div class="sec-top"><p class="lbl" id="contents-h">Contents</p><p class="lbl">Seven modules &middot; one assistant</p></div>
+  <ol class="toc">
+    <li data-reveal><a href="#sees"><span class="n doto">01</span><span class="nm">Sees</span><span class="ds">Reads your screen like a screen reader does.</span><span class="go" data-dic="arrow"></span></a></li>
+    <li data-reveal><a href="#remembers"><span class="n doto">02</span><span class="nm">Remembers</span><span class="ds">Your day, kept on your PC, locked.</span><span class="go" data-dic="arrow"></span></a></li>
+    <li data-reveal><a href="#acts"><span class="n doto">03</span><span class="nm">Acts</span><span class="ds">Opens, clicks, types. Stops when you take over.</span><span class="go" data-dic="arrow"></span></a></li>
+    <li data-reveal><a href="#talks"><span class="n doto">04</span><span class="nm">Talks</span><span class="ds">Say &ldquo;Yuki&rdquo; and it answers out loud.</span><span class="go" data-dic="arrow"></span></a></li>
+    <li data-reveal><a href="#brain"><span class="n doto">05</span><span class="nm">Your PC is the brain</span><span class="ds">The web only shows what your PC streams.</span><span class="go" data-dic="arrow"></span></a></li>
+    <li data-reveal><a href="#ai"><span class="n doto">06</span><span class="nm">Any AI</span><span class="ds">Claude, OpenAI, Gemini, OpenRouter or local.</span><span class="go" data-dic="arrow"></span></a></li>
+    <li data-reveal><a href="#download"><span class="n doto">07</span><span class="nm">Download</span><span class="ds">Windows 11. 86 MB. Two minutes to set up.</span><span class="go" data-dic="arrow"></span></a></li>
+  </ol>
+</section>
+
+<!-- ============================ 01 SEES ============================ -->
+<section class="mod scene" id="sees" style="--len: 330vh">
+  <div class="stage">
+    <div class="mod-grid wrap">
+      <header class="mod-head">
+        <div class="mod-num doto" aria-hidden="true">01</div>
+        <p class="lbl">Module 01 &nbsp;/&nbsp; Sees</p>
+        <h2>It reads your screen. It never takes a picture of it.</h2>
+        <p class="mod-p">Windows describes every app for screen readers: its buttons, lists and text. Yuki reads that description of the window in front. Nothing is photographed. Nothing is guessed from pixels.</p>
+        <dl class="spec">
+          <div><dt>Reads</dt><dd>The window in front, as text</dd></div>
+          <div><dt>Never</dt><dd>Screenshots or OCR</dd></div>
+          <div><dt>Skips</dt><dd>Private windows, apps you block</dd></div>
+          <div><dt>Pause</dt><dd>15 min, 1 hour or until tomorrow</dd></div>
+        </dl>
+        <ol class="ticks" data-steps="3"><li>Window in front</li><li>Read the tree</li><li>Keep what matters</li></ol>
+      </header>
+
+      <div class="demo demo-sees" id="sees-demo">
+        <p class="fig lbl"><span>fig. 1</span> What Yuki reads in the window in front</p>
+        <div class="sees-wrap">
+          <div class="fakewin" id="fw">
+            <div class="fw-bar"><span class="dots"><i></i><i></i><i></i></span><span class="ttl">Messages</span><span class="lbl fw-tag" id="fw-read">window in front</span></div>
+            <div class="fw-body">
+              <aside class="fw-list" data-n="1">
+                <div class="fw-item on" data-n="2"><span class="av">M</span><span><b>Maya Chen</b><em>Lunch?</em></span></div>
+                <div class="fw-item" data-n="3"><span class="av">L</span><span><b>Leo Park</b><em>Looks good</em></span></div>
+                <div class="fw-item" data-n="4"><span class="av">P</span><span><b>Priya Shah</b><em>Budget sheet</em></span></div>
+              </aside>
+              <div class="fw-chat" data-n="5">
+                <div class="fw-head">Maya Chen <span>online</span></div>
+                <div class="bub them" data-n="6">Are we still on for lunch Thursday?</div>
+                <div class="bub them" data-n="7">Bring the Lisbon photos if you can!</div>
+                <div class="bub me">Yes. 1 pm at Nori?</div>
+                <div class="fw-input" data-n="8">Type a message</div>
+              </div>
+            </div>
+            <div class="hl" id="hl" aria-hidden="true"><i class="c1"></i><i class="c2"></i><i class="c3"></i><i class="c4"></i></div>
+          </div>
+          <div class="tree" id="tree" aria-label="The window, as Yuki reads it">
+            <p class="lbl tree-h">UI tree &middot; read as text</p>
+            <div class="tr" data-n="0"><i>window</i>&ldquo;Messages&rdquo;</div>
+            <div class="tr d1" data-n="1"><i>list</i>&ldquo;Chats&rdquo;</div>
+            <div class="tr d2" data-n="2"><i>item</i>&ldquo;Maya Chen, 2 new&rdquo;</div>
+            <div class="tr d2" data-n="3"><i>item</i>&ldquo;Leo Park&rdquo;</div>
+            <div class="tr d2" data-n="4"><i>item</i>&ldquo;Priya Shah&rdquo;</div>
+            <div class="tr d1" data-n="5"><i>pane</i>&ldquo;Maya Chen&rdquo;</div>
+            <div class="tr d2" data-n="6"><i>text</i>&ldquo;Are we still on for lunch Thursday?&rdquo;</div>
+            <div class="tr d2" data-n="7"><i>text</i>&ldquo;Bring the Lisbon photos if you can!&rdquo;</div>
+            <div class="tr d2" data-n="8"><i>edit</i>&ldquo;Type a message&rdquo;</div>
+          </div>
+        </div>
+        <div class="sees-out">
+          <div class="noted clear" id="noted" data-wait="Reading&hellip; nothing kept yet">
+            <p class="lbl">Kept &middot; from Messages &middot; 14:02</p>
+            <p class="nt">Lunch with Maya, Thursday 1 pm. Bring the Lisbon photos.</p>
+            <div class="row"><span class="chip"><span data-dic="plus"></span>Added to your list</span><span class="chip">Maya Chen &middot; friend</span></div>
+          </div>
+          <div class="zero">
+            <span class="doto" id="zero">0</span>
+            <span class="lbl">screenshots<br>taken</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 02 REMEMBERS ============================ -->
+<section class="mod flip" id="remembers">
+  <div class="mod-grid wrap">
+    <header class="mod-head" data-reveal>
+      <div class="mod-num doto" aria-hidden="true" data-px="0.07">02</div>
+      <p class="lbl">Module 02 &nbsp;/&nbsp; Remembers</p>
+      <h2>It remembers your day, so you don&rsquo;t have to.</h2>
+      <p class="mod-p">Chats, pages, calls, who people are, what you said you&rsquo;d do. Yuki keeps it in memory on your PC, locked with a key only your PC has. Ask about anything. Forget anything.</p>
+      <dl class="spec">
+        <div><dt>Kept</dt><dd>On your PC, encrypted</dd></div>
+        <div><dt>For</dt><dd>As long as you want</dd></div>
+        <div><dt>Forget</dt><dd>Any item, any day, one click</dd></div>
+        <div><dt>Search</dt><dd>Ask in plain words</dd></div>
+      </dl>
+    </header>
+    <div class="demo demo-mem" id="mem-demo">
+      <p class="fig lbl"><span>fig. 2</span> A day, dealt out of memory</p>
+      <div class="mem-search" id="mem-q"><span data-dic="dot"></span><span class="q"><span id="mem-typed"></span><i class="caret"></i></span><span class="lbl">on this PC</span></div>
+      <div class="deck" id="deck">
+        <article class="mcard" data-k="leo"><p class="lbl">Person</p><h4>Leo Park</h4><p>Works at Northwind. Prefers email to chat.</p><p class="src lbl">from Mail &middot; 28 Sep</p></article>
+        <article class="mcard" data-k="leo"><p class="lbl live-l">You said you&rsquo;d</p><h4>Send Leo the Q4 deck</h4><p>By Friday. You said it on a call.</p><p class="src lbl">call with Leo &middot; 2 Oct</p></article>
+        <article class="mcard"><p class="lbl">Waiting on</p><h4>Priya: the budget sheet</h4><p>She said Friday. It&rsquo;s late.</p><p class="src lbl">from Slack &middot; 1 Oct</p></article>
+        <article class="mcard"><p class="lbl">Call &middot; both sides</p><h4>Weekly sync, 32 min</h4><p>You, Sam, Noor and Priya.</p><p class="src lbl">Teams &middot; today 09:40</p></article>
+        <article class="mcard"><p class="lbl">Person</p><h4>Maya Chen</h4><p>Friend from design school. Likes mornings.</p><p class="src lbl">from Messages &middot; 4 Oct</p></article>
+        <article class="mcard"><p class="lbl">Page</p><h4>How to repot a fern</h4><p>Read for 6 minutes.</p><p class="src lbl">Chrome &middot; 09:12</p></article>
+      </div>
+      <p class="mem-ans" id="mem-ans"><span class="who lbl">Yuki</span><span>You said you&rsquo;d send Leo the Q4 deck by Friday. He prefers email, so I can draft it there.</span></p>
+      <div class="lockline"><span data-dic="lock"></span><span class="lbl">Encrypted on this PC &middot; never uploaded</span></div>
+    </div>
+  </div>
+  <div class="subs wrap">
+    <div class="subm" data-reveal><p class="lbl"><b>02a</b> Your list</p><p>A to-do list you can add to by voice or by typing.</p></div>
+    <div class="subm" data-reveal><p class="lbl"><b>02b</b> You said you&rsquo;d</p><p>Promises you made in chats and calls, with when.</p></div>
+    <div class="subm" data-reveal><p class="lbl"><b>02c</b> Waiting on</p><p>What other people owe you, and since when.</p></div>
+    <div class="subm" data-reveal><p class="lbl"><b>02d</b> Calls, both sides</p><p>Your voice and theirs, as a timeline you can search.</p></div>
+    <div class="subm" data-reveal><p class="lbl"><b>02e</b> Breaks</p><p>A quiet nudge after a long stretch. Never in a game or a call.</p></div>
+  </div>
+</section>
+
+<!-- ============================ 03 ACTS ============================ -->
+<section class="mod scene" id="acts" style="--len: 460vh">
+  <div class="stage">
+    <div class="mod-grid wide wrap">
+      <header class="mod-head">
+        <div class="mod-num doto" aria-hidden="true">03</div>
+        <p class="lbl">Module 03 &nbsp;/&nbsp; Acts</p>
+        <h2>Ask it to do something. Watch it happen.</h2>
+        <p class="mod-p">Yuki opens apps, clicks, types and plays music. After each step it checks what changed. Grab the mouse or start typing and it stops right there. Press Resume when you&rsquo;re done.</p>
+        <dl class="spec">
+          <div><dt>Does</dt><dd>Open, click, type, play</dd></div>
+          <div><dt>Checks</dt><dd>What changed, after every step</dd></div>
+          <div><dt>Stops</dt><dd>The moment you touch the mouse or keys</dd></div>
+          <div><dt>Asks first</dt><dd>Before it sends a message. Never spends money.</dd></div>
+        </dl>
+        <ol class="ticks" data-steps="4"><li>Open Spotify</li><li>Take over</li><li>Resume</li><li>Done</li></ol>
+      </header>
+
+      <div class="demo demo-acts">
+        <p class="fig lbl"><span>fig. 3</span> &ldquo;Open Spotify and play my liked songs&rdquo;</p>
+        <div class="desk" id="desk">
+          <div class="desk-wall"></div>
+          <div class="desk-icons" aria-hidden="true"><span><i></i>Notes</span><span><i></i>Photos</span><span><i></i>Bin</span></div>
+          <div class="ask-cap" id="ask-cap"><span class="ldot blink"></span><span>&ldquo;Yuki, open Spotify and play my liked songs.&rdquo;</span></div>
+          <!-- Spotify (generic mock) -->
+          <div class="appwin" id="spot">
+            <div class="aw-bar"><span>Spotify</span><span class="ctl"><i></i><i></i><i></i></span></div>
+            <div class="aw-body">
+              <aside class="aw-side">
+                <div>Home</div><div>Search</div><div>Your Library</div>
+                <div class="liked" id="t-liked"><span class="heart"></span>Liked Songs</div>
+                <div class="pl">Morning focus</div><div class="pl">Long drive</div>
+              </aside>
+              <div class="aw-main">
+                <div class="aw-hero"><div class="cover"></div><div><p class="lbl">Playlist</p><h5 id="aw-title">Home</h5><p class="aw-sub" id="aw-sub">Jump back in</p></div></div>
+                <div class="aw-ctl"><span class="playbtn" id="t-play"><i></i></span><span class="lbl" id="aw-count">&nbsp;</span></div>
+                <ol class="aw-tracks" id="aw-tracks">
+                  <li><b>1</b><span>Slow Morning<em>Nell Ash</em></span><i>3:12</i></li>
+                  <li><b>2</b><span>Paper Boats<em>The Quiet Hours</em></span><i>2:58</i></li>
+                  <li><b>3</b><span>Low Tide<em>Ana Ferro</em></span><i>4:05</i></li>
+                  <li><b>4</b><span>Tram 28<em>Lisboa Lights</em></span><i>3:41</i></li>
+                </ol>
+              </div>
+            </div>
+            <div class="aw-now" id="aw-now"><span class="eq" id="eq"><i></i><i></i><i></i><i></i></span><span class="np"><b>Slow Morning</b> &middot; Nell Ash</span><span class="bar"><i id="np-bar"></i></span></div>
+          </div>
+          <!-- Start menu -->
+          <div class="startmenu" id="sm">
+            <div class="sm-search"><span class="mag"></span><span id="sm-typed"></span><i class="caret"></i></div>
+            <p class="lbl sm-h" id="sm-h">Pinned</p>
+            <div class="sm-res" id="sm-res">
+              <div class="r top" id="t-res"><span class="ico g"></span><span><b>Spotify</b><em>App</em></span></div>
+              <div class="r"><span class="ico"></span><span><b>Spotify settings</b><em>Settings</em></span></div>
+              <div class="r"><span class="ico"></span><span><b>Search the web: spotify</b><em>Web</em></span></div>
+            </div>
+            <div class="sm-pinned" id="sm-pinned"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          </div>
+          <!-- Taskbar -->
+          <div class="taskbar"><span class="tb-start" id="t-start"><i></i><i></i><i></i><i></i></span><span class="tb-i"></span><span class="tb-i"></span><span class="tb-i"></span><span class="tb-i sp" id="tb-spot"></span><span class="tb-clock">14:06</span></div>
+          <!-- Yuki's run card, as on the PC -->
+          <div class="runcard" id="runcard">
+            <div class="rc-top">
+              <span class="rc-fig" id="rc-fig"><i></i><i></i><i></i><i></i><i></i></span>
+              <span class="rc-t"><b id="rc-title">Open Spotify, play Liked Songs</b><em id="rc-sub" class="lbl">Step 0 of 5</em></span>
+            </div>
+            <ol class="rc-steps" id="rc-steps">
+              <li data-s="1"><span class="st">Open Start</span><span class="chg">What changed: Start is open</span></li>
+              <li data-s="2"><span class="st">Type &ldquo;Spotify&rdquo;</span><span class="chg">What changed: Spotify is the top result</span></li>
+              <li data-s="3"><span class="st">Press Enter</span><span class="chg">What changed: Spotify is in front</span></li>
+              <li data-s="4"><span class="st">Click Liked Songs</span><span class="chg">What changed: Liked Songs is showing</span></li>
+              <li data-s="5"><span class="st">Press Play</span><span class="chg">What changed: music is playing</span></li>
+            </ol>
+            <div class="rc-pause" id="rc-pause"><span class="pz"><i></i><i></i></span><span><b>Paused. You moved the mouse.</b><em>Yuki waits until you&rsquo;re done.</em></span><span class="key sm" id="t-resume">Resume</span></div>
+            <div class="rc-done" id="rc-done"><span data-dic="check"></span><span><b>Spotify is open and playing Liked Songs.</b><em class="lbl">5 steps &middot; 9 s &middot; checked after each</em></span></div>
+            <div class="rc-keys" id="rc-keys"><span class="key stop sm"><span data-dic="stop"></span>Stop</span><span class="lbl">Alt Shift X</span></div>
+          </div>
+          <!-- cursors -->
+          <div class="mcur yk" id="cur-y"><svg viewBox="0 0 16 22"><path d="M1 1v17l4.5-4.2 3 7 3-1.3-3-6.8H15z"/></svg><span>Yuki</span></div>
+          <div class="mcur you" id="cur-u"><svg viewBox="0 0 16 22"><path d="M1 1v17l4.5-4.2 3 7 3-1.3-3-6.8H15z"/></svg><span>you</span></div>
+          <div class="ripple" id="ripple"></div>
+          <div class="keycap" id="keycap">Enter</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 04 TALKS ============================ -->
+<section class="mod flip" id="talks">
+  <div class="mod-grid wrap">
+    <header class="mod-head" data-reveal>
+      <div class="mod-num doto" aria-hidden="true" data-px="0.07">04</div>
+      <p class="lbl">Module 04 &nbsp;/&nbsp; Talks</p>
+      <h2>Say &ldquo;Yuki&rdquo;. It answers out loud.</h2>
+      <p class="mod-p">It tells you what it&rsquo;s doing as it goes, in a natural voice. Change your mind halfway and it follows. It never speaks first. When it has something for you, a quiet card appears.</p>
+      <dl class="spec">
+        <div><dt>Wake word</dt><dd>&ldquo;Yuki&rdquo;, or a shortcut</dd></div>
+        <div><dt>Narrates</dt><dd>Each step, as it happens</dd></div>
+        <div><dt>Steer</dt><dd>Mid-task, in your own words</dd></div>
+        <div><dt>Speaks first</dt><dd>Never. Offers come as cards.</dd></div>
+      </dl>
+    </header>
+    <div class="demo demo-talk" id="talk-demo">
+      <p class="fig lbl"><span>fig. 4</span> A short conversation, live</p>
+      <div class="voice clear">
+        <div class="leds" id="leds">
+          <span data-m="listening"><i></i>Listening</span><span data-m="hearing"><i></i>Hearing you</span><span data-m="thinking"><i></i>Thinking</span><span data-m="speaking"><i></i>Speaking</span>
+        </div>
+        <canvas class="wave" id="wave" aria-hidden="true"></canvas>
+        <div class="tx" id="tx" aria-live="off"></div>
+      </div>
+      <div class="offer clear" id="offer">
+        <p class="lbl">A quiet card &middot; it never speaks first</p>
+        <p class="ot">Sam sent new slides at 15:40. Open them next to your notes?</p>
+        <div class="row"><span class="key sm">Open both</span><span class="key ghost sm">Not now</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 05 BRAIN (bone) ============================ -->
+<section class="mod scene bone" id="brain" style="--len: 380vh">
+  <div class="stage">
+    <div class="mod-grid wrap">
+      <header class="mod-head">
+        <div class="mod-num doto" aria-hidden="true">05</div>
+        <p class="lbl">Module 05 &nbsp;/&nbsp; Your PC is the brain</p>
+        <h2>Your memory lives on your PC. The web is a window onto it.</h2>
+        <p class="mod-p">When you open Yuki in a browser, your PC streams what you need through an encrypted relay, live, while it&rsquo;s on. Ask from the web and the task runs on your PC. We keep your account, the link to your PC and, sealed, any task you queue while it&rsquo;s off. Nothing else.</p>
+        <table class="where">
+          <thead><tr><th></th><th>Your PC</th><th>Our cloud</th></tr></thead>
+          <tbody>
+            <tr><td>Memory of your day</td><td class="y">kept, encrypted</td><td class="n">never</td></tr>
+            <tr><td>Reading the screen</td><td class="y">here only</td><td class="n">never</td></tr>
+            <tr><td>Your AI keys</td><td class="y">kept</td><td class="n">never</td></tr>
+            <tr><td>Live view and commands</td><td class="y">sent from here</td><td class="p">passed on, sealed</td></tr>
+            <tr><td>A task you queue</td><td class="y">runs it</td><td class="p">held sealed, up to 24 h</td></tr>
+            <tr><td>Your email, the PC link</td><td class="n">&mdash;</td><td class="y">kept</td></tr>
+          </tbody>
+        </table>
+      </header>
+      <div class="demo demo-brain" id="brain-demo">
+        <p class="fig lbl"><span>fig. 5</span> Exploded view &middot; PC, relay, browser</p>
+        <div class="xplode" id="xplode">
+          <!-- four stacked SVG layers with one viewBox: the stream lines, then the three slabs. Each layer moves as a
+               whole with a CSS transform; the packets are DOM dots on top. Slab faces are drawn by landing.js. -->
+          <div class="xp-stack" id="xp" role="img" aria-label="Diagram: your PC at the bottom, an encrypted relay in the middle, your browser on top.">
+            <svg class="xp" id="xl-lines" viewBox="0 0 640 700" aria-hidden="true">
+              <defs>
+                <pattern id="pdots" width="10" height="10" patternUnits="userSpaceOnUse"><circle cx="5" cy="5" r="1.1" fill="#0B0B0C" opacity=".22"/></pattern>
+                <pattern id="pdots2" width="8" height="8" patternUnits="userSpaceOnUse"><circle cx="4" cy="4" r="1.2" fill="#0B0B0C" opacity=".5"/></pattern>
+              </defs>
+              <g id="xp-lines" class="xp-lines"></g>
+            </svg>
+            <svg class="xp xl" id="xl-pc" viewBox="0 0 640 700" aria-hidden="true"><g id="xp-pc" class="slab"></g></svg>
+            <svg class="xp xl" id="xl-relay" viewBox="0 0 640 700" aria-hidden="true"><g id="xp-relay" class="slab"></g></svg>
+            <svg class="xp xl" id="xl-web" viewBox="0 0 640 700" aria-hidden="true"><g id="xp-web" class="slab"></g></svg>
+            <div class="xp-pk" id="xp-packets" aria-hidden="true"></div>
+          </div>
+          <div class="callout c-web" id="c-web"><p class="lbl"><b>A</b> Your browser</p><p>Shows what your PC streams. Sends what you type.</p></div>
+          <div class="callout c-relay" id="c-relay"><p class="lbl"><b>B</b> The relay</p><p>Sealed end to end. It passes the stream on and can&rsquo;t read it.</p></div>
+          <div class="callout c-pc" id="c-pc"><p class="lbl"><b>C</b> Your PC, the brain</p><p>Memory, screen reading, voice and AI keys. All here.</p></div>
+        </div>
+        <p class="legend lbl"><span><i class="f"></i>Up: the live view</span><span><i class="f"></i>Down: your commands</span><span><i class="o"></i>In the relay: sealed</span></p>
+        <div class="pcswitch">
+          <div class="sw-l"><p class="lbl">Try it &middot; your PC is</p>
+            <div class="seg" role="radiogroup" aria-label="PC state"><button role="radio" aria-checked="true" data-pc="on">On</button><button role="radio" aria-checked="false" data-pc="off">Off</button></div></div>
+          <div class="sw-out" id="sw-out">
+            <p class="on-t"><span class="pill"><span class="ldot blink"></span>Online</span><b>Streaming, encrypted.</b><br><span>&ldquo;Open Spotify&rdquo; runs on your PC now.</span></p>
+            <p class="off-t"><span class="pill off"><span class="ldot off"></span>Offline</span><b>Your PC is off. Run it when it&rsquo;s back?</b><br><span class="row"><span class="key sm pri">Queue</span><span class="key sm">Cancel</span></span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 06 ANY AI ============================ -->
+<section class="mod" id="ai">
+  <div class="mod-grid wrap">
+    <header class="mod-head" data-reveal>
+      <div class="mod-num doto" aria-hidden="true" data-px="0.07">06</div>
+      <p class="lbl">Module 06 &nbsp;/&nbsp; Any AI</p>
+      <h2>Bring your own AI.</h2>
+      <p class="mod-p">Pick the model that thinks for Yuki. Use your own key, a free model, or run it all on your PC with Ollama. Keys stay on your PC. Switch any time; your memory stays put.</p>
+    </header>
+    <div class="demo demo-ai" id="ai-demo">
+      <p class="fig lbl"><span>fig. 6</span> The model selector &middot; turn the dial</p>
+      <div class="console clear">
+        <div class="knob-wrap">
+          <div class="knob" id="knob" role="slider" tabindex="0" aria-label="AI provider" aria-valuemin="0" aria-valuemax="4" aria-valuenow="0">
+            <div class="knob-ticks" id="knob-ticks"></div>
+            <div class="knob-cap" id="knob-cap"><i></i></div>
+          </div>
+          <div class="knob-labels" id="knob-labels"></div>
+        </div>
+        <div class="readout">
+          <div class="lcd" id="lcd"><span class="lbl">Thinks with</span><span class="doto lcd-n" id="lcd-n">Claude</span><span class="lcd-s" id="lcd-s">Anthropic or Amazon Bedrock</span></div>
+          <dl class="spec tight" id="ai-spec">
+            <div><dt>Runs</dt><dd id="ai-runs">In the cloud, with your key</dd></div>
+            <div><dt>Key</dt><dd id="ai-key">Stays on your PC</dd></div>
+            <div><dt>Memory</dt><dd>Stays on your PC</dd></div>
+          </dl>
+        </div>
+      </div>
+      <div class="pkeys" id="pkeys" role="radiogroup" aria-label="Providers">
+        <button class="pkey" role="radio" aria-checked="true" data-i="0"><i></i>Claude</button>
+        <button class="pkey" role="radio" aria-checked="false" data-i="1"><i></i>OpenAI</button>
+        <button class="pkey" role="radio" aria-checked="false" data-i="2"><i></i>Gemini</button>
+        <button class="pkey" role="radio" aria-checked="false" data-i="3"><i></i>OpenRouter</button>
+        <button class="pkey" role="radio" aria-checked="false" data-i="4"><i></i>Ollama</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 07 DOWNLOAD ============================ -->
+<section class="mod dl" id="download">
+  <div class="wrap">
+    <div class="dl-top">
+      <div class="mod-num doto" aria-hidden="true" data-px="0.07">07</div>
+      <p class="lbl">Module 07 &nbsp;/&nbsp; Download</p>
+    </div>
+    <h2 class="dl-h doto" data-reveal><span data-px="0.05">Get yuki</span></h2>
+    <div class="dl-grid">
+      <div class="dl-card clear" data-reveal>
+        <div class="dl-row"><span data-ymark class="dl-y"></span><div><p class="dl-n">Yuki for Windows</p><p class="lbl">Version 0.9.2 &middot; 4 Oct 2026</p></div></div>
+        <a class="key pri lg dl-btn" href="#download" id="dl-btn"><span data-dic="arrow"></span>Download for Windows 11<span class="sz">86 MB</span></a>
+        <div class="dl-bar" id="dl-bar" aria-hidden="true"></div>
+        <dl class="spec">
+          <div><dt>System</dt><dd>Windows 11, 64-bit</dd></div>
+          <div><dt>Memory</dt><dd>8 GB RAM or more</dd></div>
+          <div><dt>Voice</dt><dd>Any microphone</dd></div>
+          <div><dt>Optional</dt><dd>An NVIDIA GPU, for local voice and models</dd></div>
+        </dl>
+        <p class="lbl dl-not">Mac and phone apps: not yet.</p>
+      </div>
+      <ol class="dl-steps">
+        <li data-reveal><span class="doto">1</span><div><b>Install it, then say &ldquo;Yuki&rdquo;.</b><p>It starts in the tray. Pick your AI on first run.</p></div></li>
+        <li data-reveal><span class="doto">2</span><div><b>Sign in from the app.</b><p>Settings, then &ldquo;Sign in to use Yuki from the web&rdquo;. You&rsquo;ll get a short code.</p></div></li>
+        <li data-reveal><span class="doto">3</span><div><b>Open Yuki in any browser.</b><p>Type the code once. Your PC shows up, live, while it&rsquo;s on.</p><a class="key sm" href="link.html">See how linking works</a></div></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ FOOTER ============================ -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand"><span data-ymark></span><p>A helper that lives on your PC.</p></div>
+      <nav><p class="lbl">Product</p><a href="#download">Download</a><a href="login.html">Web app</a><a href="link.html">Link your PC</a></nav>
+      <nav><p class="lbl">Trust</p><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="status.html">Status</a></nav>
+      <nav><p class="lbl">Status</p><a href="status.html" class="stat"><span class="ldot"></span>Relay working</a></nav>
+    </div>
+    <div class="foot-word doto" aria-hidden="true" data-px="0.08">yuki</div>
+    <div class="foot-base lbl"><span>&copy; 2026 Yuki</span><span>Made for Windows 11</span><span>fig. 07 &mdash; end of catalogue</span></div>
+  </div>
+</footer>
+
+<nav class="dotnav" id="dotnav" aria-hidden="true">
+  <a href="#sees" data-t="Sees"></a><a href="#remembers" data-t="Remembers"></a><a href="#acts" data-t="Acts"></a><a href="#talks" data-t="Talks"></a><a href="#brain" data-t="Your PC"></a><a href="#ai" data-t="Any AI"></a><a href="#download" data-t="Download"></a>
+</nav>
+
+<script src="js/core.js"></script>
+<script src="js/dotkit.js"></script>
+<script src="js/hero.js"></script>
+<script src="js/landing.js"></script>
+</body>
+</html>

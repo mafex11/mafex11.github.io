@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Yuki · on the web</title>
+<meta name="theme-color" content="#0B0B0C">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body class="app" data-pc="online">
+<canvas id="field" aria-hidden="true"></canvas>
+
+<div class="shell">
+  <!-- rail: the same as the PC app's -->
+  <aside class="rail">
+    <div class="rail-in clear" data-clear>
+      <a class="rbrand" href="app.html#home"><span data-ymark></span><span><span class="name">yuki</span><span class="st" id="rail-st"><span class="ldot blink"></span>on the web</span></span></a>
+      <nav class="nav" id="nav" aria-label="Pages"></nav>
+      <div class="rfoot">
+        <div class="pcbox" id="pcbox"></div>
+        <div class="me-row"><span class="av" id="me-av">A</span><span class="who" id="me-who">Alex Rivera<span>alex@example.com</span></span></div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="mainwrap">
+    <header class="topbar">
+      <a class="tb-brand" href="app.html#home" aria-label="Yuki"><span data-ymark></span><span class="doto">yuki</span></a>
+      <span class="tb-crumb" id="crumb">Home</span>
+      <div class="tb-right">
+        <span class="queued" id="queued"><span data-dic="dot"></span><span id="queued-n">1 queued</span></span>
+        <span class="pcchip" id="pcchip" role="status" aria-live="polite"></span>
+        <button class="mocktog" id="mocktog" type="button" aria-pressed="false" aria-label="Mock only: pretend the PC is off" title="Mock only: pretend the PC is off"><span class="tg"></span><span class="t">mock: PC off</span></button>
+        <a class="avbtn" href="#settings" aria-label="Account and settings">A</a>
+      </div>
+    </header>
+    <nav class="tabs-m" id="tabs-m" aria-label="Pages"></nav>
+    <div class="offbar" role="status"><span class="ldot off"></span><span><b>Your PC is off.</b> You&rsquo;re seeing what it shared before <span id="off-at">14:06</span>. Tasks can wait in a queue until it&rsquo;s back.<span class="offq" id="offq"></span></span></div>
+    <main class="view" id="view" tabindex="-1"></main>
+  </div>
+</div>
+
+<!-- the ask bar: what you type here runs on your PC -->
+<div class="askdock">
+  <section class="thread" id="thread" aria-label="Conversation with your PC" aria-live="polite"></section>
+  <div class="hints" id="hints"><button type="button" data-q="Open Spotify">Open Spotify</button><button type="button" data-q="What's on my list?">What&rsquo;s on my list?</button><button type="button" data-q="Who is Leo?">Who is Leo?</button><button type="button" data-q="Mute Slack for an hour">Mute Slack for an hour</button></div>
+  <form class="ask" id="ask" autocomplete="off">
+    <span data-ymark="bare" data-cls="yd"></span>
+    <input id="ask-in" type="text" placeholder="Ask Yuki or tell it to do something on your PC" aria-label="Ask Yuki or tell it to do something on your PC">
+    <span class="where" id="ask-where"><span data-dic="lock"></span>runs on DESKTOP-4KD7Q2M</span>
+    <button class="key pri send" type="submit" aria-label="Send"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
+  </form>
+</div>
+
+<script src="js/core.js"></script>
+<script src="js/dotkit.js"></script>
+<script src="js/appfield.js"></script>
+<script src="js/app-data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

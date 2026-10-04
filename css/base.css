@@ -1,0 +1,189 @@
+/* =====================================================================
+   Yuki website / base. Lattice tokens (same as the PC app's style.css),
+   fonts, resets and the few parts every page shares.
+   Port: this file becomes app/globals.css in the Next.js build.
+   ===================================================================== */
+:root {
+  /* colour: one product with the app */
+  --bg: #0B0B0C;
+  --raise: #121214;
+  --raise-2: #18191B;
+  --dot: #26292C;
+  --lit: #F2EFE9;
+  --text: #F2EFE9;
+  --text-2: #B4B0A8;
+  --text-3: #8A8780;
+  --hair: #1E2023;
+  --hair-2: #2B2E32;
+  --mark: #474B50;
+  --live: #6FEBC4;          /* the only colour, and only for live things */
+  --live-ink: #062419;
+  --live-dim: rgba(111, 235, 196, .12);
+  /* bone sections (for rhythm) */
+  --bone: #F2EFE9;
+  --bone-2: #E7E3DB;
+  --ink: #0B0B0C;
+  --ink-2: #4A4741;
+  --ink-3: #75716A;
+  --bone-hair: #D6D1C7;
+  /* radii, space */
+  --r-1: 4px; --r-2: 8px; --r-3: 14px; --r-4: 20px; --r-pill: 999px;
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 24px; --s-6: 32px; --s-7: 48px; --s-8: 64px;
+  /* type */
+  --f-display: 'Doto', 'JetBrains Mono', monospace;
+  --f-ui: 'Instrument Sans', system-ui, sans-serif;
+  --f-mono: 'JetBrains Mono', ui-monospace, monospace;
+  /* motion */
+  --d-fast: 140ms; --d-med: 260ms; --d-slow: 520ms;
+  --ease: cubic-bezier(.2, .7, .1, 1);
+  --ease-out: cubic-bezier(.16, 1, .3, 1);
+  /* layout */
+  --gut: clamp(16px, 4vw, 56px);
+  --maxw: 1600px;
+}
+
+@font-face { font-family: 'Doto'; src: url(../fonts/Doto.ttf) format('truetype'); font-weight: 100 900; font-display: block; }
+@font-face { font-family: 'Instrument Sans'; src: url(../fonts/InstrumentSans.ttf) format('truetype'); font-weight: 400 700; font-stretch: 75% 100%; font-display: block; }
+@font-face { font-family: 'JetBrains Mono'; src: url(../fonts/JetBrainsMono.ttf) format('truetype'); font-weight: 100 800; font-display: block; }
+
+* { box-sizing: border-box; }
+html { background: var(--bg); color: var(--text); -webkit-text-size-adjust: 100%; }
+body { margin: 0; font: 400 15px/1.5 var(--f-ui); -webkit-font-smoothing: antialiased; font-feature-settings: 'ss01', 'tnum'; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+a { color: inherit; }
+img, svg, canvas { display: block; }
+:focus-visible { outline: 1.5px solid var(--live); outline-offset: 2px; border-radius: var(--r-1); }
+::selection { background: var(--live); color: var(--live-ink); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.doto { font-family: var(--f-display); font-variation-settings: 'ROND' 100; font-weight: 800; letter-spacing: .02em; }
+.mono { font-family: var(--f-mono); }
+.t2 { color: var(--text-2); } .t3 { color: var(--text-3); }
+.live { color: var(--live); }
+
+/* tiny caps mono label: the catalogue voice */
+.lbl { font: 500 10.5px/1.3 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); }
+.lbl b { color: var(--text); font-weight: 500; }
+.lbl.live { color: var(--live); }
+
+/* clearings: a panel the field parts around, crop marks at its corners (from the app) */
+.clear {
+  position: relative;
+  --m: var(--mark);
+  background:
+    linear-gradient(var(--m), var(--m)) 0 0 / 9px 1px no-repeat,
+    linear-gradient(var(--m), var(--m)) 0 0 / 1px 9px no-repeat,
+    linear-gradient(var(--m), var(--m)) 100% 0 / 9px 1px no-repeat,
+    linear-gradient(var(--m), var(--m)) 100% 0 / 1px 9px no-repeat,
+    linear-gradient(var(--m), var(--m)) 0 100% / 9px 1px no-repeat,
+    linear-gradient(var(--m), var(--m)) 0 100% / 1px 9px no-repeat,
+    linear-gradient(var(--m), var(--m)) 100% 100% / 9px 1px no-repeat,
+    linear-gradient(var(--m), var(--m)) 100% 100% / 1px 9px no-repeat;
+}
+.dotrule { height: 3px; background: radial-gradient(circle, var(--hair-2) 1px, transparent 1.3px) 0 0 / 6px 3px repeat-x; }
+
+/* keys (buttons) */
+.key {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 36px; padding: 0 14px;
+  border-radius: var(--r-2); border: 1px solid var(--hair-2); background: var(--raise); color: var(--text);
+  font-size: 14px; font-weight: 500; white-space: nowrap; text-decoration: none;
+  transition: background var(--d-fast), border-color var(--d-fast), transform var(--d-fast), color var(--d-fast);
+}
+.key:hover { background: var(--raise-2); border-color: #3A3E43; }
+.key:active { transform: translateY(1px); }
+.key.pri { background: var(--lit); color: var(--ink); border-color: var(--lit); font-weight: 600; }
+.key.pri:hover { background: #fff; }
+.key.ghost { background: transparent; border-color: transparent; color: var(--text-2); }
+.key.ghost:hover { color: var(--text); background: var(--raise); }
+.key.stop { border-color: rgba(111,235,196,.45); color: var(--live); background: var(--live-dim); }
+.key.lg { height: 48px; padding: 0 20px; font-size: 15px; border-radius: 10px; }
+.key.sm { height: 28px; padding: 0 10px; font-size: 12.5px; }
+.key.xs { height: 22px; padding: 0 8px; font-size: 11.5px; border-radius: 6px; }
+.key[disabled] { opacity: .45; pointer-events: none; }
+.key svg { width: 14px; height: 14px; flex: none; }
+.kbd { font: 500 10.5px/1 var(--f-mono); color: var(--text-3); border: 1px solid var(--hair-2); border-radius: 4px; padding: 3px 5px; }
+
+.chip {
+  display: inline-flex; align-items: center; gap: 7px; height: 26px; padding: 0 10px; border-radius: var(--r-pill);
+  border: 1px solid var(--hair-2); color: var(--text-2); font: 500 11.5px/1 var(--f-mono); white-space: nowrap;
+}
+.chip.live { border-color: rgba(111,235,196,.4); color: var(--live); }
+.ldot { width: 7px; height: 7px; border-radius: 50%; background: var(--live); flex: none; }
+.ldot.blink { animation: blink 1.6s steps(2, jump-none) infinite; }
+.ldot.off { background: transparent; border: 1px solid var(--text-3); }
+@keyframes blink { 50% { opacity: .3; } }
+
+/* inputs */
+.field-in {
+  width: 100%; height: 46px; padding: 0 14px; border-radius: 10px; border: 1px solid var(--hair-2); background: var(--raise);
+  color: var(--text); font-size: 15px; transition: border-color var(--d-fast), background var(--d-fast);
+}
+.field-in::placeholder { color: var(--text-3); }
+.field-in:focus { outline: 0; border-color: rgba(111,235,196,.6); background: var(--bg); }
+.field-in[aria-invalid="true"] { border-color: #E7B7A0; }
+
+/* dot icons: tiny grids of dots, drawn as SVG */
+.dic { width: 14px; height: 14px; fill: currentColor; flex: none; }
+
+/* the Y mark (inline SVG) */
+.ymark { width: 28px; height: 28px; flex: none; }
+
+/* ---------- mock-only: the screens pill (removed in the real build) ---------- */
+.mockpill { position: fixed; z-index: 90; left: 0; top: 50%; font: 500 11px/1 var(--f-mono); }
+.mockpill > button {
+  position: absolute; left: 0; top: 0; transform: translateY(-50%); writing-mode: vertical-rl;
+  display: inline-flex; align-items: center; gap: 8px; padding: 12px 6px; border-radius: 0 8px 8px 0;
+  border: 1px dashed #4A4E54; border-left: 0; background: rgba(11,11,12,.9); color: var(--text-3);
+  letter-spacing: .1em; text-transform: uppercase; font-size: 9.5px; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+}
+.mockpill > button:hover { color: var(--text); border-color: var(--text-3); }
+.mockpill > button i { width: 5px; height: 5px; border-radius: 50%; background: var(--text-3); }
+.mockpill .panel {
+  position: absolute; left: 34px; top: 0; transform: translateY(-50%); width: 300px; max-height: min(80vh, 640px); overflow: auto; padding: 14px;
+  border: 1px solid var(--hair-2); border-radius: 14px; background: rgba(11,11,12,.97); box-shadow: 0 20px 60px rgba(0,0,0,.6);
+  opacity: 0; translate: -6px 0; pointer-events: none; transition: opacity var(--d-fast), translate var(--d-fast);
+  scrollbar-width: thin; scrollbar-color: #2B2E32 transparent;
+}
+.mockpill.open .panel { opacity: 1; translate: 0 0; pointer-events: auto; }
+.mockpill .panel h6 { margin: 12px 0 6px; font: 500 10px/1 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); }
+.mockpill .panel h6:first-child { margin-top: 0; }
+.mockpill .panel a { display: flex; justify-content: space-between; gap: 10px; padding: 6px 8px; border-radius: 6px; color: var(--text-2); text-decoration: none; font: 400 12.5px/1.3 var(--f-ui); }
+.mockpill .panel a span { font: 500 10.5px/1.3 var(--f-mono); color: var(--text-3); }
+.mockpill .panel a:hover { background: var(--raise); color: var(--text); }
+.mockpill .panel a.here { color: var(--text); background: var(--raise-2); }
+.mockpill .panel .all { margin-top: 10px; border-top: 1px solid var(--hair); padding-top: 10px; }
+
+/* ---------- simple doc pages (privacy, terms, status stubs) ---------- */
+.doc { max-width: 760px; margin: 0 auto; padding: 120px var(--gut) 120px; }
+.doc h1 { font-family: var(--f-display); font-variation-settings: 'ROND' 100; font-weight: 800; font-size: clamp(48px, 9vw, 96px); line-height: .9; margin: 18px 0 28px; letter-spacing: .01em; }
+.doc h2 { font-size: 20px; margin: 40px 0 10px; font-weight: 600; }
+.doc p, .doc li { color: var(--text-2); font-size: 16px; line-height: 1.6; }
+.doc li b, .doc p b { color: var(--text); font-weight: 500; }
+.doc .stub { margin-top: 48px; padding: 16px 18px; border: 1px dashed var(--hair-2); border-radius: 12px; font: 500 12px/1.5 var(--f-mono); color: var(--text-3); }
+
+/* reduced motion: static frames, no CSS motion */
+[data-motion="reduced"] *, [data-motion="reduced"] *::before, [data-motion="reduced"] *::after { animation: none !important; transition: none !important; }
+
+@media (max-width: 760px) {
+  .mockpill > button { width: 22px; height: 48px; padding: 0; justify-content: center; font-size: 0; gap: 0; }
+  .mockpill > button i { width: 5px; height: 5px; }
+  .mockpill .panel { left: 26px; width: min(300px, calc(100vw - 38px)); }
+}
+.doc p.lbl { font-size: 10.5px; line-height: 1.3; color: var(--text-3); margin: 0; }
+
+/* ---------- the stub pages' header (privacy, terms, status) ---------- */
+.dtop { position: fixed; top: 0; left: 0; right: 0; height: 60px; display: flex; align-items: center; padding: 0 var(--gut); background: rgba(11,11,12,.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 10; border-bottom: 1px solid var(--hair); }
+.dtop a.brand { display: inline-flex; align-items: center; gap: 10px; min-height: 40px; text-decoration: none; }
+.dtop .doto { font-size: 24px; font-weight: 900; letter-spacing: .04em; }
+.dtop .r { margin-left: auto; display: flex; gap: 4px; }
+.dtop .r a { display: inline-flex; align-items: center; min-height: 40px; padding: 0 8px; font-size: 13.5px; color: var(--text-2); text-decoration: none; }
+.dtop .r a:hover { color: var(--text); }
+
+/* ---------- touch: every key, link and switch is at least 40 px on a phone or any touch screen ----------
+   Only real controls grow (a, button); the keys drawn inside the landing demos are spans and keep their size. */
+@media (max-width: 760px), (pointer: coarse) {
+  a.key, button.key { min-height: 40px; }
+  a.key.sm, button.key.sm, a.key.xs, button.key.xs { height: 40px; min-width: 40px; }
+  a.key.xs, button.key.xs { padding: 0 12px; font-size: 12.5px; border-radius: var(--r-2); }
+}

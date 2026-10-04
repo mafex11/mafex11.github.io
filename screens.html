@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>All screens · Yuki website mock</title>
+<meta name="theme-color" content="#0B0B0C">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/base.css">
+<style>
+  body { background: var(--bg); }
+  .wrap { max-width: 1440px; margin: 0 auto; padding: 0 var(--gut); }
+  .top { display: flex; align-items: center; gap: 12px; height: 64px; }
+  .top a.brand { display: inline-flex; align-items: center; gap: 10px; min-height: 40px; text-decoration: none; }
+  .top .doto { font-size: 24px; font-weight: 900; letter-spacing: .04em; }
+  .top .right { margin-left: auto; }
+  h1 { font-family: var(--f-display); font-variation-settings: 'ROND' 100; font-weight: 800; font-size: clamp(64px, 10vw, 140px); line-height: .85; margin: 56px 0 18px; letter-spacing: .01em; }
+  .intro { color: var(--text-2); max-width: 64ch; font-size: 16px; line-height: 1.55; margin: 0 0 48px; }
+  .grp { margin-bottom: 56px; }
+  .grp-h { display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 12px; border-bottom: 1px solid var(--hair-2); margin-bottom: 18px; }
+  .grp-h h2 { margin: 0; font-size: 22px; font-weight: 600; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+  .sc { display: flex; flex-direction: column; gap: 8px; min-height: 148px; padding: 16px 18px; text-decoration: none; transition: background var(--d-fast); }
+  .sc:hover { background: var(--raise); }
+  .sc .n { display: flex; justify-content: space-between; }
+  .sc .n .doto { font-size: 22px; color: var(--text-3); line-height: 1; }
+  .sc:hover .n .doto { color: var(--text); }
+  .sc b { font-size: 16px; font-weight: 600; }
+  .sc p { margin: 0; font-size: 13px; color: var(--text-2); line-height: 1.45; }
+  .sc code { margin-top: auto; font: 500 11px/1.3 var(--f-mono); color: var(--text-3); word-break: break-all; }
+  .note { margin: 0 0 80px; padding: 16px 18px; border: 1px dashed var(--hair-2); border-radius: 12px; color: var(--text-2); font-size: 14px; line-height: 1.55; }
+  .note b { color: var(--text); font-weight: 500; }
+</style>
+</head>
+<body data-no-pill>
+<div class="wrap">
+  <header class="top"><a class="brand" href="index.html"><span data-ymark></span><span class="doto">yuki</span></a><span class="lbl">Website mock &middot; 4 Oct 2026</span><span class="right lbl">Not public yet</span></header>
+  <h1>Screens</h1>
+  <p class="intro">Every page and every state of the website mock, in one place. Click a card to open it. On any page, the small dashed tab on the left edge opens this list too. All people and data are invented.</p>
+  <div id="groups"></div>
+  <p class="note"><b>How states work.</b> Each page reads its state from the address: <code>login.html#sent</code>, <code>link.html#linked</code>, <code>app.html#work&amp;offline</code>. You can also click through by hand: type an email to sign in, type <b>K7Q4MX</b> on the link page, type &ldquo;Open Spotify&rdquo; in the dashboard&rsquo;s ask bar, or flip the dashed &ldquo;mock: PC off&rdquo; switch. Add <code>?motion=reduced</code> to the landing page to see the still frames people get when they turn off motion.</p>
+</div>
+<script src="js/core.js"></script>
+<script>
+(function () {
+  const NOTE = {
+    'index.html': 'The living dot field: the yuki matrix, the planet, the pointer lens. Scroll to scatter it.',
+    'index.html#sees': 'Sticky scene. A read head walks the UI tree of a chat window, then keeps one fact.',
+    'index.html#remembers': 'Memory cards deal out of a stack as you scroll, then a search finds Leo.',
+    'index.html#acts': 'Sticky scene. Open Spotify step by step, What changed ticks, you grab the mouse, Resume.',
+    'index.html#talks': 'Live voice: listening, hearing you, thinking, speaking. A steer mid-task. A quiet card.',
+    'index.html#brain': 'Bone section. Exploded view of PC, relay and browser. Try the PC on and off switch.',
+    'index.html#ai': 'Turn the dial or press a key: Claude, OpenAI, Gemini, OpenRouter, Ollama.',
+    'index.html#download': 'Get yuki. Click Download to see the dotted progress bar.',
+    'index.html?motion=reduced': 'Everything still: scenes become plain sections, demos show one honest frame.',
+    'login.html#email': 'Sign in with a magic link or Google. The privacy note sits under the buttons.',
+    'login.html#create': 'The same card, set to create an account.',
+    'login.html#invalid': 'Error: the email has a typo.',
+    'login.html#sent': 'Check your inbox. Resend counts down. Mock buttons open the link, or open it too late.',
+    'login.html#expired': 'Error: the link is older than 15 minutes or already used.',
+    'login.html#signed-in': 'You’re in. Next step: link your PC.',
+    'link.html#start': 'The PC app before you sign in. Press its Sign in key: it opens the browser and shows a code.',
+    'link.html#waiting': 'Device code flow. Left: type the code. Right: the PC app shows it. Click it to fill.',
+    'link.html#wrong': 'Error: the code doesn’t match. The boxes shake.',
+    'link.html#expired': 'Error: the code ran out. The PC app offers a new one.',
+    'link.html#linked': 'DESKTOP-4KD7Q2M linked · encrypted. It joins the devices list.',
+    'link.html#unlink': 'Unlink an older PC, with a plain confirm.',
+    'app.html#home': 'Now, your list, today. The field parts around every panel, as in the PC app.',
+    'app.html#work': 'Your list, you said you’d, waiting on, needs your reply, and the today strip.',
+    'app.html#day': 'Totals, the day strip and the timeline of what you did.',
+    'app.html#calls': 'Calls with both sides, and what came out of each.',
+    'app.html#memory': 'What Yuki knows, searchable while your PC is on. Forget any line.',
+    'app.html#settings': 'PC link, AI chosen on the PC, what happens when the PC is off, account.',
+    'app.html#home&run=spotify': 'Open Spotify runs on your PC: sent, step lines streamed live, Stop key.',
+    'app.html#home&run=spotify&at=done': 'Done, with what it achieved: Spotify is open and playing Liked Songs.',
+    'app.html#home&run=spotify&at=stopped': 'You pressed Stop at step 2. Nothing else was done.',
+    'app.html#home&ask=list': 'A question answered inline from what the PC streams.',
+    'app.html#home&offline': 'The PC is off: the chip says so and the page shows the last copy.',
+    'app.html#home&offline&run=spotify': 'Your PC is off. Run it when it’s back? Queue or Cancel.',
+    'app.html#home&offline&run=spotify&at=queued': 'Queued. Flip the PC back on and it runs.',
+    'privacy.html': 'Stub. What we keep, what we never see.',
+    'terms.html': 'Stub.',
+    'status.html': 'Stub with live-looking status rows.'
+  };
+  let n = 0;
+  document.getElementById('groups').innerHTML = Y.SCREENS.map((g) => `<section class="grp"><div class="grp-h"><h2>${g.g}</h2><span class="lbl">${g.items.length} screens</span></div><div class="grid">${g.items.map(([name, href]) => {
+    n++; return `<a class="sc clear" href="${href}"><span class="n"><span class="doto">${String(n).padStart(2, '0')}</span><span class="lbl">${href.split('#')[0].split('?')[0].replace('.html', '')}</span></span><b>${name}</b><p>${NOTE[href] || ''}</p><code>${href}</code></a>`;
+  }).join('')}</div></section>`).join('');
+})();
+</script>
+</body>
+</html>
