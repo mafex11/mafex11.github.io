@@ -5,6 +5,10 @@
      'A' marks the i's dot, the one accent;
    - planet(): the planet-splash motif (logo/planet-splash.js) as a pure function of a cell, with a moving
      light and rays that pulse outward, so the hero can animate it every frame.
+   - lensK(dx, dy, R): the one field-lens falloff every canvas shares (fx "lens"): 1 at the pointer, 0 at R
+     and beyond, smoothstep in between. Callers swell dots by up to 1.8x and brighten one ramp step with it:
+       const k = DotKit.lensK(x - px, y - py, 120); r *= 1 + 0.8 * k; if (k > 0.35) row = brighter;
+     Radius: 120 px (hero 160). Off with reduced motion (the caller skips it).
    Port: a plain TS module (lib/dotkit.ts) shared by the hero, the login field and the dashboard field. */
 (function () {
   'use strict';
@@ -109,5 +113,13 @@
     return 0.66 + Math.min(0.4, (d - R0) / (13 * HS) * 0.4) + hash(x, y, 6) * 0.04;
   }
 
-  window.DotKit = { RAMP, COL, atlas, WORD, WORD_COLS, WORD_ROWS, wordDots, planet, planetWhen, PLANET: { R: R0, GAP, EXTENT }, hash, bayer };
+  // the shared lens falloff: smoothstep from 1 at the centre to 0 at R
+  function lensK(dx, dy, R) {
+    const d2 = dx * dx + dy * dy, R2 = R * R;
+    if (d2 >= R2) return 0;
+    const t = 1 - Math.sqrt(d2) / R;
+    return t * t * (3 - 2 * t);
+  }
+
+  window.DotKit = { RAMP, COL, atlas, WORD, WORD_COLS, WORD_ROWS, wordDots, planet, planetWhen, PLANET: { R: R0, GAP, EXTENT }, hash, bayer, lensK };
 })();

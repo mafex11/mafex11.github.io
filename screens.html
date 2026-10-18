@@ -7,85 +7,168 @@
 <meta name="theme-color" content="#0B0B0C">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/fx.css">
 <style>
   body { background: var(--bg); }
   .wrap { max-width: 1440px; margin: 0 auto; padding: 0 var(--gut); }
-  .top { display: flex; align-items: center; gap: 12px; height: 64px; }
+  .top { display: flex; align-items: center; gap: 14px; height: 64px; }
   .top a.brand { display: inline-flex; align-items: center; gap: 10px; min-height: 40px; text-decoration: none; }
   .top .doto { font-size: 24px; font-weight: 900; letter-spacing: .04em; }
-  .top .right { margin-left: auto; }
+  .top .right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
   h1 { font-family: var(--f-display); font-variation-settings: 'ROND' 100; font-weight: 800; font-size: clamp(64px, 10vw, 140px); line-height: .85; margin: 56px 0 18px; letter-spacing: .01em; }
-  .intro { color: var(--text-2); max-width: 64ch; font-size: 16px; line-height: 1.55; margin: 0 0 48px; }
+  .intro { color: var(--text-2); max-width: 56ch; font-size: var(--t-line); line-height: 1.55; margin: 0 0 48px; }
   .grp { margin-bottom: 56px; }
-  .grp-h { display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 12px; border-bottom: 1px solid var(--hair-2); margin-bottom: 18px; }
+  .grp-h { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--hair-2); margin-bottom: 18px; }
   .grp-h h2 { margin: 0; font-size: 22px; font-weight: 600; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
-  .sc { display: flex; flex-direction: column; gap: 8px; min-height: 148px; padding: 16px 18px; text-decoration: none; transition: background var(--d-fast); }
-  .sc:hover { background: var(--raise); }
-  .sc .n { display: flex; justify-content: space-between; }
-  .sc .n .doto { font-size: 22px; color: var(--text-3); line-height: 1; }
-  .sc:hover .n .doto { color: var(--text); }
+  .grp-h .lbl { margin: 0; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); gap: 14px; }
+
+  /* a screen card: an item, so it tilts (3 deg) and lights its whole border; the crop marks stay still */
+  .sc { display: flex; flex-direction: column; gap: 8px; min-height: 156px; padding: 16px 18px; text-decoration: none; transition: background-color var(--d-fast); }
+  html.fx-hover .sc:hover, .sc:focus-visible, .sc.is-tap { background-color: var(--raise); }
+  .sc .n { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+  .sc .n .doto { font-size: 24px; color: var(--text-3); line-height: 1; transition: color var(--d-fast); }
+  html.fx-hover .sc:hover .n .doto, .sc:focus-visible .n .doto { color: var(--text); }
   .sc b { font-size: 16px; font-weight: 600; }
-  .sc p { margin: 0; font-size: 13px; color: var(--text-2); line-height: 1.45; }
-  .sc code { margin-top: auto; font: 500 11px/1.3 var(--f-mono); color: var(--text-3); word-break: break-all; }
-  .note { margin: 0 0 80px; padding: 16px 18px; border: 1px dashed var(--hair-2); border-radius: 12px; color: var(--text-2); font-size: 14px; line-height: 1.55; }
-  .note b { color: var(--text); font-weight: 500; }
+  .sc p { margin: 0; font-size: 14px; color: var(--text-2); line-height: 1.45; }
+  .sc code { margin-top: auto; font: 500 12.5px/1.3 var(--f-mono); color: var(--text-3); word-break: break-all; }
+
+  /* the interaction vocabulary strip: one live tile per effect */
+  .fxs { padding-top: 8px; margin-bottom: 56px; scroll-margin-top: 24px; }
+  .fxs .grp-h a { font-size: 14px; color: var(--text-2); }
+  .fxs-intro { margin: 0 0 18px; max-width: 64ch; font-size: var(--t-read); color: var(--text-2); line-height: 1.5; }
+  .fxgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); gap: 14px; }
+  .ft { display: flex; flex-direction: column; gap: 12px; min-height: 196px; padding: 16px 18px; border: 1px solid var(--hair); border-radius: 12px; background: var(--raise); }
+  .ft h3 { margin: 0; display: flex; align-items: baseline; gap: 10px; font-size: 16px; font-weight: 600; }
+  .ft h3 .doto { font-size: 20px; color: var(--text-3); min-width: 1.4em; }
+  .ft .d { flex: 1; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+  .ft .note { margin: 0; font-size: var(--t-cap); line-height: 1.45; color: var(--text-2); }
+  .ft .note b { color: var(--text); font-weight: 500; }
+  .frow { display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%; padding: 10px 12px; border-radius: 10px; background: var(--bg); border: 1px solid var(--hair-2); font-size: 14.5px; }
+  .frow .cap { font-size: 13.5px; }
+  .fclear { display: grid; place-items: center; width: 100%; min-height: 70px; padding: 12px; background-color: var(--bg); font-size: 14px; color: var(--text-2); }
+  .fbadge { width: 100%; padding: 12px 14px; border-radius: 12px; background: var(--raise-2); border: 1px solid var(--hair-2); display: grid; gap: 3px; }
+  .fbadge b { font-size: 17px; font-weight: 600; }
+  .fbig { font-size: 76px; line-height: .8; padding: 2px 4px; }
+  .fprose { margin: 0; font-size: var(--t-read); line-height: 1.55; color: var(--text-2); }
+  .fprose a, .fprose [data-spec] { color: var(--text); }
+  .fprose [data-spec] { border-bottom: 1px dashed var(--text-3); }
+  .fodo { font-size: 44px; line-height: 1; }
+
+  .note-box { margin: 0 0 80px; padding: 16px 18px; border: 1px dashed var(--hair-2); border-radius: 12px; color: var(--text-2); font-size: 15px; line-height: 1.55; }
+  .note-box b, .note-box code { color: var(--text); font-weight: 500; }
+  .note-box code { font: 500 13.5px var(--f-mono); }
 </style>
 </head>
 <body data-no-pill>
 <div class="wrap">
-  <header class="top"><a class="brand" href="index.html"><span data-ymark></span><span class="doto">yuki</span></a><span class="lbl">Website mock &middot; 4 Oct 2026</span><span class="right lbl">Not public yet</span></header>
+  <header class="top"><a class="brand" href="index.html" aria-label="Yuki home"><span data-ymark></span><span class="doto">yuki</span></a><span class="lbl">Website mock &middot; 18 Oct 2026</span><span class="right"><a class="key sm ghost" href="#fx">Effects</a><span class="lbl">Not public yet</span></span></header>
   <h1>Screens</h1>
-  <p class="intro">Every page and every state of the website mock, in one place. Click a card to open it. On any page, the small dashed tab on the left edge opens this list too. All people and data are invented.</p>
+  <p class="intro">Every page and state of the website mock. Click a card to open it. On any page, the dashed tab on the left edge opens this list. All people and data are invented.</p>
   <div id="groups"></div>
-  <p class="note"><b>How states work.</b> Each page reads its state from the address: <code>login.html#sent</code>, <code>link.html#linked</code>, <code>app.html#work&amp;offline</code>. You can also click through by hand: type an email to sign in, type <b>K7Q4MX</b> on the link page, type &ldquo;Open Spotify&rdquo; in the dashboard&rsquo;s ask bar, or flip the dashed &ldquo;mock: PC off&rdquo; switch. Add <code>?motion=reduced</code> to the landing page to see the still frames people get when they turn off motion.</p>
+
+  <section class="fxs" id="fx" aria-labelledby="fx-h">
+    <div class="grp-h"><h2 id="fx-h">Interaction vocabulary</h2><a href="fx-gallery.html" data-fx="dotline">The full effects gallery</a></div>
+    <p class="fxs-intro">Each effect once, live. Try it with a mouse, then Tab, then a phone, and say which to keep. Big panels lock their crop marks; single items light their border.</p>
+    <div class="fxgrid">
+      <div class="ft"><h3><span class="doto">L</span>Lit border</h3>
+        <div class="d"><div class="frow" data-fx="lit" tabindex="0"><span>Maya Chen</span><span class="cap">Lunch, Thursday</span></div></div>
+        <p class="note"><b>Tab:</b> the lit border is the focus ring. <b>Touch:</b> tap.</p></div>
+      <div class="ft"><h3><span class="doto">1</span>Dot-matrix key</h3>
+        <div class="d"><button class="key pri lg" type="button" data-fx="matrix">Download for Windows</button></div>
+        <p class="note"><b>Tab:</b> the dots sweep once. <b>Touch:</b> they bloom where you tap. Main keys only.</p></div>
+      <div class="ft"><h3><span class="doto">2</span>Hardware press</h3>
+        <div class="d"><button class="key" type="button">Resume</button><button class="key sm" type="button">Forget</button></div>
+        <p class="note"><b>Tab:</b> Space or Enter press it. <b>Touch:</b> it sinks under your finger.</p></div>
+      <div class="ft"><h3><span class="doto">3</span>Magnet</h3>
+        <div class="d"><button class="key lg" type="button" data-fx="magnet" data-magnet="6">Use it from the web</button></div>
+        <p class="note">Leans toward the pointer. <b>Tab</b> and <b>touch:</b> off. Two per screen at most.</p></div>
+      <div class="ft"><h3><span class="doto">4</span>Crop lock-on</h3>
+        <div class="d"><div class="fclear clear" data-fx="crop" tabindex="0">A clearing</div></div>
+        <p class="note">The corners jump out and lock on. <b>Tab:</b> focus inside. <b>Touch:</b> tap.</p></div>
+      <div class="ft"><h3><span class="doto">5</span>Field lens</h3>
+        <div class="d"><span class="fbig doto" data-fx="lens" data-lens="70" aria-label="05">05</span></div>
+        <p class="note">Dots swell under the cursor. Decoration only. <b>Touch:</b> where you tap.</p></div>
+      <div class="ft"><h3><span class="doto">6</span>Tilt</h3>
+        <div class="d"><div class="fbadge" data-fx="tilt lit" data-tilt="3" tabindex="0"><span class="lbl" data-depth="1">Person</span><b data-depth="2">Leo Park</b><span class="cap" data-depth="1">Works at Northwind. Prefers email.</span></div></div>
+        <p class="note"><b>Tab:</b> it rises 2 px. <b>Touch:</b> it presses in slightly.</p></div>
+      <div class="ft"><h3><span class="doto">7</span>Dotted underline</h3>
+        <div class="d"><p class="fprose">Read the <a href="privacy.html" data-fx="dotline">privacy page</a> or the <a href="terms.html" data-fx="dotline">terms</a>.</p></div>
+        <p class="note">Dots draw in one by one. <b>Tab:</b> shown at once. <b>Touch:</b> while pressed.</p></div>
+      <div class="ft"><h3><span class="doto">8</span>Spec readout</h3>
+        <div class="d"><p class="fprose">Yuki never reads <span data-spec="Also skipped: password fields and apps or sites you block." data-spec-tap>private windows</span>.</p></div>
+        <p class="note">Extra detail after a short pause. <b>Tab:</b> on focus. <b>Touch:</b> tap the term.</p></div>
+      <div class="ft"><h3><span class="doto">9</span>Live pulse</h3>
+        <div class="d"><span class="chip live" data-fx="pulse" tabindex="0"><span class="ldot"></span>DESKTOP-4KD7Q2M online</span></div>
+        <p class="note">One mint ring, twice. Only live things get it, and only mint moves.</p></div>
+      <div class="ft"><h3><span class="doto">10</span>Reveal and odometer</h3>
+        <div class="d"><span class="fodo doto" id="odo" data-odo="1,284"></span><button class="key sm" type="button" id="replay">Replay</button></div>
+        <p class="note">Blocks rise in on scroll and digits roll. <b>Reduced motion:</b> the final state.</p></div>
+    </div>
+  </section>
+
+  <p class="note-box"><b>How states work.</b> Each page reads its state from the address, for example <code>login.html#sent</code> or <code>app.html#work&amp;offline</code>. Or click through by hand: sign in with any email, type <b>K7Q4MX</b> on the link page, ask the dashboard something. Add <code>?motion=reduced</code> to any page for the still version.</p>
 </div>
 <script src="js/core.js"></script>
+<script src="js/fx.js"></script>
 <script>
 (function () {
+  'use strict';
   const NOTE = {
-    'index.html': 'The living dot field: the yuki matrix, the planet, the pointer lens. Scroll to scatter it.',
-    'index.html#sees': 'Sticky scene. A read head walks the UI tree of a chat window, then keeps one fact.',
-    'index.html#remembers': 'Memory cards deal out of a stack as you scroll, then a search finds Leo.',
-    'index.html#acts': 'Sticky scene. Open Spotify step by step, What changed ticks, you grab the mouse, Resume.',
-    'index.html#talks': 'Live voice: listening, hearing you, thinking, speaking. A steer mid-task. A quiet card.',
-    'index.html#brain': 'Bone section. Exploded view of PC, relay and browser. Try the PC on and off switch.',
-    'index.html#ai': 'Turn the dial or press a key: Claude, OpenAI, Gemini, OpenRouter, Ollama.',
-    'index.html#download': 'Get yuki. Click Download to see the dotted progress bar.',
-    'index.html?motion=reduced': 'Everything still: scenes become plain sections, demos show one honest frame.',
-    'login.html#email': 'Sign in with a magic link or Google. The privacy note sits under the buttons.',
-    'login.html#create': 'The same card, set to create an account.',
+    'index.html': 'The living dot field: the yuki matrix, the planet, the pointer lens. Six modules below it, one line each.',
+    'index.html#sees': 'Four nodes read, each lit with a white border. Then hover the window or the tree.',
+    'index.html#remembers': 'Four memory objects. Ask about Leo or what’s late; Forget and Undo.',
+    'index.html#acts': '“Play my focus one”, step by step and checked. Grab the mouse; Resume.',
+    'index.html#talks': 'A message with a countdown, steered mid-task. A quiet card. Pause the conversation.',
+    'index.html#brain': 'Bone section. The exploded view of your PC, the relay and your browser.',
+    'index.html#ai': 'Turn the knob and the readout says where the AI thinks and what stays on your PC.',
+    'index.html#download': 'Get yuki. Only the system requirements. Click Download for the dotted bar.',
+    'index.html?motion=reduced': 'Everything still: each scene shows one honest frame.',
+    'login.html#email': 'Sign in with an emailed link or Google.',
+    'login.html#create': 'The same card, set to create an account. The tab slides over.',
     'login.html#invalid': 'Error: the email has a typo.',
-    'login.html#sent': 'Check your inbox. Resend counts down. Mock buttons open the link, or open it too late.',
+    'login.html#sent': 'Check your inbox. The resend countdown rolls.',
     'login.html#expired': 'Error: the link is older than 15 minutes or already used.',
     'login.html#signed-in': 'You’re in. Next step: link your PC.',
-    'link.html#start': 'The PC app before you sign in. Press its Sign in key: it opens the browser and shows a code.',
-    'link.html#waiting': 'Device code flow. Left: type the code. Right: the PC app shows it. Click it to fill.',
+    'link.html#start': 'The PC app before you sign in. Press its Sign in key to get a code.',
+    'link.html#waiting': 'Type the code on the left, or click it in the PC app on the right to fill it.',
     'link.html#wrong': 'Error: the code doesn’t match. The boxes shake.',
     'link.html#expired': 'Error: the code ran out. The PC app offers a new one.',
-    'link.html#linked': 'DESKTOP-4KD7Q2M linked · encrypted. It joins the devices list.',
+    'link.html#linked': 'DESKTOP-4KD7Q2M is linked and joins Your PCs.',
     'link.html#unlink': 'Unlink an older PC, with a plain confirm.',
     'app.html#home': 'Now, your list, today. The field parts around every panel, as in the PC app.',
-    'app.html#work': 'Your list, you said you’d, waiting on, needs your reply, and the today strip.',
+    'app.html#work': 'Your list, you said you’d, waiting on, needs your reply.',
     'app.html#day': 'Totals, the day strip and the timeline of what you did.',
     'app.html#calls': 'Calls with both sides, and what came out of each.',
     'app.html#memory': 'What Yuki knows, searchable while your PC is on. Forget any line.',
-    'app.html#settings': 'PC link, AI chosen on the PC, what happens when the PC is off, account.',
-    'app.html#home&run=spotify': 'Open Spotify runs on your PC: sent, step lines streamed live, Stop key.',
-    'app.html#home&run=spotify&at=done': 'Done, with what it achieved: Spotify is open and playing Liked Songs.',
+    'app.html#settings': 'PC link, the AI chosen on the PC, what happens when the PC is off, account.',
+    'app.html#home&run=spotify': 'A task runs on your PC: step lines stream in live, with a Stop key.',
+    'app.html#home&run=spotify&at=done': 'Done, with what it achieved, checked after each step.',
     'app.html#home&run=spotify&at=stopped': 'You pressed Stop at step 2. Nothing else was done.',
     'app.html#home&ask=list': 'A question answered inline from what the PC streams.',
     'app.html#home&offline': 'The PC is off: the chip says so and the page shows the last copy.',
     'app.html#home&offline&run=spotify': 'Your PC is off. Run it when it’s back? Queue or Cancel.',
     'app.html#home&offline&run=spotify&at=queued': 'Queued. Flip the PC back on and it runs.',
-    'privacy.html': 'Stub. What we keep, what we never see.',
-    'terms.html': 'Stub.',
-    'status.html': 'Stub with live-looking status rows.'
+    'privacy.html': 'What stays on your PC, what we keep, what passes through sealed.',
+    'terms.html': 'The short version, with the send rule.',
+    'status.html': 'Three services, 90 days each. Hover a day for its record.',
+    'screens.html#fx': 'All eleven effects, live, on this page.',
+    'fx-gallery.html': 'Every effect at full size, on dark and on bone.'
   };
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   let n = 0;
-  document.getElementById('groups').innerHTML = Y.SCREENS.map((g) => `<section class="grp"><div class="grp-h"><h2>${g.g}</h2><span class="lbl">${g.items.length} screens</span></div><div class="grid">${g.items.map(([name, href]) => {
-    n++; return `<a class="sc clear" href="${href}"><span class="n"><span class="doto">${String(n).padStart(2, '0')}</span><span class="lbl">${href.split('#')[0].split('?')[0].replace('.html', '')}</span></span><b>${name}</b><p>${NOTE[href] || ''}</p><code>${href}</code></a>`;
+  document.getElementById('groups').innerHTML = Y.SCREENS.map((g) => `<section class="grp"><div class="grp-h"><h2>${esc(g.g)}</h2><span class="lbl">${g.items.length} screens</span></div><div class="grid">${g.items.map(([name, href]) => {
+    n++; return `<a class="sc clear" href="${esc(href)}" data-fx="tilt lit" data-tilt="3"><span class="n" data-depth="1"><span class="doto">${String(n).padStart(2, '0')}</span><span class="lbl">${esc(href.split('#')[0].split('?')[0].replace('.html', ''))}</span></span><b data-depth="2">${esc(name)}</b><p data-depth="1">${esc(NOTE[href] || '')}</p><code>${esc(href)}</code></a>`;
   }).join('')}</div></section>`).join('');
+  Y.fx.refresh(document.getElementById('groups'));
+  // the odometer tile replays on demand
+  const odo = document.getElementById('odo');
+  document.getElementById('replay').addEventListener('click', () => {
+    if (Y.reduced) return;
+    odo.classList.remove('go'); void odo.offsetWidth; setTimeout(() => odo.classList.add('go'), 60);
+  });
+  // a same-page anchor (#fx) from the list scrolls there
+  if (location.hash === '#fx') setTimeout(() => document.getElementById('fx').scrollIntoView(), 0);
 })();
 </script>
 </body>

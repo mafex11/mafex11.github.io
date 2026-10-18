@@ -7,41 +7,41 @@
 <meta name="theme-color" content="#0B0B0C">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/fx.css">
 <style>
-  .srow { display: grid; grid-template-columns: 1fr auto; gap: 8px 16px; align-items: center; padding: 16px 0; border-top: 1px solid var(--hair); }
-  .srow b { font-size: 16px; font-weight: 600; }
-  .srow .chip { justify-self: end; }
-  .bars { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(90, 1fr); gap: 2px; }
-  .bars i { height: 18px; border-radius: 2px; background: radial-gradient(circle, var(--text-2) 1.1px, transparent 1.4px) 50% 0 / 100% 4px repeat-y; opacity: .75; }
-  .bars i.d { background: radial-gradient(circle, var(--text-3) 1.1px, transparent 1.4px) 50% 0 / 100% 4px repeat-y; opacity: .5; height: 10px; align-self: end; }
-  .bars-l { grid-column: 1 / -1; display: flex; justify-content: space-between; font: 500 11px/1 var(--f-mono); color: var(--text-3); }
+  /* header links: the dotted underline draws in on hover / focus, with no resting line */
+  .dtop .r a[data-fx~="dotline"] { background: none; --dl-y: 10px; }
+  .dtop .r a[aria-current="page"] { color: var(--text); }
 </style>
 </head>
 <body>
-<header class="dtop"><a class="brand" href="index.html"><span data-ymark></span><span class="doto">yuki</span></a><nav class="r"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="status.html">Status</a></nav></header>
+<header class="dtop"><a class="brand" href="index.html" aria-label="Yuki home"><span data-ymark></span><span class="doto">yuki</span></a><nav class="r" aria-label="Trust pages"><a href="privacy.html" data-fx="dotline" aria-current="page">Privacy</a><a href="terms.html" data-fx="dotline">Terms</a><a href="status.html" data-fx="dotline">Status</a></nav></header>
 <main class="doc">
-  <p class="lbl">Trust &middot; last changed 4 Oct 2026</p>
+  <p class="lbl">Trust &middot; last changed 18 Oct 2026</p>
   <h1>Privacy</h1>
-  <p>Yuki is built so that your day stays on your PC. This page says what that means, in plain words.</p>
+  <p>Yuki is built so that your day stays on your PC. Here is what that means, in plain words.</p>
   <h2>What stays on your PC</h2>
   <ul>
     <li><b>Memory.</b> Everything Yuki remembers: chats, pages, calls, people, promises. It&rsquo;s encrypted with a key only your PC has.</li>
     <li><b>Reading the screen.</b> Yuki reads the window in front as text, on your PC. No screenshots, no OCR.</li>
-    <li><b>Voice and call recordings.</b> Both sides of a call are kept on your PC, never uploaded.</li>
-    <li><b>Your AI keys.</b> Claude, OpenAI, Gemini or OpenRouter keys are stored on your PC. With Ollama there is no key at all.</li>
+    <li><b>Calls.</b> What was said on both sides is kept on your PC, never uploaded.</li>
+    <li><b>Your AI keys.</b> Claude, OpenAI, Gemini or OpenRouter keys stay on your PC. With a cloud model, only what a question needs is sent to that provider. With Ollama there is no key, and nothing leaves.</li>
   </ul>
+  <h2>What Yuki learns about you</h2>
+  <p>What Yuki learns about you stays on your PC, encrypted. <b>Record how I work</b> is off until you turn it on, and it never records typing, the clipboard or the screen.</p>
   <h2>What we keep</h2>
   <ul>
     <li><b>Your email</b>, so you can sign in.</li>
     <li><b>The link to your PC</b>: its name, when you linked it, and when it was last online.</li>
-    <li><b>Tasks you queue while your PC is off</b>, only if you choose Queue. Each one is sealed so only your PC can open it. We can&rsquo;t read it. It&rsquo;s deleted when it runs, when you cancel it, or after 24 hours.</li>
+    <li><b>Tasks you queue while your PC is off</b>, only if you choose Queue. Each one is sealed so only your PC can open it. It&rsquo;s deleted when it runs, when you cancel it, or after 24 hours.</li>
   </ul>
   <h2>What passes through us, sealed</h2>
-  <p>When you use Yuki in a browser, your PC streams what the page needs through our relay. The stream is end-to-end encrypted between your PC and your browser. We pass it on. We can&rsquo;t read it, and we don&rsquo;t store it.</p>
+  <p>In a browser, your PC streams what the page needs through our relay, encrypted end to end. We pass it on. We can&rsquo;t read it, and we don&rsquo;t store it. See the <a href="status.html">status page</a> if the relay is slow.</p>
   <h2>Deleting things</h2>
   <p>Forget any memory from the app or the web; it&rsquo;s removed on your PC. Delete your account and we remove your email and PC links. Your PC keeps its own memory until you delete it there.</p>
   <p class="stub">Mock page: the full policy comes with the real build.</p>
 </main>
 <script src="js/core.js"></script>
+<script src="js/fx.js"></script>
 </body>
 </html>

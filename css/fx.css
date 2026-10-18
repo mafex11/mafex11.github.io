@@ -1,0 +1,179 @@
+/* =====================================================================
+   Yuki website / fx: the shared interaction vocabulary (round 2, 18 Oct). Link it right after base.css:
+     <link rel="stylesheet" href="css/fx.css">   and load js/fx.js after core.js (+ dotkit.js), before page js.
+   Markup API: data-fx="<names...>" (space separated). js/fx.js sets html.fx-hover (fine pointer + hover) or
+   html.fx-touch, html.fx-kb after a Tab key (removed on pointerdown), .is-tap on touch, .is-down on press.
+   One rule: containers (big panels, .clear) lock their crop marks ("crop"); items light their border ("lit").
+   Mint only on live things ("pulse"); the read / hover highlight is white (ink on bone).
+     L  lit      data-fx="lit" or .is-lit from code. Whole border lights: a ring at inset -3px, 1.5px --lit-c, a 3px
+                 halo; in 160ms + lands from scale 1.012; out 200ms. Options: data-lit="in" (ring inside, for
+                 overflow:hidden items), --lit-r (radius; fx copies the element's own radius), data-lit-pair="k"
+                 (hover/focus one, every [data-lit-pair="k"] in the closest [data-lit-scope] lights: .fx-paired),
+                 data-fx-off on an ancestor (hover + pairing paused, e.g. while a scene plays; .is-lit still works).
+                 Focus: the ring is the focus indicator (outline removed). Touch: tap. Reduced: opacity only.
+     1  matrix   primary CTAs: a 96px lens of 4px-pitch dots follows the cursor inside the key.
+     2  press    default on every .key (css in base.css), or data-fx="press".
+     3  magnet   data-magnet="6" (px): the key leans toward the pointer within its rect + 28px; label 0.4x more.
+     4  crop     on a .clear: corners jump out 6px and glide in, arms 9 -> 14px, --crop-c -> --crop-on.
+     5  lens     DOM text (Doto digits, footer word): dots swell under the cursor. data-lens="120" (radius px).
+                 Canvas twin: DotKit.lensK(dx, dy, R).
+     6  tilt     data-tilt="3" (deg, max 2.5 over 480px): perspective tilt + sheen; children data-depth="1|2|3".
+     7  dotline  default on .doc a, .foot nav a, .fine a, .mod-p a; or data-fx="dotline". Dots draw in one by one.
+                 --dl-y moves the bright line, --dl-rest the faint one (both 0).
+     8  spec     data-spec="text": the shared #fx-tip (13px mono). data-spec-tap: plain tap opens it on touch
+                 (else long-press 450ms). data-spec-notab: fx won't add tabindex="0". Never the only copy.
+     9  pulse    on .ldot or anything holding one (live things only): one mint ring, twice. Fires "fx:pulse".
+    10  reveal   data-reveal="rise|wipe|stagger" (core.js), data-odo="1,284" (fx.js): digits roll in columns.
+   ===================================================================== */
+
+/* ---------- L: lit border ---------- */
+:where([data-fx~="lit"]) { position: relative; }
+.fx-ring {
+  position: absolute; inset: -3px; z-index: 2; pointer-events: none;
+  border-radius: calc(var(--lit-r, 10px) + 3px); border: 1.5px solid var(--lit-c); box-shadow: 0 0 0 3px var(--lit-halo);
+  opacity: 0; transform: scale(1.012); transition: opacity 200ms var(--ease), transform 220ms var(--ease-out);
+}
+[data-lit~="in"] > .fx-ring { inset: 0; border-radius: var(--lit-r, 10px); }
+.is-lit > .fx-ring, .fx-paired > .fx-ring, [data-fx~="lit"].is-tap > .fx-ring,
+html.fx-hover [data-fx~="lit"]:hover > .fx-ring,
+[data-fx~="lit"]:focus-visible > .fx-ring,
+html.fx-kb [data-fx~="lit"]:focus-within > .fx-ring {
+  opacity: 1; transform: none; transition: opacity 160ms var(--ease), transform 220ms var(--ease-out);
+}
+[data-fx-off] [data-fx~="lit"]:not(.is-lit):not(.fx-paired) > .fx-ring { opacity: 0; }
+[data-fx~="lit"]:focus-visible { outline: none; }
+.is-lit:not(.fx-r) { outline: 1.5px solid var(--lit-c); outline-offset: 3px; }   /* before fx injects the ring */
+
+/* ---------- 1: dot-matrix key ---------- */
+[data-fx~="matrix"] { position: relative; isolation: isolate; }
+.fx-mx { position: absolute; inset: 0; z-index: -1; border-radius: inherit; overflow: hidden; pointer-events: none; opacity: 0; transition: opacity 260ms var(--ease); }
+.fx-mx.on { opacity: 1; transition-duration: var(--d-fast); }
+.fx-mx-l { position: absolute; left: 0; top: 0; width: 96px; height: 96px; border-radius: 50%; overflow: hidden; }
+.fx-mx-g { position: absolute; left: 0; top: 0; background: radial-gradient(circle, var(--mx-c, rgba(242,239,233,.22)) 1px, transparent 1.35px) 0 0 / 4px 4px; }
+.key.pri, [data-fx~="matrix"].pri { --mx-c: rgba(11, 11, 12, .2); }
+.bone .key.pri, [data-tone="bone"] .key.pri { --mx-c: rgba(242, 239, 233, .24); }
+.fx-mx.pop .fx-mx-l { animation: fx-mxpop 320ms var(--ease-out) forwards; }
+@keyframes fx-mxpop { from { scale: .6; opacity: 1; } to { scale: 1.2; opacity: 0; } }
+
+/* ---------- 3: magnet (the inner wrapper keeps the key's flex layout) ---------- */
+.fx-mg-in { display: inline-flex; align-items: center; justify-content: center; gap: inherit; }
+
+/* ---------- 4: crop lock-on ---------- */
+.fx-cm-on { --m: transparent; }
+.fx-c { position: absolute; z-index: 3; width: 14px; height: 14px; pointer-events: none; }
+.fx-c::before, .fx-c::after {
+  content: ''; position: absolute; left: 0; top: 0; background: var(--crop-c);
+  transition: transform 260ms var(--ease), background-color 260ms var(--ease);
+}
+.fx-c::before { width: 14px; height: 1px; transform: scaleX(.643); transform-origin: left; }
+.fx-c::after { width: 1px; height: 14px; transform: scaleY(.643); transform-origin: top; }
+.fx-c.tl { left: 0; top: 0; --jx: -6px; --jy: -6px; --dl: 0ms; }
+.fx-c.tr { right: 0; top: 0; transform: scaleX(-1); --jx: 6px; --jy: -6px; --dl: 20ms; }
+.fx-c.br { right: 0; bottom: 0; transform: scale(-1); --jx: 6px; --jy: 6px; --dl: 40ms; }
+.fx-c.bl { left: 0; bottom: 0; transform: scaleY(-1); --jx: -6px; --jy: 6px; --dl: 60ms; }
+html.fx-hover [data-fx~="crop"]:hover > .fx-c, html.fx-kb [data-fx~="crop"]:focus-within > .fx-c,
+[data-fx~="crop"].is-tap > .fx-c, .fx-lock > .fx-c { animation: fx-lock 300ms var(--ease-out) var(--dl) both; }
+html.fx-hover [data-fx~="crop"]:hover > .fx-c::before, html.fx-hover [data-fx~="crop"]:hover > .fx-c::after,
+html.fx-kb [data-fx~="crop"]:focus-within > .fx-c::before, html.fx-kb [data-fx~="crop"]:focus-within > .fx-c::after,
+[data-fx~="crop"].is-tap > .fx-c::before, [data-fx~="crop"].is-tap > .fx-c::after,
+.fx-lock > .fx-c::before, .fx-lock > .fx-c::after { transform: none; background: var(--crop-on); }
+@keyframes fx-lock { from { translate: var(--jx) var(--jy); } to { translate: 0 0; } }
+
+/* ---------- 5: field lens on DOM text ---------- */
+:where([data-fx~="lens"]) { position: relative; }
+.fx-ln { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 200ms var(--ease); }
+.fx-ln.on { opacity: 1; }
+.fx-ln-w {
+  position: absolute; left: 0; top: 0; width: var(--lr2, 240px); height: var(--lr2, 240px); border-radius: 50%; overflow: hidden;
+  -webkit-mask-image: radial-gradient(closest-side, #000 55%, transparent); mask-image: radial-gradient(closest-side, #000 55%, transparent);
+}
+.fx-ln-t { position: absolute; left: 0; top: 0; font-weight: 900; color: inherit; }
+
+/* ---------- 6: tilt ---------- */
+.fx-tilting { transform-style: preserve-3d; }
+.fx-tilting [data-depth="1"] { transform: translateZ(8px); }
+.fx-tilting [data-depth="2"] { transform: translateZ(16px); }
+.fx-tilting [data-depth="3"] { transform: translateZ(24px); }
+.fx-tilt-out { transition: transform 600ms var(--ease-out); }
+:where([data-fx~="tilt"]) { position: relative; }
+.fx-sheen { position: absolute; inset: 0; z-index: 1; border-radius: inherit; overflow: hidden; pointer-events: none; opacity: 0; transition: opacity 300ms var(--ease); }
+.fx-tilting > .fx-sheen { opacity: 1; }
+.fx-sheen > i { position: absolute; left: -60%; top: -60%; width: 120%; height: 120%; background: radial-gradient(closest-side, rgba(255,255,255,.06), transparent); }
+html.fx-kb [data-fx~="tilt"]:focus-visible, html.fx-kb [data-fx~="tilt"]:focus-within { translate: 0 -2px; transition: translate 200ms var(--ease-out); }
+[data-fx~="tilt"].is-tap { scale: .99; transition: scale 120ms var(--ease); }
+
+/* ---------- 7: dotted underline (a faint dotted rest line; the bright dots draw in on hover) ---------- */
+:is(.doc a, .foot nav a, .fine a, .mod-p a, [data-fx~="dotline"]) {
+  position: relative; text-decoration: none;
+  background: radial-gradient(circle, color-mix(in srgb, currentColor 38%, transparent) 1px, transparent 1.3px) 0 calc(100% - var(--dl-rest, 0px)) / 4px 3px repeat-x;
+}
+:is(.doc a, .foot nav a, .fine a, .mod-p a, [data-fx~="dotline"])::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: var(--dl-y, 0px); height: 3px; pointer-events: none;
+  background: radial-gradient(circle, currentColor 1.1px, transparent 1.4px) 0 0 / 4px 3px repeat-x;
+  transform: scaleX(0); transform-origin: right; transition: transform 240ms var(--ease);
+}
+html.fx-hover :is(.doc a, .foot nav a, .fine a, .mod-p a, [data-fx~="dotline"]):hover::after {
+  transform: scaleX(1); transform-origin: left; transition: transform 420ms steps(var(--dl-steps, 24));
+}
+:is(.doc a, .foot nav a, .fine a, .mod-p a, [data-fx~="dotline"]):focus-visible::after { transform: scaleX(1); transition: none; }
+html.fx-touch :is(.doc a, .foot nav a, .fine a, .mod-p a, [data-fx~="dotline"]):active::after { transform: scaleX(1); transition: none; }
+
+/* ---------- 8: spec readout ---------- */
+#fx-tip {
+  position: fixed; left: 0; top: 0; z-index: 1000; max-width: 36ch; padding: 9px 12px; overflow: hidden; pointer-events: none;
+  font: 500 13px/1.45 var(--f-mono); color: var(--text); border: 1px solid var(--hair-2); border-radius: 8px;
+  --m: var(--text-3);
+  background:
+    linear-gradient(var(--m), var(--m)) 3px 3px / 6px 1px no-repeat, linear-gradient(var(--m), var(--m)) 3px 3px / 1px 6px no-repeat,
+    linear-gradient(var(--m), var(--m)) calc(100% - 3px) 3px / 6px 1px no-repeat, linear-gradient(var(--m), var(--m)) calc(100% - 3px) 3px / 1px 6px no-repeat,
+    linear-gradient(var(--m), var(--m)) 3px calc(100% - 3px) / 6px 1px no-repeat, linear-gradient(var(--m), var(--m)) 3px calc(100% - 3px) / 1px 6px no-repeat,
+    linear-gradient(var(--m), var(--m)) calc(100% - 3px) calc(100% - 3px) / 6px 1px no-repeat, linear-gradient(var(--m), var(--m)) calc(100% - 3px) calc(100% - 3px) / 1px 6px no-repeat,
+    var(--raise-2);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, .45);
+  opacity: 0; transform: translate(var(--tx, 0), calc(var(--ty, 0px) + var(--dy, 4px)));
+  transition: opacity 160ms var(--ease), transform 160ms var(--ease-out);
+}
+#fx-tip.below { --dy: -4px; }
+#fx-tip.on { opacity: 1; transform: translate(var(--tx, 0), var(--ty, 0)); }
+.fx-tip-cv { position: absolute; left: 0; right: 0; top: 9px; bottom: 9px; background: var(--raise-2); transform: translateY(101%); } /* covers exactly the text lines */
+#fx-tip.typing .fx-tip-cv { animation: fx-type var(--td, 200ms) steps(var(--tn, 1), jump-start) both; }
+@keyframes fx-type { from { transform: translateY(0); } to { transform: translateY(100%); } }
+html.fx-touch [data-spec] { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
+[data-spec]:not(a):not(button):not(.key) { cursor: help; }
+
+/* ---------- 9: live pulse (the ring slot is .ldot::after in base.css) ---------- */
+.fx-pulse.ldot::after, .fx-pulse .ldot::after { animation: fx-pulse 900ms var(--ease-out) 2; }
+@keyframes fx-pulse { from { transform: scale(1); opacity: .55; } to { transform: scale(3); opacity: 0; } }
+
+/* ---------- 10: reveals (rise kept low-specificity so a page's own rise wins) + odometer ---------- */
+:where([data-reveal]) { opacity: 0; transform: translateY(18px); transition: opacity .8s var(--ease-out), transform .8s var(--ease-out); }
+:where([data-reveal].in) { opacity: 1; transform: none; }
+[data-reveal][data-reveal="wipe"], [data-reveal][data-reveal="stagger"] { opacity: 1; transform: none; }
+:where([data-reveal="wipe"]) { position: relative; }
+.fx-wipe { position: absolute; inset: 0; z-index: 4; overflow: hidden; pointer-events: none; }
+.fx-wipe > i {
+  position: absolute; inset: 0; transform: translateX(0); transition: transform 700ms var(--ease-out);
+  background: radial-gradient(circle, var(--wipe-dot, var(--dot)) 1px, transparent 1.3px) 0 0 / 6px 6px, var(--wipe-bg, var(--bg));
+}
+.bone, [data-tone="bone"] { --wipe-bg: var(--bone); --wipe-dot: var(--bone-hair); }
+.in > .fx-wipe > i { transform: translateX(101%); }
+.in > .fx-wipe { visibility: hidden; transition: visibility 0s 720ms; }
+[data-reveal="stagger"] > * { opacity: 0; }
+[data-reveal="stagger"].in > * { opacity: 1; animation: fx-rise .6s var(--ease-out) backwards; animation-delay: calc(var(--i, 0) * 50ms); }
+@keyframes fx-rise { from { opacity: 0; translate: 0 14px; } }
+.fx-odo { display: inline-flex; }
+.fx-odo-c { display: inline-block; height: 1em; line-height: 1; overflow: hidden; vertical-align: top; }
+.fx-odo-s { display: flex; flex-direction: column; transition: transform 900ms var(--ease-out); transition-delay: calc(var(--i, 0) * 60ms); }
+.fx-odo-s > span { display: block; height: 1em; line-height: 1; }
+.fx-odo.go .fx-odo-s { transform: translateY(calc(var(--d) * -1em)); }
+
+/* ---------- reduced motion: final states, no travel (base.css already drops every transition / animation) ---------- */
+[data-motion="reduced"] .is-lit > .fx-ring, [data-motion="reduced"] .fx-ring { transform: none; }
+[data-motion="reduced"] .fx-mx-l { width: 100%; height: 100%; border-radius: 0; transform: none !important; }
+[data-motion="reduced"] .fx-mx-g { inset: 0; width: auto !important; height: auto !important; transform: none !important; opacity: .9; }
+[data-motion="reduced"] .fx-ln, [data-motion="reduced"] .fx-sheen { display: none; }
+[data-motion="reduced"] [data-fx~="tilt"] { transform: none !important; translate: none !important; scale: none !important; }
+[data-motion="reduced"] #fx-tip, [data-motion="reduced"] #fx-tip.on { transform: translate(var(--tx, 0), var(--ty, 0)); }
+[data-motion="reduced"] .fx-tip-cv, [data-motion="reduced"] .fx-wipe { display: none; }
+[data-motion="reduced"] [data-reveal="stagger"] > * { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .fx-ring { transform: none !important; } .fx-c { animation: none !important; } }

@@ -7,6 +7,7 @@
 <meta name="theme-color" content="#0B0B0C">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/fx.css">
 <link rel="stylesheet" href="css/auth.css">
 </head>
 <body class="auth">
@@ -22,47 +23,47 @@
     <div>
       <p class="lbl">Step 2 of 2</p>
       <h1>Link your PC</h1>
-      <p>Yuki runs on your PC. Link it once and use it from any browser while your PC is on. Your memory stays on the PC; the web only shows what it streams.</p>
+      <p class="line">Link it once, then use Yuki from any browser while your PC is on. Your memory stays on the PC.</p>
     </div>
     <div class="lsteps" aria-label="Progress"><span class="done"><b>01</b>Signed in</span><span id="st2"><b>02</b>Link your PC</span></div>
   </div>
 
-  <div class="banner" id="banner" role="status">
-    <span class="ldot blink"></span>
-    <span><b>DESKTOP-4KD7Q2M linked &middot; encrypted</b><br><span class="t2">It streams to your browser while it&rsquo;s on. Commands you type here run there.</span></span>
-    <a class="key pri" href="app.html#home">Open your dashboard</a>
+  <div class="banner" id="banner" role="status" data-fx="pulse">
+    <span class="ldot"></span>
+    <span><b>DESKTOP-4KD7Q2M is linked</b><br><span class="t2">Encrypted. What you type here runs there.</span></span>
+    <a class="key pri" href="app.html#home" data-fx="matrix">Open your dashboard</a>
   </div>
 
   <div class="panes">
     <!-- A: the web side -->
-    <section class="pane clear" aria-labelledby="pa-h">
+    <section class="pane clear" data-fx="crop" aria-labelledby="pa-h">
       <p class="lbl"><b>A</b> &nbsp;Here, on the web</p>
       <h2 id="pa-h">Type the code from your PC</h2>
-      <p class="sub" id="pa-sub">Six letters and numbers, shown in the Yuki app on your PC.</p>
+      <p class="sub" id="pa-sub">Six letters and numbers, from the Yuki app on your PC.</p>
       <form id="codeform" autocomplete="off">
         <div class="code" id="code" role="group" aria-label="Six-character code">
-          <input maxlength="1" aria-label="Character 1"><input maxlength="1" aria-label="Character 2"><input maxlength="1" aria-label="Character 3">
+          <span class="cb"><input name="c1" maxlength="1" placeholder=" " aria-label="Character 1"></span><span class="cb"><input name="c2" maxlength="1" placeholder=" " aria-label="Character 2"></span><span class="cb"><input name="c3" maxlength="1" placeholder=" " aria-label="Character 3"></span>
           <span class="dash" aria-hidden="true"></span>
-          <input maxlength="1" aria-label="Character 4"><input maxlength="1" aria-label="Character 5"><input maxlength="1" aria-label="Character 6">
+          <span class="cb"><input name="c4" maxlength="1" placeholder=" " aria-label="Character 4"></span><span class="cb"><input name="c5" maxlength="1" placeholder=" " aria-label="Character 5"></span><span class="cb"><input name="c6" maxlength="1" placeholder=" " aria-label="Character 6"></span>
         </div>
         <p class="err" id="cerr" role="alert"></p>
-        <button class="key pri btn-full" id="linkbtn" type="submit">Link this PC</button>
+        <button class="key pri btn-full" id="linkbtn" type="submit" data-fx="matrix"><span class="bl" id="linkbtn-l">Link this PC</span></button>
       </form>
       <div class="openpc" id="openrow"><span>No code on screen?</span><a class="key sm" href="#waiting" id="openpc"><span data-dic="pc"></span>Open Yuki on your PC</a></div>
       <div class="help">
         <ol>
-          <li><span>Open <b>Yuki</b> on your PC. It lives in the tray.</span></li>
-          <li><span>Go to <b>Settings</b>, then <b>Sign in to use Yuki from the web</b>.</span></li>
-          <li><span>Type the code it shows. It works for 10 minutes.</span></li>
+          <li><span>Open <b>Yuki</b> from the tray.</span></li>
+          <li><span><b>Settings</b>, then <b>Sign in to use Yuki from the web</b>.</span></li>
+          <li><span>Type the code here. It lasts 10 minutes.</span></li>
         </ol>
       </div>
     </section>
 
     <!-- B: the PC app's own sign-in screen -->
-    <section class="pane clear" aria-labelledby="pb-h">
+    <section class="pane clear" data-fx="crop" aria-labelledby="pb-h">
       <p class="lbl"><b>B</b> &nbsp;On your PC, in the Yuki app</p>
       <h2 id="pb-h">What your PC shows</h2>
-      <p class="sub">The app&rsquo;s own sign-in screen, in Settings. Click the code to fill it in (mock).</p>
+      <p class="sub">The app&rsquo;s own sign-in screen. Click its code to fill it in.</p>
       <div class="pcwin">
         <div class="pc-bar"><span data-ymark="bare" data-cls="ymark"></span><span class="doto">yuki</span><span class="lbl">Settings &rsaquo; Web</span><span class="ctl"><i></i><i></i><i></i></span></div>
         <canvas id="pcfield" aria-hidden="true"></canvas>
@@ -71,36 +72,36 @@
             <div data-pc="start">
               <p class="lbl">Yuki on the web</p>
               <h3>Use Yuki from any browser</h3>
-              <p>Sign in once. While this PC is on, it streams what you need to your browser, end-to-end encrypted. Your memory stays here.</p>
+              <p>Sign in once. While this PC is on, it streams to your browser, encrypted. Your memory stays here.</p>
               <button class="key pri sm pc-go" type="button" id="pcsignin">Sign in to use Yuki from the web</button>
               <div class="pc-meta"><span>DESKTOP-4KD7Q2M</span><span>Not signed in</span></div>
             </div>
             <div data-pc="opening">
               <p class="lbl">Yuki on the web</p>
               <h3>Opening your browser&hellip;</h3>
-              <p>Finish signing in there. A short code comes next; you type it on the web.</p>
+              <p>Finish signing in there. A short code comes next.</p>
               <div class="pc-wait"><span class="spin"><i></i><i></i><i></i></span>Getting a code</div>
               <div class="pc-meta"><span>DESKTOP-4KD7Q2M</span><span>Yuki 0.9.2</span></div>
             </div>
             <div data-pc="waiting">
               <p class="lbl">Yuki on the web</p>
-              <h3>Sign in to use Yuki from the web</h3>
-              <p>We opened your browser. If it didn&rsquo;t open, go to <b>yuki.app/link</b> and type this code.</p>
-              <button class="pc-code" type="button" id="pccode" title="Fill the code on the web side"><span class="doto">K7Q 4MX</span><span class="lbl" id="pcexp">9:41 left</span></button>
+              <h3>Type this code on the web</h3>
+              <p>We opened your browser. If it didn&rsquo;t open, go to <b>yuki.app/link</b>.</p>
+              <button class="pc-code clear" type="button" id="pccode" data-fx="crop" data-spec="Click to fill the web side · mock only" aria-label="Code K7Q 4MX. Click to fill the web side"><span class="doto">K7Q 4MX</span><span class="lbl" id="pcexp">9:41 left</span></button>
               <div class="pc-wait"><span class="spin"><i></i><i></i><i></i></span>Waiting for your browser</div>
               <div class="pc-meta"><span>DESKTOP-4KD7Q2M</span><span>Yuki 0.9.2</span></div>
             </div>
             <div data-pc="expired" class="pc-dead">
               <p class="lbl">Yuki on the web</p>
               <h3>This code expired</h3>
-              <p>Codes last 10 minutes. Get a new one and type it on the web.</p>
+              <p>Codes last 10 minutes. Get a new one.</p>
               <div class="pc-code"><span class="doto">K7Q 4MX</span><span class="lbl">expired</span></div>
               <a class="key pri sm" href="#waiting">Get a new code</a>
             </div>
             <div data-pc="linked">
               <p class="lbl">Yuki on the web</p>
               <h3>Linked to alex@example.com</h3>
-              <p>While this PC is on, it streams to your browser through an end-to-end encrypted relay. Memory stays here.</p>
+              <p>While this PC is on, it streams to your browser through an encrypted relay. Memory stays here.</p>
               <div class="pc-done"><span class="ldot blink"></span><span><b>Streaming, encrypted</b><span>DESKTOP-4KD7Q2M &middot; 1 browser</span></span></div>
               <a class="key sm" href="#unlink">Unlink this PC</a>
             </div>
@@ -111,15 +112,16 @@
   </div>
 
   <!-- devices -->
-  <section class="devs clear" aria-labelledby="dv-h">
-    <div class="devs-h"><p class="lbl" id="dv-h">Your PCs</p><p class="lbl">Unlink any time</p></div>
+  <section class="devs clear" data-fx="crop" aria-labelledby="dv-h">
+    <div class="devs-h"><p class="lbl" id="dv-h">Your PCs</p><p class="cap">Unlink any time</p></div>
     <div id="devlist"></div>
   </section>
-  <p class="lbl mockrow"><a class="mockact" href="#start">mock &middot; start on the PC</a><a class="mockact" href="#expired">mock &middot; let the code expire</a><a class="mockact" href="#wrong">mock &middot; type a wrong code</a></p>
+  <p class="mockrow"><a class="mockact" href="#start">mock &middot; start on the PC</a><a class="mockact" href="#expired">mock &middot; let the code expire</a><a class="mockact" href="#wrong">mock &middot; type a wrong code</a></p>
 </main>
 
 <script src="js/core.js"></script>
 <script src="js/dotkit.js"></script>
+<script src="js/fx.js"></script>
 <script src="js/fieldcanvas.js"></script>
 <script src="js/link.js"></script>
 </body>

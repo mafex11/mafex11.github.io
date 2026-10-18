@@ -2,7 +2,13 @@
    - a fixed grid of resting dots; every [data-clear] panel is a clearing (dots shrink to nothing near it, 20 px feather);
    - [data-figure="num"] draws a big 5x7 numeral in lit dots (the page's count), [data-figure="bars"] a week of dot bars;
    - pulse(x, y): one ring of live dots from a point, when something streams in from the PC.
-   It only repaints when the layout moves (scroll, resize, a tab change) or while a pulse runs.
+   - pulse rings are clipped to the gutters: their strength is scaled by the clearing mask, so they fade out in
+     the feather and never cut across a panel;
+   - the lens (round 2, fx "lens", DotKit.lensK): over the gutters only, the dots under the pointer swell and
+     brighten. It is a small canvas laid over the field and moved by transform; it repaints only its ~22 x 22
+     cells, with the same paint() as the field, so its edges match the field exactly. Touch: the tap point for
+     700 ms. Off with reduced motion. It rides the field's one Y.loop subscriber (no loop of its own).
+   It only repaints when the layout moves (scroll, resize, a tab change), while a pulse runs, or while the lens moves.
    Port: components/AppField.tsx (client), reading clearings through a small registry instead of querySelectorAll. */
 (function () {
   'use strict';
@@ -15,11 +21,19 @@
     8: ['01110', '10001', '10001', '01110', '10001', '10001', '01110'], 9: ['01110', '10001', '10001', '01111', '00001', '00010', '01100']
   };
   function mount(cv) {
-    const { loop, reduced, view } = window.Y;
+    const { loop, reduced, view, pointer } = window.Y;
     const ctx = cv.getContext('2d', { alpha: false });
     const DPR = Math.min(2, window.devicePixelRatio || 1);
     const P = 12;
     let W = 0, H = 0, C = 0, R = 0, mask = null, lit = null, tone = null, A = null, dirty = true, pulses = [], off = false, t0 = performance.now() / 1000;
+    // the lens overlay: N x N cells, snapped to the grid, moved by transform
+    const LR = 120, N = Math.ceil((2 * LR) / P) + 2;
+    const ov = document.createElement('canvas');
+    ov.className = 'field-lens'; ov.setAttribute('aria-hidden', 'true');
+    cv.after(ov);
+    const octx = ov.getContext('2d', { alpha: false });
+    const hoverMQ = window.matchMedia('(hover: hover) and (pointer: fine)');
+    let lensOn = false, gutter = false, inside = true, tap = null, tapT = 0, lastLx = -1, lastLy = -1, lastOx = 1e9, lastOy = 1e9;
     function size() {
       W = innerWidth; H = innerHeight;
       cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
@@ -27,6 +41,9 @@
       C = Math.ceil(W / P); R = Math.ceil(H / P);
       mask = new Float32Array(C * R); lit = new Float32Array(C * R); tone = new Uint8Array(C * R);
       A = K.atlas(['#26292C', '#3A3E43', K.COL.mid, K.COL.bone, K.COL.live], P * 0.32, 18, DPR);
+      ov.width = Math.round(N * P * DPR); ov.height = Math.round(N * P * DPR);
+      ov.style.width = N * P + 'px'; ov.style.height = N * P + 'px';
+      lastOx = 1e9;
       dirty = true; loop.kick();
     }
     function measure() {
@@ -70,35 +87,79 @@
         }
       });
     }
+    // one cell's dot, shared by the field and the lens overlay. (ox, oy): the target canvas's offset in CSS px;
+    // lens: { x, y } pointer in CSS px, or null
+    function cell(c, i, j, t, e, ox, oy, lens) {
+      const k = j * C + i, m = mask[k];
+      const x = i * P + P / 2, y = j * P + P / 2;
+      if (lit[k] > 0) {
+        const grow = Math.min(1, Math.max(0, (e - 0.1 - (i % 40) * 0.012) / 0.35));
+        A.dot(c, x - ox, y - oy, P * (0.12 + 0.2 * lit[k] * grow), off && tone[k] === 4 ? 2 : tone[k], 0.35 + 0.65 * lit[k] * grow);
+        return;
+      }
+      if (m < 0.06) return;
+      let r = (0.55 + 0.6 * m), row = 0, a = 1;
+      for (const p of pulses) {
+        const dd = Math.abs(Math.hypot(x - p.x, y - p.y) - (t - p.t) * 420);
+        if (dd < 22) {
+          // clipped to the gutters: the mask fades the ring out in the feather around every panel
+          const f = (1 - dd / 22) * Math.max(0, 1 - (t - p.t) / 0.8) * m * m;
+          if (f > 0.05) { r = Math.max(r, 1 + 1.6 * f); row = f > 0.55 ? 4 : f > 0.25 ? 2 : 1; a = Math.min(1, 0.25 + f * 0.8); }
+        }
+      }
+      if (lens) {
+        const q = K.lensK(x - lens.x, y - lens.y, LR) * m;
+        if (q > 0) { r *= 1 + 0.8 * q; if (q > 0.35 && row === 0) row = 1; if (q > 0.8 && row < 2) row = 2; }
+      }
+      A.dot(c, x - ox, y - oy, r, row, a);
+    }
     function draw(t) {
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.fillStyle = '#0B0B0C'; ctx.fillRect(0, 0, cv.width, cv.height);
       A.begin(ctx);
       const e = reduced ? 99 : t - t0;
-      for (let j = 0; j < R; j++) for (let i = 0; i < C; i++) {
-        const k = j * C + i, m = mask[k];
-        const x = i * P + P / 2, y = j * P + P / 2;
-        if (lit[k] > 0) {
-          const grow = Math.min(1, Math.max(0, (e - 0.1 - (i % 40) * 0.012) / 0.35));
-          A.dot(ctx, x, y, P * (0.12 + 0.2 * lit[k] * grow), off && tone[k] === 4 ? 2 : tone[k], 0.35 + 0.65 * lit[k] * grow);
-          continue;
-        }
-        if (m < 0.06) continue;
-        let r = (0.55 + 0.6 * m), row = 0, a = 1;
-        for (const p of pulses) {
-          const dd = Math.abs(Math.hypot(x - p.x, y - p.y) - (t - p.t) * 420);
-          if (dd < 22) { const f = (1 - dd / 22) * Math.max(0, 1 - (t - p.t) / 0.8); if (f > 0.05) { r = Math.max(r, 1 + 1.6 * f); row = f > 0.55 ? 4 : f > 0.25 ? 2 : 1; a = Math.min(1, 0.25 + f * 0.8); } }
-        }
-        A.dot(ctx, x, y, r, row, a);
-      }
+      for (let j = 0; j < R; j++) for (let i = 0; i < C; i++) cell(ctx, i, j, t, e, 0, 0, null);
     }
+    // the lens: where it is (pointer or tap) and whether it should show (gutters only)
+    function lensAt(t) {
+      if (reduced) return null;
+      if (tap) { if (t - tapT < 0.7) return tap; tap = null; }
+      if (!hoverMQ.matches || !pointer.seen || !inside || !gutter) return null;
+      const i = Math.floor(pointer.sx / P), j = Math.floor(pointer.sy / P);
+      if (i < 0 || j < 0 || i >= C || j >= R || mask[j * C + i] < 0.5) return null;
+      return { x: pointer.sx, y: pointer.sy };
+    }
+    function drawLens(t, L) {
+      const i0 = Math.floor((L.x - LR) / P), j0 = Math.floor((L.y - LR) / P), ox = i0 * P, oy = j0 * P;
+      if (ox !== lastOx || oy !== lastOy) { ov.style.transform = `translate3d(${ox}px,${oy}px,0)`; lastOx = ox; lastOy = oy; }
+      octx.setTransform(1, 0, 0, 1, 0, 0);
+      octx.fillStyle = '#0B0B0C'; octx.fillRect(0, 0, ov.width, ov.height);
+      A.begin(octx);
+      const e = reduced ? 99 : t - t0;
+      for (let j = Math.max(0, j0); j < Math.min(R, j0 + N); j++) for (let i = Math.max(0, i0); i < Math.min(C, i0 + N); i++) cell(octx, i, j, t, e, ox, oy, L);
+    }
+    // pointer over a gutter, not a panel, a control or the bars (one closest() per pointerover, never per frame)
+    const BLOCK = '[data-clear], .topbar, .tabs-m, .offbar, .askdock .thread, .ask, .hints, a, button, input, label';
+    document.addEventListener('pointerover', (ev) => { if (ev.pointerType === 'touch') return; gutter = !(ev.target.closest && ev.target.closest(BLOCK)); loop.kick(); }, { passive: true });
+    document.documentElement.addEventListener('pointerleave', () => { inside = false; loop.kick(); });
+    document.documentElement.addEventListener('pointerenter', () => { inside = true; });
+    document.addEventListener('pointerdown', (ev) => {
+      if (reduced || ev.pointerType !== 'touch' || (ev.target.closest && ev.target.closest(BLOCK))) return;
+      tap = { x: ev.clientX, y: ev.clientY }; tapT = performance.now() / 1000; loop.kick();
+    }, { passive: true });
     let lastY = -1;
     loop.add((t) => {
       if (view.y !== lastY) { lastY = view.y; dirty = true; }
       pulses = pulses.filter((p) => t - p.t < 0.85);
       const anim = pulses.length > 0 || (!reduced && t - t0 < 1.2);
-      if (dirty || anim) { if (dirty) measure(); draw(t); dirty = false; }
-      return anim;
+      const redraw = dirty || anim;
+      if (redraw) { if (dirty) measure(); draw(t); dirty = false; }
+      const L = lensAt(t);
+      if (L) {
+        if (redraw || Math.abs(L.x - lastLx) + Math.abs(L.y - lastLy) > 0.25) { drawLens(t, L); lastLx = L.x; lastLy = L.y; }
+        if (!lensOn) { lensOn = true; ov.classList.add('on'); }
+      } else if (lensOn) { lensOn = false; ov.classList.remove('on'); lastLx = -1; }
+      return anim || !!tap;
     });
     addEventListener('resize', size);
     size();

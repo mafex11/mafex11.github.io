@@ -7,31 +7,71 @@
 <meta name="theme-color" content="#0B0B0C">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/fx.css">
 <style>
-  .srow { display: grid; grid-template-columns: 1fr auto; gap: 8px 16px; align-items: center; padding: 16px 0; border-top: 1px solid var(--hair); }
-  .srow b { font-size: 16px; font-weight: 600; }
+  .dtop .r a[data-fx~="dotline"] { background: none; --dl-y: 10px; }
+  .dtop .r a[aria-current="page"] { color: var(--text); }
+  .rows { margin-top: 28px; display: grid; gap: 10px; }
+  /* each service row lights its whole border (fx "lit") on hover, focus inside, or tap */
+  .srow { display: grid; grid-template-columns: 1fr auto; gap: 10px 16px; align-items: center; padding: 16px 10px; margin: 0 -10px; border-radius: 12px; transition: background var(--d-fast); }
+  html.fx-hover .srow:hover { background: var(--raise); }
+  .srow b { font-size: 17px; font-weight: 600; }
+  .srow .what { display: block; font-size: 14.5px; color: var(--text-2); margin-top: 2px; }
   .srow .chip { justify-self: end; }
-  .bars { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(90, 1fr); gap: 2px; }
-  .bars i { height: 18px; border-radius: 2px; background: radial-gradient(circle, var(--text-2) 1.1px, transparent 1.4px) 50% 0 / 100% 4px repeat-y; opacity: .75; }
-  .bars i.d { background: radial-gradient(circle, var(--text-3) 1.1px, transparent 1.4px) 50% 0 / 100% 4px repeat-y; opacity: .5; height: 10px; align-self: end; }
-  .bars-l { grid-column: 1 / -1; display: flex; justify-content: space-between; font: 500 11px/1 var(--f-mono); color: var(--text-3); }
+  /* 90 day bars: hover one for its day (fx "spec"); the uptime figure lists the incidents for keyboard and screen readers */
+  .bars { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(90, 1fr); gap: 2px; height: 22px; align-items: end; }
+  .bars i { height: 22px; border-radius: 2px; background: radial-gradient(circle, var(--text-2) 1.1px, transparent 1.4px) 50% 0 / 100% 4px repeat-y; opacity: .8; transition: opacity var(--d-fast), transform var(--d-fast) var(--ease-out); transform-origin: bottom; }
+  .bars i.d { background: radial-gradient(circle, var(--text) 1.1px, transparent 1.4px) 50% 0 / 100% 4px repeat-y; height: 12px; opacity: 1; }
+  html.fx-hover .bars:hover i { opacity: .45; }
+  html.fx-hover .bars i:hover { opacity: 1; transform: scaleY(1.25); }
+  .bars-l { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; font: 500 13px/1 var(--f-mono); color: var(--text-2); }
+  .bars-l .up { color: var(--text); padding: 4px 0; border-bottom: 1px dashed var(--text-3); }
+  .bars-l .up:focus-visible { outline-offset: 4px; }
 </style>
 </head>
 <body>
-<header class="dtop"><a class="brand" href="index.html"><span data-ymark></span><span class="doto">yuki</span></a><nav class="r"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="status.html">Status</a></nav></header>
+<header class="dtop"><a class="brand" href="index.html" aria-label="Yuki home"><span data-ymark></span><span class="doto">yuki</span></a><nav class="r" aria-label="Trust pages"><a href="privacy.html" data-fx="dotline">Privacy</a><a href="terms.html" data-fx="dotline">Terms</a><a href="status.html" data-fx="dotline" aria-current="page">Status</a></nav></header>
 <main class="doc">
   <p class="lbl">Trust &middot; updated every minute</p>
   <h1>Status</h1>
-  <p><span class="chip live"><span class="ldot blink"></span>Everything is working</span></p>
-  <div style="margin-top:28px">
-    <div class="srow"><div><b>Relay</b><br><span class="t2" style="font-size:13.5px">Carries the sealed stream between your PC and your browser.</span></div><span class="chip live"><span class="ldot"></span>Working</span><div class="bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="d"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="bars-l"><span>90 days ago</span><span>99.97%</span><span>today</span></div></div>
-    <div class="srow"><div><b>Sign in</b><br><span class="t2" style="font-size:13.5px">Email links and Google.</span></div><span class="chip live"><span class="ldot"></span>Working</span><div class="bars"><i></i><i></i><i></i><i></i><i></i><i class="d"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="d"></i><i></i><i class="d"></i></div><div class="bars-l"><span>90 days ago</span><span>99.99%</span><span>today</span></div></div>
-    <div class="srow"><div><b>Website</b><br><span class="t2" style="font-size:13.5px">This site and the web dashboard.</span></div><span class="chip live"><span class="ldot"></span>Working</span><div class="bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="d"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="d"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="d"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="bars-l"><span>90 days ago</span><span>100%</span><span>today</span></div></div>
-  </div>
+  <p><span class="chip live" data-fx="pulse" data-spec="Checked every minute. Hover a day for its record."><span class="ldot"></span>Everything is working</span></p>
+  <div class="rows" id="rows"></div>
   <h2>Your PC</h2>
-  <p>Everything else runs on your PC, so it works even when we don&rsquo;t. If the relay is down, Yuki on your PC carries on as normal; only the web view waits.</p>
+  <p>Everything else runs on your PC, so it works even when we don&rsquo;t. If the relay is down, Yuki on your PC carries on; only the web view waits.</p>
   <p class="stub">Mock page with invented numbers.</p>
 </main>
 <script src="js/core.js"></script>
+<script src="js/fx.js"></script>
+<script>
+/* status rows: 90 invented days ending on the mock's Monday, 5 Oct 2026. Each bar has a spec readout for its day
+   (pointer: hover; touch: long-press). Bars are not tab stops; the uptime figure carries the incident list. */
+(function () {
+  'use strict';
+  const SERVICES = [
+    { name: 'Relay', what: 'Carries the sealed stream between your PC and your browser.', up: '99.97%',
+      inc: { '14 Sep': ['99.7%', 'the relay was slow for 4 min'], '27 Jul': ['99.9%', 'two browsers reconnected after 1 min'] } },
+    { name: 'Sign in', what: 'Email links and Google.', up: '99.99%',
+      inc: { '12 Jul': ['99.9%', 'email links arrived 6 min late'], '3 Oct': ['99.9%', 'Google sign-in was slow for 3 min'] } },
+    { name: 'Website', what: 'This site and the web dashboard.', up: '99.98%',
+      inc: { '21 Jul': ['99.8%', 'the dashboard was slow to load for 9 min'], '5 Sep': ['99.9%', 'the site was slow for 2 min'] } }
+  ];
+  const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const end = new Date(2026, 9, 5);
+  const days = Array.from({ length: 90 }, (_, i) => { const d = new Date(end); d.setDate(end.getDate() - (89 - i)); return d.getDate() + ' ' + MON[d.getMonth()]; });
+  document.getElementById('rows').innerHTML = SERVICES.map((s) => {
+    const keys = Object.keys(s.inc);
+    const sum = keys.length ? keys.length + ' short incidents in 90 days: ' + keys.map((k) => k + ', ' + s.inc[k][1]).join('; ') + '.' : 'No incidents in 90 days.';
+    const bars = days.map((d, i) => {
+      const x = s.inc[d], label = (i === 89 ? 'Today, ' : '') + d + ' · ' + (x ? x[0] + ' · ' + x[1] : '100% · no issues');
+      return '<i' + (x ? ' class="d"' : '') + ' data-spec="' + label + '" data-spec-notab aria-hidden="true"></i>';
+    }).join('');
+    return '<div class="srow" data-fx="lit"><div><b>' + s.name + '</b><span class="what">' + s.what + '</span></div>' +
+      '<span class="chip live"><span class="ldot"></span>Working</span>' +
+      '<div class="bars">' + bars + '</div>' +
+      '<div class="bars-l"><span>90 days ago</span><span class="up" data-spec="' + sum + '" data-spec-tap aria-label="' + s.up + ' uptime">' + s.up + '</span><span>today</span></div></div>';
+  }).join('');
+  Y.fx.refresh(document.getElementById('rows'));
+})();
+</script>
 </body>
 </html>

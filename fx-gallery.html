@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Interaction vocabulary · Yuki website mock</title>
+<meta name="theme-color" content="#0B0B0C">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/fx.css">
+<style>
+  /* the gallery's own layout (this page only); every effect comes from css/fx.css + js/fx.js */
+  .wrap { max-width: 1440px; margin: 0 auto; padding: 0 var(--gut); }
+  .top { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; min-height: 64px; padding: 10px 0; }
+  .top a.brand { display: inline-flex; align-items: center; gap: 10px; min-height: 40px; text-decoration: none; }
+  .top .doto { font-size: 24px; font-weight: 900; letter-spacing: .04em; }
+  .top .right { margin-left: auto; display: flex; flex-wrap: wrap; gap: 6px; }
+  @media (max-width: 420px) { .top .right .ghost { display: none; } } /* the Screens pill already lists every screen */
+  h1 { font-family: var(--f-display); font-variation-settings: 'ROND' 100; font-weight: 800; font-size: clamp(56px, 9vw, 128px); line-height: .85; margin: 48px 0 16px; letter-spacing: .01em; }
+  .intro { color: var(--text-2); max-width: 62ch; font-size: var(--t-line); line-height: 1.5; margin: 0 0 12px; }
+  .rule { margin: 0 0 44px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 400px), 1fr)); gap: 16px; padding-bottom: 72px; }
+  .tile { display: flex; flex-direction: column; gap: 14px; padding: 22px 22px 20px; min-height: 280px; background-color: transparent; }
+  .tile h2 { margin: 0; font-size: 20px; font-weight: 600; display: flex; align-items: baseline; gap: 10px; }
+  .tile h2 .doto { font-size: 22px; color: var(--text-3); }
+  .demo { flex: 1; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 6px 0; }
+  .notes { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; border-top: 1px solid var(--hair); padding-top: 12px; }
+  .notes li { font-size: var(--t-cap); line-height: 1.45; color: var(--text-2); }
+  .notes b { color: var(--text); font-weight: 500; }
+  .row { display: flex; align-items: center; gap: 12px; width: 100%; padding: 12px 14px; border-radius: 10px; background: var(--raise); border: 1px solid var(--hair); }
+  .row .who { font-size: var(--t-read); color: var(--text); }
+  .row .cap { margin-left: auto; }
+  .stack { display: grid; gap: 8px; width: 100%; }
+  .mini { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; width: 100%; }
+  .win { border: 1px solid var(--hair-2); border-radius: 10px; padding: 10px; display: grid; gap: 8px; background: var(--raise); }
+  .win .bar { height: 26px; border-radius: 6px; background: var(--raise-2); display: flex; align-items: center; padding: 0 10px; font-size: 13.5px; color: var(--text-2); }
+  .win .btn { justify-self: start; height: 30px; padding: 0 12px; border-radius: 7px; border: 1px solid var(--hair-2); display: inline-flex; align-items: center; font-size: 13.5px; }
+  .tree { display: grid; gap: 6px; }
+  .tree div { padding: 7px 10px; border-radius: 7px; font: 500 13.5px/1.3 var(--f-mono); color: var(--text-2); background: var(--raise); }
+  .badge { width: min(100%, 300px); padding: 18px; border-radius: 14px; background: var(--raise-2); border: 1px solid var(--hair-2); display: grid; gap: 6px; }
+  .badge .lbl { color: var(--text-3); }
+  .badge b { font-size: 20px; font-weight: 600; }
+  .badge span.cap { color: var(--text-2); }
+  .big { font-size: 120px; line-height: .8; color: var(--text); padding: 4px 6px; }
+  canvas.field { width: 100%; height: 150px; border-radius: 10px; background: var(--bg); border: 1px solid var(--hair); }
+  .prose { font-size: var(--t-read); line-height: 1.6; color: var(--text-2); margin: 0; }
+  .prose a, .prose [data-spec] { color: var(--text); }
+  .prose [data-spec] { border-bottom: 1px dashed var(--text-3); }
+  .odo-n { font-family: var(--f-display); font-variation-settings: 'ROND' 100; font-weight: 800; font-size: 64px; line-height: 1; }
+  .rv { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; }
+  .rv > div { padding: 14px; border-radius: 10px; background: var(--raise); border: 1px solid var(--hair); font-size: 14px; color: var(--text-2); min-height: 84px; }
+  .rv .st { display: grid; gap: 6px; }
+  .rv .st span { display: block; height: 8px; border-radius: 4px; background: var(--hair-2); }
+  .bonebox { background: var(--bone); color: var(--ink); padding: 56px 0 72px; }
+  .bonebox h2.sec { margin: 0 0 8px; font-size: 26px; font-weight: 600; }
+  .bonebox .intro { color: var(--ink-2); }
+  .bonebox .row { background: #fff; border-color: var(--bone-hair); }
+  .bonebox .row .who { color: var(--ink); }
+  .bonebox .row .cap { color: var(--ink-2); } /* was light grey on bone, 2.2:1 */
+  .bonebox .lbl { color: var(--ink-3); }
+  .bonebox .key { background: #fff; border-color: var(--bone-hair); color: var(--ink); }
+  .bonebox .key.pri { background: var(--ink); border-color: var(--ink); color: var(--bone); }
+  .bgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 400px), 1fr)); gap: 16px; }
+  .console { padding: 22px; border-radius: 16px; background: var(--bg); color: var(--text); display: grid; gap: 12px; }
+  .console .cap { color: var(--text-2); }
+  .bonebox .console .row { background: var(--raise); border-color: var(--hair-2); }
+  .bonebox .console .row .who { color: var(--text); }
+  .bonebox .console .row .cap { color: var(--text-2); }
+  .bonebox .console .lbl { color: var(--text-3); }
+  .foot { padding: 40px 0 64px; border-top: 1px solid var(--hair); }
+  .foot nav { display: flex; flex-wrap: wrap; gap: 18px; }
+  .foot nav a { color: var(--text-2); font-size: 14px; }
+  @media (max-width: 760px) { .mini, .rv { grid-template-columns: 1fr; } .big { font-size: 88px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="index.html"><span data-ymark></span><span class="doto">yuki</span></a>
+    <span class="lbl">Website mock &middot; 18 Oct 2026</span>
+    <span class="right"><a class="key sm ghost" href="screens.html">All screens</a><a class="key sm" href="fx-gallery.html?motion=reduced" id="motionLink">Reduced motion</a></span>
+  </header>
+  <h1>Effects</h1>
+  <p class="intro">Every hover effect on the site, once each. Try each one with a mouse, then with Tab, then on a phone. One rule: big panels lock their crop marks, single items light their border.</p>
+  <p class="cap rule">Mint is only for live things. Everything here also works with the keyboard, by touch, and with motion turned off. All names are invented.</p>
+
+  <div class="grid">
+    <!-- L -->
+    <section class="tile clear" data-fx="crop" aria-labelledby="t-l">
+      <h2 id="t-l"><span class="doto">L</span>Lit border</h2>
+      <div class="demo stack">
+        <div class="row" data-fx="lit" tabindex="0"><span class="who">Maya Chen</span><span class="cap">Design review, Friday</span></div>
+        <div class="row" data-fx="lit" tabindex="0"><span class="who">Leo Park</span><span class="cap">Sent the brief</span></div>
+        <div class="row" data-fx="lit" tabindex="0" id="litCode"><span class="who">Priya Shah</span><span class="cap">Lit from code</span></div>
+        <button class="key sm" type="button" id="litBtn" aria-pressed="false">Light Priya from code</button>
+      </div>
+      <ul class="notes">
+        <li><b>Pointer:</b> the whole border lights in white.</li>
+        <li><b>Keyboard:</b> the lit border is the focus ring. <b>Touch:</b> tap.</li>
+      </ul>
+    </section>
+
+    <!-- L pairs -->
+    <section class="tile clear" data-fx="crop" aria-labelledby="t-lp">
+      <h2 id="t-lp"><span class="doto">L</span>Lit pairs</h2>
+      <div class="demo mini" data-lit-scope>
+        <div class="win">
+          <div class="bar" data-fx="lit" data-lit-pair="title" tabindex="0">Design review notes</div>
+          <div class="bar" data-fx="lit" data-lit-pair="msg" tabindex="0">Maya: can we move it to 3?</div>
+          <span class="btn" data-fx="lit" data-lit-pair="send" tabindex="0">Send</span>
+        </div>
+        <div class="tree">
+          <div data-fx="lit" data-lit-pair="title" tabindex="0">window "Design review"</div>
+          <div data-fx="lit" data-lit-pair="msg" tabindex="0">text "Maya: can we…"</div>
+          <div data-fx="lit" data-lit-pair="send" tabindex="0">button "Send"</div>
+        </div>
+      </div>
+      <ul class="notes">
+        <li><b>Pointer:</b> hover a part of the window or a tree row; its partner lights too.</li>
+        <li><b>Keyboard:</b> Tab through either side. <b>Touch:</b> tap one.</li>
+      </ul>
+    </section>
+
+    <!-- 1 + 3 -->
+    <section class="tile clear" data-fx="crop" aria-labelledby="t-1">
+      <h2 id="t-1"><span class="doto">1</span>Dot-matrix key <span class="doto">3</span>Magnet</h2>
+      <div class="demo">
+        <a class="key pri lg" href="#download" data-fx="matrix magnet" data-magnet="8">Download for Windows</a>
+        <a class="key lg" href="#signin" data-fx="matrix">Sign in</a>
+      </div>
+      <ul class="notes">
+        <li><b>Pointer:</b> a lens of dots follows the cursor; the main key leans toward it.</li>
+        <li><b>Keyboard:</b> the lens sweeps once. <b>Touch:</b> the dots bloom where you tap.</li>
+      </ul>
+    </section>
+
+    <!-- 2 -->
+    <section class="tile clear" data-fx="crop" aria-labelledby="t-2">
+      <h2 id="t-2"><span class="doto">2</span>Hardware press</h2>
+      <div class="demo">
+        <button class="key" type="button">Resume</button>
+        <button class="key" type="button">Pause</button>
+        <button class="key ghost" type="button">Undo</button>
+        <button class="key sm" type="button">Forget</button>
+      </div>
+      <ul class="notes">
+        <li><b>Pointer:</b> lifts 1 px, sinks when pressed, springs back.</li>
+        <li><b>Keyboard:</b> Space or Enter press it. <b>Touch:</b> sinks under the finger.</li>
+      </ul>
+    </section>
+
+    <!-- 4 -->
+    <section class="tile clear" data-fx="crop" aria-labelledby="t-4" tabindex="0">
+      <h2 id="t-4"><span class="doto">4</span>Crop lock-on</h2>
+      <div class="demo"><p class="prose">Every panel on this page is a clearing. Hover one and its corner marks jump out, then lock onto the corners.</p></div>
+      <ul class="notes">
+        <li><b>Keyboard:</b> focus anything inside the panel. <b>Touch:</b> tap; it lets go after a moment.</li>
+      </ul>
+    </section>
+
+    <!-- 5 -->
+    <section class="tile clear" data-fx="crop" aria-labelledby="t-5">
+      <h2 id="t-5"><span class="doto">5</span>Field lens</h2>
+      <div class="demo">
+        <span class="big doto" data-fx="lens" aria-label="05">05</span>
+        <canvas class="field" id="lensField" aria-hidden="true"></canvas>
+      </div>
+      <ul class="notes">
+        <li><b>Pointer:</b> dots swell under the cursor, on text and on the dot field.</li>
+        <li><b>Keyboard:</b> none, it is decoration. <b>Touch:</b> swells where you tap.</li>
+      </ul>
+    </section>
+
+    <!-- 6 -->
+    <section class="tile clear" data-fx="crop" aria-labelledby="t-6">
+      <h2 id="t-6"><span class="doto">6</span>Tilt</h2>
+      <div class="demo">
+        <div class="badge" data-fx="tilt lit" data-tilt="3" tabindex="0">
+          <span class="lbl" data-depth="1">Person</span>
+          <b data-depth="2">Leo Park</b>
+          <span class="cap" data-depth="1">Design lead at Northwind. Last talked Tuesday.</span>
+        </div>
+      </div>
+      <ul class="notes">
+        <li><b>Pointer:</b> the card tips toward the cursor, with a soft sheen.</li>
+        <li><b>Keyboard:</b> it rises 2 px. <b>Touch:</b> it presses in slightly.</li>
+      </ul>
+    </section>
+
+    <!-- 7 + 8 -->
+    <section class="tile clear" data-fx="crop" aria-labelledby="t-7">
+      <h2 id="t-7"><span class="doto">7</span>Dotted underline <span class="doto">8</span>Spec readout</h2>
+      <div class="demo">
+        <p class="prose">Read the <a href="privacy.html" data-fx="dotline">privacy page</a> or the <a href="terms.html" data-fx="dotline">terms</a>. Yuki skips <span data-spec="Incognito and InPrivate windows, and any app you block in Settings.">private windows</span> and keeps memory <span data-spec="Encrypted with a key only this PC has." data-spec-tap>on your PC</span>.</p>
+        <button class="key sm" type="button" data-spec="Stops the run at the next step. Nothing is undone.">Stop</button>
+      </div>
+      <ul class="notes">
+        <li><b>Pointer:</b> links draw a row of dots; terms show a readout after a short pause.</li>
+        <li><b>Keyboard:</b> both show on focus. <b>Touch:</b> long-press a term (or tap "on your PC").</li>
+      </ul>
+    </section>
+
+    <!-- 9 -->
+    <section class="tile clear" data-fx="crop" aria-labelledby="t-9">
+      <h2 id="t-9"><span class="doto">9</span>Live pulse</h2>
+      <div class="demo">
+        <span class="chip live" data-fx="pulse" tabindex="0"><span class="ldot"></span>DESKTOP-4KD7Q2M online</span>
+        <span class="chip" tabindex="0"><span class="ldot off"></span>Laptop offline</span>
+      </div>
+      <ul class="notes">
+        <li><b>Pointer:</b> one mint ring, twice. Only things that are live right now get it.</li>
+        <li><b>Keyboard:</b> on focus. <b>Touch:</b> on tap. <b>Reduced motion:</b> no ring.</li>
+      </ul>
+    </section>
+
+    <!-- 10 -->
+    <section class="tile clear" data-fx="crop" aria-labelledby="t-10">
+      <h2 id="t-10"><span class="doto">10</span>Reveal and odometer</h2>
+      <div class="demo" id="rvBox">
+        <div class="rv">
+          <div data-reveal="rise">Rise</div>
+          <div data-reveal="wipe">Wipe</div>
+          <div data-reveal="stagger" class="st"><span></span><span></span><span></span><span></span></div>
+        </div>
+        <span class="odo-n" data-odo="1,284"></span><span class="cap">facts kept on this PC</span>
+        <button class="key sm" type="button" id="replay">Replay</button>
+      </div>
+      <ul class="notes">
+        <li><b>Scroll:</b> blocks rise, wipe or arrive one by one; digits roll into place.</li>
+        <li><b>Reduced motion:</b> everything is shown in its final state.</li>
+      </ul>
+    </section>
+  </div>
+</div>
+
+<section class="bonebox" aria-labelledby="t-bone">
+  <div class="wrap">
+    <h2 class="sec" id="t-bone">On bone</h2>
+    <p class="intro">The same effects on the light pages: the lit border turns ink, crop marks go darker, dark panels keep white.</p>
+    <div class="bgrid" style="margin-top: 24px">
+      <div class="tile clear" data-fx="crop">
+        <span class="lbl">Fig. 1 &middot; items</span>
+        <div class="stack">
+          <div class="row" data-fx="lit" tabindex="0"><span class="who">Your PC thinks</span><span class="cap">Memory, voice, actions</span></div>
+          <div class="row" data-fx="lit" tabindex="0"><span class="who">The relay passes</span><span class="cap">Encrypted, never read</span></div>
+        </div>
+        <div class="demo"><button class="key" type="button">Claude</button><button class="key pri" type="button" data-fx="matrix">Download</button></div>
+      </div>
+      <div class="console clear" data-fx="crop" data-tone="dark">
+        <span class="lbl">Fig. 2 &middot; a dark panel on bone</span>
+        <div class="row" data-fx="lit" tabindex="0"><span class="who">Llama 3.1 on this PC</span><span class="cap">Nothing leaves the PC</span></div>
+        <p class="cap">The ring stays white here because the panel sets data-tone="dark".</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <footer class="foot">
+    <nav aria-label="Pages"><a href="index.html">Landing</a><a href="app.html">Dashboard</a><a href="login.html">Sign in</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="screens.html">All screens</a></nav>
+  </footer>
+</div>
+
+<script src="js/core.js"></script>
+<script src="js/dotkit.js"></script>
+<script src="js/fx.js"></script>
+<script>
+(function () {
+  'use strict';
+  const { $, loop, pointer, reduced, watch, measured } = Y;
+  if (reduced) { const m = $('#motionLink'); m.textContent = 'Full motion'; m.href = 'fx-gallery.html'; }
+  $('#litBtn').addEventListener('click', (e) => {
+    const on = e.currentTarget.getAttribute('aria-pressed') !== 'true';
+    e.currentTarget.setAttribute('aria-pressed', on);
+    Y.fx.lit($('#litCode'), on);
+  });
+  $('#replay').addEventListener('click', () => {
+    const box = $('#rvBox'), els = box.querySelectorAll('[data-reveal], [data-odo]');
+    els.forEach((el) => el.classList.remove('in', 'go'));
+    void box.offsetWidth;
+    setTimeout(() => els.forEach((el) => el.classList.add(el.hasAttribute('data-odo') ? 'go' : 'in')), 60);
+  });
+  // a small dot field with the shared lens falloff (DotKit.lensK), drawn from the core loop only when it changes
+  const cv = $('#lensField'), ctx = cv.getContext('2d'), P = 14, DPR = Math.min(2, devicePixelRatio || 1);
+  let W = 0, H = 0, box = null, lx = -1e4, ly = -1e4, tap = 0, need = true;
+  const vis = watch(cv, '0px');
+  const size = () => { W = cv.clientWidth; H = cv.clientHeight; cv.width = W * DPR; cv.height = H * DPR; box = null; need = true; };
+  measured.add(size); size();
+  function draw() {
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0); ctx.clearRect(0, 0, W, H);
+    for (let y = P / 2; y < H; y += P) for (let x = P / 2; x < W; x += P) {
+      const k = reduced ? 0 : DotKit.lensK(x - lx, y - ly, 120);
+      ctx.fillStyle = k > 0.35 ? '#96938C' : k > 0.02 ? '#3A3E43' : '#26292C';
+      ctx.beginPath(); ctx.arc(x, y, 1.6 * (1 + 0.8 * k), 0, 6.2832); ctx.fill();
+    }
+  }
+  if (reduced) { draw(); return; }
+  addEventListener('scroll', () => { box = null; }, { passive: true });
+  cv.addEventListener('pointerdown', (e) => { if (e.pointerType !== 'touch') return; const r = cv.getBoundingClientRect(); lx = e.clientX - r.left; ly = e.clientY - r.top; tap = performance.now() + 700; need = true; loop.kick(); });
+  loop.add(() => {
+    if (!vis.on) return false;
+    if (!box) box = cv.getBoundingClientRect();
+    let nx = -1e4, ny = -1e4;
+    if (tap > performance.now()) { nx = lx; ny = ly; }
+    else if (pointer.seen) { nx = pointer.sx - box.left; ny = pointer.sy - box.top; if (nx < -130 || ny < -130 || nx > W + 130 || ny > H + 130) { nx = ny = -1e4; } }
+    if (nx !== lx || ny !== ly || need) { lx = nx; ly = ny; need = false; draw(); }
+    return tap > performance.now();
+  });
+})();
+</script>
+</body>
+</html>

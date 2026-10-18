@@ -2,11 +2,18 @@
    Hash state (for the screens index): #home | #work | #day | #calls | #memory | #settings, plus
    &offline (PC off), &run=spotify (types "Open Spotify" and sends it), &at=done | stopped | queued, &ask=list.
    Port: app/(dash)/[tab]/page.tsx for the tabs, components/AskBar.tsx + components/RunCard.tsx for the ask flow,
-   lib/relay.ts for the channel (Supabase Realtime, payloads sealed with the PC's key; the server never sees them). */
+   lib/relay.ts for the channel (Supabase Realtime, payloads sealed with the PC's key; the server never sees them).
+   Round 2 (18 Oct): the shared hover vocabulary (js/fx.js, Y.fx). Rows light their whole border (data-fx="lit"),
+   panels lock their crop marks ("crop"), Now tiles tilt, keys press, Send is a dot-matrix key, the PC chip pulses
+   (its fx:pulse event sends one ring through the field, at most one per 2.5 s), chips and day-strip blocks carry
+   a spec readout. The to-do circle draws a tick in dots; Forget dissolves into "Forgotten on this PC · Undo" (5 s).
+   Y.fx.refresh(view) runs after every render, then focusRows(view) gives control-less lit rows tabindex=0. */
 (function () {
   'use strict';
   const { $, $$, hashTokens, reduced, dic } = Y;
+  const FX = Y.fx || { refresh() {}, pulse() {}, ring() {} };
   const D = window.YD;
+  const LIT = 'data-fx="lit"';
   const TABS = [['home', 'Home', 'dot'], ['work', 'Work', 'check'], ['day', 'Day', 'globe'], ['calls', 'Calls', 'mic'], ['memory', 'Memory', 'lock'], ['settings', 'Settings', 'plus']];
   const field = AppField.mount($('#field'));
   const view = $('#view'), thread = $('#thread'), input = $('#ask-in');
@@ -17,42 +24,53 @@
   /* ---------------- chrome: nav, tabs, PC status ---------------- */
   function renderNav() {
     const off = S.online ? '' : '&offline';
-    const item = ([k, n, ic]) => `<a href="#${k}${off}" ${S.tab === k ? 'aria-current="page"' : ''}>${dic(ic)}${n}${counts[k] !== '' ? `<span class="n${k === 'home' ? '' : ' dim'}">${counts[k]}</span>` : ''}</a>`;
+    const item = ([k, n, ic]) => `<a href="#${k}${off}" data-fx="lit" data-lit="in" ${S.tab === k ? 'aria-current="page"' : ''}>${dic(ic)}${n}${counts[k] !== '' ? `<span class="n${k === 'home' ? '' : ' dim'}">${counts[k]}</span>` : ''}</a>`;
     $('#nav').innerHTML = TABS.slice(0, 5).map(item).join('') + '<div class="sep"></div>' + item(TABS[5]);
-    $('#tabs-m').innerHTML = TABS.map(([k, n]) => `<a href="#${k}${off}" ${S.tab === k ? 'aria-current="page"' : ''}>${n}${counts[k] !== '' ? `<span class="n">${counts[k]}</span>` : ''}</a>`).join('');
+    $('#tabs-m').innerHTML = TABS.map(([k, n]) => `<a href="#${k}${off}" data-fx="lit" data-lit="in" ${S.tab === k ? 'aria-current="page"' : ''}>${n}${counts[k] !== '' ? `<span class="n">${counts[k]}</span>` : ''}</a>`).join('');
     $('#crumb').textContent = TABS.find((t) => t[0] === S.tab)[1];
   }
   function renderPC() {
     document.body.dataset.pc = S.online ? 'online' : 'offline';
-    $('#pcchip').innerHTML = S.online
+    const chip = $('#pcchip'), box = $('#pcbox');
+    // pulse is for live things only: the chip and the rail box pulse while the PC streams, never when it is off
+    if (S.online) { chip.setAttribute('data-fx', 'pulse'); box.setAttribute('data-fx', 'pulse'); } else { chip.removeAttribute('data-fx'); box.removeAttribute('data-fx'); }
+    chip.setAttribute('data-spec', S.online ? `Sealed end to end with ${D.pc.name}'s key. The relay passes it on and can't read it.` : `Last seen at ${D.pc.lastSeen}. Tasks you type can wait in a queue until it's back.`);
+    chip.setAttribute('data-spec-tap', '');
+    chip.innerHTML = S.online
       ? `<span class="ldot blink"></span><span class="k">Online</span><span class="full">· ${D.pc.name}</span><span class="s">· streaming, encrypted</span><span class="enc">· encrypted</span>`
       : `<span class="ldot off"></span><span class="k">Offline</span><span class="full">· ${D.pc.name}</span><span class="s">· last seen ${D.pc.lastSeen}</span><span class="enc">· last seen ${D.pc.lastSeen}</span>`;
-    $('#pcbox').innerHTML = `<p class="lbl"><span>Your PC</span><span>${S.online ? '<span class="live">live</span>' : 'off'}</span></p><b>${D.pc.name}</b><span class="t3">${S.online ? 'Streaming, end-to-end encrypted' : 'Last seen ' + D.pc.lastSeen + '. Tasks wait in a queue.'}</span>`;
+    box.innerHTML = `<p class="lbl"><span>Your PC</span><span>${S.online ? '<span class="live pcl"><span class="ldot"></span>live</span>' : 'off'}</span></p><b>${D.pc.name}</b><span class="t3">${S.online ? 'Streaming, end-to-end encrypted' : 'Last seen ' + D.pc.lastSeen + '. Tasks wait in a queue.'}</span>`;
     $('#rail-st').innerHTML = S.online ? '<span class="ldot blink"></span>on the web · live' : '<span class="ldot off"></span>PC is off';
     $('#mocktog').setAttribute('aria-pressed', String(!S.online));
     $('#ask-where').innerHTML = S.online ? `${dic('lock')}runs on ${D.pc.name}` : `${dic('dot')}${D.pc.name} is off`;
     const q = S.queued.length; $('#queued').classList.toggle('on', q > 0); $('#queued-n').textContent = `${q} queued`;
     $('#offq').textContent = q ? ` ${q === 1 ? 'One task is' : q + ' tasks are'} queued.` : '';
     field.setOffline(!S.online);
+    FX.refresh(document.querySelector('.topbar')); FX.refresh(box.parentElement);
   }
 
   /* ---------------- pages ---------------- */
-  const sec = (label, n, aside, body, cls) => `<section class="sec clear ${cls || ''}" data-clear><div class="sec-h"><span class="label">${label}${n != null ? ` <span class="doto">${n}</span>` : ''}</span>${aside ? `<span class="aside">${aside}</span>` : ''}</div>${body}</section>`;
+  const sec = (label, n, aside, body, cls) => `<section class="sec clear ${cls || ''}" data-clear data-fx="crop"><div class="sec-h"><span class="label">${label}${n != null ? ` <span class="doto">${n}</span>` : ''}</span>${aside ? `<span class="aside">${aside}</span>` : ''}</div>${body}</section>`;
   const head = (title, meta, fig, cap) => `<div class="ph"><h1>${title}</h1><div class="meta">${meta}</div>${fig || ''}${cap ? `<div class="fig-cap">${cap}</div>` : ''}</div>`;
   const liveMeta = () => S.online ? `<span class="live-only"><span class="live">●</span> live from <b>${D.pc.name}</b></span>` : `<span>as of <b>${D.pc.lastSeen}</b>, when your PC went off</span>`;
-  const todoRows = (list) => list.map((t, i) => `<div class="todo" data-i="${i}"><button class="ck" aria-label="Done: ${esc(t.t)}"></button><div><div class="tt">${esc(t.t)}</div><div class="src"><b class="${t.hot ? 'hot' : ''}">due ${t.due}</b> · ${esc(t.src)}</div></div></div>`).join('');
+  // the tick, drawn in five dots (the check glyph, short arm first); CSS lights them 30 ms apart
+  const TICK = `<svg class="tk" viewBox="0 0 15 15" aria-hidden="true">${[[0, 3], [1, 4], [2, 3], [3, 2], [4, 1]].map(([x, y], i) => `<circle cx="${x * 3 + 1.5}" cy="${y * 3 + 1.5}" r="1.25" style="--i:${i}"/>`).join('')}</svg>`;
+  const todoRows = (list) => list.map((t, i) => `<div class="todo" ${LIT} data-i="${i}"><button class="ck" type="button" data-fx="press" aria-pressed="false" aria-label="Done: ${esc(t.t)}">${TICK}</button><div><div class="tt">${esc(t.t)}</div><div class="src"><b class="${t.hot ? 'hot' : ''}">due ${t.due}</b> · ${esc(t.src)}</div></div></div>`).join('');
   const yourList = () => sec('Your list', D.list.length, 'due soonest first',
     `<label class="addrow">${dic('plus')}<input placeholder="${phoneMQ.matches ? 'Add to your list…' : 'Add to your list… “call the plumber on Friday”'}" aria-label="Add to your list"></label>${todoRows(D.list)}<div class="foot-row"><span>Recently done ${D.done.length}</span><span>synced to your PC</span></div>`);
-  const dayMini = () => D.day.map((b) => `<div class="pr tmr"><span class="tmc">${b.a}</span><div><div class="tt"><b>${esc(b.t)}</b></div><div class="src">${b.apps ? esc(b.apps) + ' · ' : ''}until ${b.b === 'now' ? (S.online ? 'now' : '14:06') : b.b}</div></div>${b.live ? '<span class="when live-only"><span class="live">● now</span></span>' : ''}</div>`).join('');
-  const replies = () => sec('Needs your reply', D.replies.length, 'newest first', D.replies.map((r) => `<div class="pr"><span class="av">${r.who[0]}</span><div><div class="tt"><b>${esc(r.who)}</b> “${esc(r.t)}”</div><div class="src">${r.app}</div><div class="acts"><button class="key xs" data-q="Reply to ${esc(r.who.split(' ')[0])}">Reply on my PC</button></div></div><span class="when">${r.ago}</span></div>`).join(''));
-  const said = () => sec('You said you’d', D.said.length, 'from your chats and calls', D.said.map((s) => `<div class="pr"><span class="av">${s.to[0]}</span><div><div class="tt"><b>${esc(s.t)}</b></div><div class="src">to ${esc(s.to)} · ${esc(s.src)}</div></div><span class="when">${s.when}</span></div>`).join(''));
-  const waiting = () => sec('Waiting on', D.waiting.length, 'what others owe you', D.waiting.map((w) => `<div class="pr"><span class="av">${w.who[0]}</span><div><div class="tt"><b>${esc(w.who)}</b>: ${esc(w.t)}</div><div class="src">${esc(w.src)}</div></div><span class="when ${w.late ? 'late' : ''}">${w.since}</span></div>`).join(''));
+  const dayMini = () => D.day.map((b) => `<div class="pr tmr" ${LIT}><span class="tmc">${b.a}</span><div><div class="tt"><b>${esc(b.t)}</b></div><div class="src">${b.apps ? esc(b.apps) + ' · ' : ''}until ${b.b === 'now' ? (S.online ? 'now' : '14:06') : b.b}</div></div>${b.live && S.online ? '<span class="when"><span class="live">● now</span></span>' : ''}</div>`).join('');
+  const replies = () => sec('Needs your reply', D.replies.length, 'newest first', D.replies.map((r) => `<div class="pr" ${LIT}><span class="av">${r.who[0]}</span><div><div class="tt"><b>${esc(r.who)}</b> “${esc(r.t)}”</div><div class="src">${r.app}</div><div class="acts"><button class="key xs" data-q="Reply to ${esc(r.who.split(' ')[0])}">Reply on my PC</button></div></div><span class="when">${r.ago}</span></div>`).join(''));
+  const said = () => sec('You said you’d', D.said.length, 'from your chats and calls', D.said.map((s) => `<div class="pr" ${LIT}><span class="av">${s.to[0]}</span><div><div class="tt"><b>${esc(s.t)}</b></div><div class="src">to ${esc(s.to)} · ${esc(s.src)}</div></div><span class="when">${s.when}</span></div>`).join(''));
+  const waiting = () => sec('Waiting on', D.waiting.length, 'what others owe you', D.waiting.map((w) => `<div class="pr" ${LIT}><span class="av">${w.who[0]}</span><div><div class="tt"><b>${esc(w.who)}</b>: ${esc(w.t)}</div><div class="src">${esc(w.src)}</div></div><span class="when ${w.late ? 'late' : ''}">${w.since}</span></div>`).join(''));
   const toMin = (s) => { if (s === 'now') return 14 * 60 + 12; const [h, m] = s.split(':').map(Number); return h * 60 + m; };
   const strip = () => {
     const a0 = 8 * 60, a1 = 20 * 60, pct = (m) => ((m - a0) / (a1 - a0) * 100).toFixed(2);
-    const blocks = D.day.map((b) => `<span class="blk k-${b.k} ${b.live && S.online ? 'k-live' : ''}" style="left:${pct(toMin(b.a))}%;width:calc(${pct(toMin(b.b))}% - ${pct(toMin(b.a))}% - 3px)" title="${esc(b.t)}"></span>`).join('');
+    // each block: a spec readout ("Figma · 10:15–12:30 · Onboarding flow v3"), lit on hover, focus or tap
+    const end = (b) => (b.b === 'now' ? (S.online ? 'now' : '14:06') : b.b);
+    const spec = (b) => (b.k === 'away' ? `Away · ${b.a}–${end(b)}` : `${b.apps.split(',')[0]} · ${b.a}–${end(b)} · ${b.t}`);
+    const blocks = D.day.map((b) => `<span class="blk k-${b.k} ${b.live && S.online ? 'k-live' : ''}" ${LIT} role="img" aria-label="${esc(spec(b))}" data-spec="${esc(spec(b))}" data-spec-tap style="left:${pct(toMin(b.a))}%;width:calc(${pct(toMin(b.b))}% - ${pct(toMin(b.a))}% - 3px)"></span>`).join('');
     const axis = [8, 10, 12, 14, 16, 18, 20].map((h) => `<span style="left:${pct(h * 60)}%">${String(h).padStart(2, '0')}:00</span>`).join('');
-    return `<section class="strip clear" data-clear><div class="sec-h"><span class="label">Today, 08:00 to 20:00</span><span class="legend2"><span><i></i>at the PC</span><span><i class="c"></i>call</span><span><i class="a"></i>away</span></span></div>
+    return `<section class="strip clear" data-clear data-fx="crop"><div class="sec-h"><span class="label">Today, 08:00 to 20:00</span><span class="legend2"><span><i></i>at the PC</span><span><i class="c"></i>call</span><span><i class="a"></i>away</span></span></div>
       <div class="strip-track">${blocks}${S.online ? `<span class="strip-now" style="left:${pct(toMin('now'))}%"><span>now 14:12</span></span>` : ''}</div><div class="strip-axis">${axis}</div></section>`;
   };
   const PAGES = {
@@ -60,38 +78,38 @@
       const n = D.now;
       return head('Home', `<span>${D.today} · <b>${D.clock}</b></span><span><b>3</b> need you</span>${liveMeta()}`, '<div class="fig" data-figure="num" data-value="3" data-scale="2"></div>', 'need you') +
         `<div class="now">
-          <div class="clear" data-clear><div class="lbl2">${S.online ? '<span class="ldot blink"></span>' : '<span class="ldot off"></span>'}${S.online ? n.front.label : 'Last in front · at 14:06'}</div><div class="big">${n.front.title}</div><div class="sm">${n.front.note}</div></div>
-          <div class="clear" data-clear><div class="lbl2">${dic('play')}${n.playing.label}</div><div class="big">${n.playing.title}</div><div class="sm">${n.playing.note}</div></div>
-          <div class="clear" data-clear><div class="lbl2">${dic('dot')}${n.next.label}</div><div class="big">${n.next.title}</div><div class="sm">${n.next.note}</div></div>
+          <div class="clear" data-clear data-fx="crop tilt" data-tilt="2.5"><div class="lbl2">${S.online ? '<span class="ldot blink"></span>' : '<span class="ldot off"></span>'}${S.online ? n.front.label : 'Last in front · at 14:06'}</div><div class="big">${n.front.title}</div><div class="sm">${n.front.note}</div></div>
+          <div class="clear" data-clear data-fx="crop tilt" data-tilt="2.5"><div class="lbl2">${dic('play')}${n.playing.label}</div><div class="big">${n.playing.title}</div><div class="sm">${n.playing.note}</div></div>
+          <div class="clear" data-clear data-fx="crop tilt" data-tilt="2.5"><div class="lbl2">${dic('dot')}${n.next.label}</div><div class="big">${n.next.title}</div><div class="sm">${n.next.note}</div></div>
         </div>
-        <div class="cols"><div class="col">${yourList()}</div><div class="col">${sec('Today', D.day.length, '4 h 17 m at the PC', dayMini())}${sec('Waiting on', D.waiting.length, '', D.waiting.slice(0, 2).map((w) => `<div class="pr"><span class="av">${w.who[0]}</span><div><div class="tt"><b>${esc(w.who)}</b>: ${esc(w.t)}</div><div class="src">${esc(w.src)}</div></div><span class="when ${w.late ? 'late' : ''}">${w.since}</span></div>`).join(''))}</div></div>`;
+        <div class="cols"><div class="col">${yourList()}</div><div class="col">${sec('Today', D.day.length, '4 h 17 m at the PC', dayMini())}${sec('Waiting on', D.waiting.length, '', D.waiting.slice(0, 2).map((w) => `<div class="pr" ${LIT}><span class="av">${w.who[0]}</span><div><div class="tt"><b>${esc(w.who)}</b>: ${esc(w.t)}</div><div class="src">${esc(w.src)}</div></div><span class="when ${w.late ? 'late' : ''}">${w.since}</span></div>`).join(''))}</div></div>`;
     },
     work() {
       return head('Work', `<span><b>${D.said.length}</b> you said you’d</span><span><b>${D.waiting.length}</b> waiting on others</span><span><b>${D.replies.length}</b> to answer</span>`, '<div class="fig" data-figure="bars" data-values="6,7,5,8,6,2,5"></div>', 'hours at the PC, last 7 days') +
         strip() + `<div class="cols"><div class="col">${yourList()}${said()}</div><div class="col">${replies()}${waiting()}</div></div>`;
     },
     day() {
-      const rows = D.day.map((b) => `<div class="tl-row k-${b.k} ${b.live && S.online ? 'k-live' : ''}"><div class="tm"><b>${b.a}</b>${b.b === 'now' ? (S.online ? 'now' : '14:06') : b.b}</div><div class="rail2"><i></i></div><div><div class="tt">${esc(b.t)}${b.k === 'call' ? '<span class="kind">call · both sides</span>' : ''}${b.k === 'away' ? '<span class="kind">away</span>' : ''}</div>${b.apps ? `<div class="apps">${esc(b.apps)}</div>` : ''}<div class="did">${esc(b.did)}</div></div></div>`).join('');
+      const rows = D.day.map((b) => `<div ${LIT} class="tl-row k-${b.k} ${b.live && S.online ? 'k-live' : ''}"><div class="tm"><b>${b.a}</b>${b.b === 'now' ? (S.online ? 'now' : '14:06') : b.b}</div><div class="rail2"><i></i></div><div><div class="tt">${esc(b.t)}${b.k === 'call' ? '<span class="kind">call · both sides</span>' : ''}${b.k === 'away' ? '<span class="kind">away</span>' : ''}</div>${b.apps ? `<div class="apps">${esc(b.apps)}</div>` : ''}<div class="did">${esc(b.did)}</div></div></div>`).join('');
       return head('Day', `<span>${D.today}</span><span><b>4 h 17 m</b> at the PC</span><span><b>1</b> call</span>${liveMeta()}`, '<div class="fig" data-figure="num" data-value="4" data-scale="2"></div>', 'hours so far') +
-        `<div class="totals"><div class="clear" data-clear><span class="lbl">At the PC</span><span class="doto">4h17</span><div class="sub">About your usual by now.</div></div><div class="clear" data-clear><span class="lbl">Longest stretch</span><span class="doto">1h42</span><div class="sub">Figma, 10:15 to 11:57</div></div><div class="clear" data-clear><span class="lbl">Calls</span><span class="doto">32m</span><div class="sub">Weekly sync on Teams</div></div><div class="clear" data-clear><span class="lbl">Away</span><span class="doto">50m</span><div class="sub">Lunch, 12:30</div></div></div>` +
-        strip() + sec('Timeline', null, 'what you did, as Yuki saw it', `<div class="tl">${rows}</div>`);
+        `<div class="totals"><div class="clear" data-clear data-fx="crop"><span class="lbl">At the PC</span><span class="doto">4h17</span><div class="sub">About your usual by now.</div></div><div class="clear" data-clear data-fx="crop"><span class="lbl">Longest stretch</span><span class="doto">1h42</span><div class="sub">Figma, 10:15 to 11:57</div></div><div class="clear" data-clear data-fx="crop"><span class="lbl">Calls</span><span class="doto">32m</span><div class="sub">Weekly sync on Teams</div></div><div class="clear" data-clear data-fx="crop"><span class="lbl">Away</span><span class="doto">50m</span><div class="sub">Lunch, 12:30</div></div></div>` +
+        strip() + sec('Timeline', null, 'what you did, as Yuki saw it', `<div class="tline">${rows}</div>`);
     },
     calls() {
       const bars = () => `<span class="wave2">${Array.from({ length: 16 }, (_, i) => `<i style="height:${3 + Math.round(Math.abs(Math.sin(i * 1.7)) * 11)}px"></i>`).join('')}</span>`;
-      const cards = D.calls.map((c) => `<section class="callc clear" data-clear>
-        <div class="call-h"><div><p class="lbl">${c.app} · ${c.when}</p><h3>${esc(c.title)}</h3><div class="meta2">${c.len} · ${esc(c.who)}</div></div><span class="chip">${bars()}both sides · on your PC</span></div>
-        <div class="call-body"><div>${c.lines.map((l) => `<div class="cl ${l.s === 'You' ? 'you' : ''}"><span class="s">${l.s}</span><span class="t">${esc(l.t)}</span></div>`).join('')}</div>
-        <div class="outc"><p class="lbl">What came out of it</p>${c.out.said ? `<div class="row"><p class="lbl">You said you’d</p>${esc(c.out.said)}</div>` : ''}${c.out.owed ? `<div class="row"><p class="lbl">Waiting on</p>${esc(c.out.owed)}</div>` : ''}</div></div></section>`).join('');
+      const cards = D.calls.map((c) => `<section class="callc clear" data-clear data-fx="crop">
+        <div class="call-h"><div><p class="lbl">${c.app} · ${c.when}</p><h3>${esc(c.title)}</h3><div class="meta2">${c.len} · ${esc(c.who)}</div></div><span class="chip" data-spec="Your mic and the call app's sound, both kept as text on your PC." data-spec-tap>${bars()}both sides · on your PC</span></div>
+        <div class="call-body"><div class="lines" ${LIT}>${c.lines.map((l) => `<div class="cl ${l.s === 'You' ? 'you' : ''}"><span class="s">${l.s}</span><span class="t">${esc(l.t)}</span></div>`).join('')}</div>
+        <div class="outc" ${LIT}><p class="lbl">What came out of it</p>${c.out.said ? `<div class="row"><p class="lbl">You said you’d</p>${esc(c.out.said)}</div>` : ''}${c.out.owed ? `<div class="row"><p class="lbl">Waiting on</p>${esc(c.out.owed)}</div>` : ''}</div></div></section>`).join('');
       return head('Calls', `<span><b>${D.calls.length}</b> in the last 7 days</span><span>both sides recorded</span><span>audio stays on your PC</span>`, '<div class="fig" data-figure="num" data-value="3" data-scale="2"></div>', 'calls, last 7 days') + cards;
     },
     memory() {
       const people = [['Maya Chen', 'Friend · likes mornings'], ['Leo Park', 'Northwind · prefers email'], ['Priya Shah', 'Runs the offsite budget'], ['Sam Okafor', 'Your team · reviews on Fridays'], ['Noor Haddad', 'Planning the offsite']];
-      return head('Memory', `<span>What Yuki knows</span><span><b>1,284</b> things, kept on your PC</span><span>searchable here while it’s on</span>`, '', '') +
+      return head('Memory', `<span>What Yuki knows</span><span><b data-odo="1,284">1,284</b> things, kept on your PC</span><span>searchable here while it’s on</span>`, '', '') +
         `<div class="cols"><div class="col">${sec('Search', null, S.online ? 'asks your PC' : 'last copy, read only',
           `<label class="msearch">${dic('dot')}<input id="msearch" placeholder="Search: “Leo”, “dentist”, “venue”" value="${esc(S.memQ)}" aria-label="Search memory"></label>
-           <div class="cats" id="cats">${D.memCats.map(([k, n]) => `<button type="button" data-cat="${k}" aria-pressed="${S.memCat === k}">${n}</button>`).join('')}</div>
+           <div class="cats" id="cats">${D.memCats.map(([k, n]) => `<button type="button" data-fx="press" data-cat="${k}" aria-pressed="${S.memCat === k}">${n}</button>`).join('')}</div>
            <div id="facts"></div>`)}</div>
-         <div class="col">${sec('People', people.length, '', `<div class="people">${people.map(([n, r]) => `<div class="person"><span class="av">${n[0]}</span><div><b>${n}</b><span>${r}</span></div></div>`).join('')}</div>`)}
+         <div class="col">${sec('People', people.length, '', `<div class="people">${people.map(([n, r]) => `<div class="person" ${LIT}><span class="av">${n[0]}</span><div><b>${n}</b><span>${r}</span></div></div>`).join('')}</div>`)}
          <div class="memnote">${dic('lock')}<span>Memory lives on your PC, encrypted. This page asks your PC and shows the answer. Nothing here is saved in the cloud. Forget removes it on your PC too.</span></div></div></div>`;
     },
     settings() {
@@ -105,7 +123,7 @@
             <div class="srow"><span>Link another PC</span><a class="key sm" href="link.html">Link a PC</a></div>
             <div class="srow"><span>Unlink<small>The web stops seeing this PC. Its memory stays on it.</small></span><a class="key sm" href="link.html#unlink=desktop">Unlink</a></div>`)}
           ${sec('When your PC is off', null, '', `
-            <div class="srow"><span>Tasks you type here<small>Yuki can hold them until your PC is back.</small></span><span class="seg2" id="qpref"><button type="button" aria-pressed="true">Ask me</button><button type="button" aria-pressed="false">Queue</button><button type="button" aria-pressed="false">Don’t run</button></span></div>
+            <div class="srow"><span>Tasks you type here<small>Yuki can hold them until your PC is back.</small></span><span class="seg2" id="qpref"><button type="button" data-fx="press" aria-pressed="true">Ask me</button><button type="button" data-fx="press" aria-pressed="false">Queue</button><button type="button" data-fx="press" aria-pressed="false">Don’t run</button></span></div>
             <div class="srow"><span>Queued tasks expire<small>So nothing old runs by surprise.</small></span><span class="v">after 24 hours</span></div>`)}
         </div><div class="col">
           ${sec('AI', null, 'chosen on your PC', `<div class="aibig"><span class="doto">${D.pc.ai}</span><span>${D.pc.aiVia}.<br>Change it in the Yuki app on your PC. Keys never leave it.</span></div>
@@ -119,14 +137,57 @@
         </div></div>`;
     }
   };
+  /* Forget: the fact dissolves into dots, then "Forgotten on this PC · Undo" holds for 5 s, then the row goes.
+     A re-render (search, a category) settles any pending forget at once. */
+  const pending = new Map();   // memory index -> timer
+  function settleForgets() { pending.forEach((tm, i) => { clearTimeout(tm); D.memory[i].gone = true; }); pending.clear(); }
   function renderFacts() {
     const box = $('#facts'); if (!box) return;
+    settleForgets();
     const q = S.memQ.trim().toLowerCase();
-    const list = D.memory.filter((f) => (S.memCat === 'all' || f.k === S.memCat) && (!q || f.t.toLowerCase().includes(q)));
+    const list = D.memory.filter((f) => !f.gone && (S.memCat === 'all' || f.k === S.memCat) && (!q || f.t.toLowerCase().includes(q)));
     const hi = (t) => q ? esc(t).replace(new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'ig'), '<mark>$1</mark>') : esc(t);
-    box.innerHTML = list.length ? list.map((f) => `<div class="fact"><div class="tx">${hi(f.t)}</div><div class="m2"><span>${esc(f.src)}</span><span>${f.d}</span></div><button class="key xs fg" type="button" data-forget>Forget</button></div>`).join('')
-      : `<p class="mem-empty">Nothing on your PC matches “${esc(S.memQ)}”.</p>`;
+    box.innerHTML = list.length ? list.map((f) => `<div class="fact" ${LIT} data-i="${D.memory.indexOf(f)}"><div class="tx">${hi(f.t)}</div><div class="m2"><span>${esc(f.src)}</span><span>${f.d}</span></div><button class="key xs fg" type="button" data-forget aria-label="Forget: ${esc(f.t)}">Forget</button></div>`).join('')
+      : `<p class="mem-empty">${q ? `Nothing on your PC matches “${esc(S.memQ)}”.` : 'Nothing left here. What you forgot is gone from your PC too.'}</p>`;
+    FX.refresh(box);
     field.refresh();
+  }
+  function forget(f) {
+    const i = Number(f.dataset.i);
+    f.classList.add('dissolve');
+    setTimeout(() => {
+      if (!f.isConnected) return;
+      f.classList.remove('dissolve'); f.classList.add('forgot');
+      f.insertAdjacentHTML('beforeend', `<div class="gone-l" role="status">${dic('lock')}<span>Forgotten on this PC</span><button class="key xs" type="button" data-undo>Undo</button><i class="undo-bar" aria-hidden="true"></i></div>`);
+      f.querySelector('[data-undo]').focus({ preventScroll: true });
+      void f.offsetWidth; f.classList.add('counting');
+      pending.set(i, setTimeout(() => {
+        pending.delete(i); D.memory[i].gone = true;
+        const hadFocus = f.contains(document.activeElement);
+        f.classList.add('out');
+        setTimeout(() => {
+          const next = f.nextElementSibling || f.previousElementSibling;
+          f.remove(); field.refresh();
+          if (!$('#facts .fact')) renderFacts();
+          if (hadFocus) { const k = next && next.querySelector && next.querySelector('[data-forget]'); (k || $('#msearch')).focus({ preventScroll: true }); }
+        }, reduced ? 0 : 220);
+      }, 5000));
+    }, reduced ? 0 : 280);
+  }
+  function undo(f) {
+    const i = Number(f.dataset.i);
+    clearTimeout(pending.get(i)); pending.delete(i);
+    const g = f.querySelector('.gone-l'); if (g) g.remove();
+    f.classList.remove('forgot', 'counting');
+    const k = f.querySelector('[data-forget]'); if (k) k.focus({ preventScroll: true });
+  }
+  // lit rows with no control of their own (said, waiting, today, timeline, call lines, people) join the Tab order,
+  // so the keyboard gets the same lit border as hover and tap (fx.css lights [data-fx~=lit]:focus-visible)
+  const FOCUSABLE = 'a[href],button,input,select,textarea,summary,[tabindex]';
+  function focusRows(root) {
+    $$('[data-fx~="lit"]', root).forEach((el) => {
+      if (!el.matches(FOCUSABLE) && !el.querySelector(FOCUSABLE)) el.tabIndex = 0;
+    });
   }
   function render(enter) {
     renderNav();
@@ -134,6 +195,8 @@
     if (enter && !reduced) { view.classList.remove('enter'); void view.offsetWidth; view.classList.add('enter'); }
     Y.fillMarks(); Y.fillIcons(view);
     if (S.tab === 'memory') renderFacts();
+    FX.refresh(view);
+    focusRows(view);
     field.remeasure();
     // the field re-reads the clearings once the entry animation has settled
     setTimeout(() => field.refresh(), 560);
@@ -142,13 +205,13 @@
   /* ---------------- page events ---------------- */
   view.addEventListener('click', (e) => {
     const ck = e.target.closest('.ck');
-    if (ck) { ck.closest('.todo').classList.toggle('done'); return; }
+    if (ck) { const done = ck.closest('.todo').classList.toggle('done'); ck.setAttribute('aria-pressed', String(done)); return; }
     const cat = e.target.closest('[data-cat]');
     if (cat) { S.memCat = cat.dataset.cat; $$('#cats button').forEach((b) => b.setAttribute('aria-pressed', String(b === cat))); renderFacts(); return; }
     const fg = e.target.closest('[data-forget]');
-    if (fg) { const f = fg.closest('.fact'); f.classList.add('gone'); fg.textContent = 'Undo'; fg.removeAttribute('data-forget'); fg.dataset.undo = '1'; return; }
+    if (fg) { const f = fg.closest('.fact'); if (!f.classList.contains('dissolve') && !f.classList.contains('forgot')) forget(f); return; }
     const un = e.target.closest('[data-undo]');
-    if (un) { un.closest('.fact').classList.remove('gone'); un.textContent = 'Forget'; un.removeAttribute('data-undo'); un.dataset.forget = '1'; return; }
+    if (un) { undo(un.closest('.fact')); return; }
     const q = e.target.closest('[data-q]');
     if (q) { ask(q.dataset.q); return; }
     const seg = e.target.closest('.seg2 button');
@@ -163,7 +226,9 @@
   });
 
   /* ---------------- the ask bar ---------------- */
-  const chipPulse = () => { const r = $('#pcchip').getBoundingClientRect(); field.pulse(r.left + 14, r.top + r.height / 2); };
+  // a step streamed in: one mint ring on the chip; the chip's fx:pulse sends a ring through the field (at most one per 2.5 s)
+  const chipPulse = () => { if (S.online) FX.pulse($('#pcchip')); };
+  document.addEventListener('fx:pulse', (e) => { if (S.online && e.detail) field.pulse(e.detail.x, e.detail.y); });
   const timers = [];
   const later = (ms, fn) => { const id = setTimeout(fn, reduced ? 0 : ms); timers.push(id); return id; };
   function openThread() { thread.classList.add('on'); }
@@ -183,14 +248,14 @@
   }
   function plan(text) {
     const t = text.trim().toLowerCase();
-    if (/spotify|liked songs|play (some )?music/.test(t)) return {
-      title: 'Open Spotify', steps: [['Opening Spotify', 'Spotify is in front'], ['Opening Liked Songs', 'Liked Songs is showing'], ['Pressing Play', 'music is playing']],
-      done: 'Spotify is open and playing Liked Songs.', meta: '3 steps · 5 s · checked after each', after: 'Pause it'
+    // same run as the landing's Acts demo: it fills in your usual (Morning focus) instead of asking which playlist
+    if (/spotify|morning focus|focus one|play (some )?music/.test(t)) return {
+      title: 'Open Spotify', steps: [['Opening Spotify', 'Spotify is in front'], ['Opening Morning focus, your usual', 'Morning focus is showing'], ['Pressing Play', 'music is playing']],
+      done: 'Spotify is open and playing Morning focus, your usual.', meta: '3 steps · checked after each', after: 'Pause it'
     };
     const mOpen = t.match(/^open (.+)$/);
-    if (mOpen) { const app = mOpen[1].replace(/\b\w/g, (c) => c.toUpperCase()); return { title: 'Open ' + app, steps: [['Opening ' + app, app + ' is in front']], done: app + ' is open.', meta: '1 step · 2 s', after: '' }; }
-    if (/mute|silence|quiet/.test(t) && /slack/.test(t)) return { title: 'Mute Slack', steps: [['Opening Slack', 'Slack is in front'], ['Pausing notifications for 1 hour', 'notifications are paused until 15:12']], done: 'Slack is quiet until 15:12.', meta: '2 steps · 4 s', after: 'Unmute' };
-    if (/^reply to (\w+)/.test(t)) { const who = t.match(/^reply to (\w+)/)[1].replace(/^\w/, (c) => c.toUpperCase()); return { title: 'Reply to ' + who, steps: [['Opening the chat with ' + who, 'the chat is open'], ['Writing a draft in your style', 'a draft is in the box, not sent']], done: 'A draft to ' + who + ' is waiting on your PC. Yuki didn’t send it: sends need your words.', meta: '2 steps · 6 s', after: 'Show draft' }; }
+    if (mOpen) { const app = mOpen[1].replace(/\b\w/g, (c) => c.toUpperCase()); return { title: 'Open ' + app, steps: [['Opening ' + app, app + ' is in front']], done: app + ' is open.', meta: '1 step · checked', after: '' }; }
+    if (/^reply to (\w+)/.test(t)) { const who = t.match(/^reply to (\w+)/)[1].replace(/^\w/, (c) => c.toUpperCase()); return { title: 'Reply to ' + who, steps: [['Opening the chat with ' + who, 'the chat is open'], ['Writing a draft', 'a draft is in the box, not sent']], done: 'A draft to ' + who + ' is in the chat on your PC. Not sent: you didn’t say what to write.', meta: '2 steps · checked after each', after: 'Show draft' }; }
     return { title: text.trim().replace(/^\w/, (c) => c.toUpperCase()), steps: [['Reading the screen', 'found where to start'], ['Working on it', 'the change is on screen']], done: 'Done: ' + text.trim().replace(/[.!]$/, '') + '.', meta: '2 steps · checked after each', after: '' };
   }
   function runCard(p, opts) {

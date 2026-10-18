@@ -3,7 +3,10 @@
    screens pill. Everything that moves subscribes to Y.loop; nothing else calls requestAnimationFrame.
    Motion rules: transform and opacity only in the DOM; dots go to canvas. Reduced motion: every subscriber
    is asked for one static frame and the loop stops. Port: becomes a small React context + hooks
-   (useLoop, useScene, useReveal) in the Next.js build. */
+   (useLoop, useScene, useReveal) in the Next.js build.
+   Reveals: data-reveal="" or "rise" (fade up), "wipe" (a dotted cover slides off; core injects <i class="fx-wipe">),
+   "stagger" (children 50 ms apart, at most 8; core sets --i on each child). The CSS lives in css/fx.css;
+   landing.css may keep its own rise. The shared hover layer is js/fx.js (Y.fx), one subscriber of this loop. */
 (function () {
   'use strict';
   const qs = new URLSearchParams(location.search);
@@ -113,6 +116,14 @@
   /* ---------------- reveals and parallax (declarative, from data attributes) ---------------- */
   function initReveals(root) {
     const els = (root || document).querySelectorAll('[data-reveal]');
+    els.forEach((e) => {
+      const v = e.dataset.reveal;
+      if (v === 'stagger') [...e.children].forEach((c, i) => c.style.setProperty('--i', Math.min(i, 7)));
+      else if (v === 'wipe' && !e.querySelector(':scope > .fx-wipe')) {
+        const w = document.createElement('i'); w.className = 'fx-wipe'; w.setAttribute('aria-hidden', 'true');
+        w.innerHTML = '<i></i>'; e.appendChild(w);
+      }
+    });
     if (reduced || !window.IntersectionObserver) { els.forEach((e) => e.classList.add('in')); return; }
     const io = new IntersectionObserver((es) => es.forEach((e) => {
       if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
@@ -141,7 +152,7 @@
   const SCREENS = [
     { g: 'Landing', items: [
       ['Top: hero', 'index.html'], ['01 Sees', 'index.html#sees'], ['02 Remembers', 'index.html#remembers'], ['03 Acts', 'index.html#acts'],
-      ['04 Talks', 'index.html#talks'], ['05 Your PC is the brain', 'index.html#brain'], ['06 Any AI', 'index.html#ai'], ['07 Download', 'index.html#download'],
+      ['04 Talks', 'index.html#talks'], ['05 Your PC', 'index.html#brain'], ['05 Any AI knob', 'index.html#ai'], ['06 Download', 'index.html#download'],
       ['Reduced motion', 'index.html?motion=reduced']] },
     { g: 'Sign in', items: [
       ['Enter email', 'login.html#email'], ['Create account', 'login.html#create'], ['Invalid email', 'login.html#invalid'],
@@ -155,7 +166,8 @@
       ['Open Spotify: running', 'app.html#home&run=spotify'], ['Open Spotify: done', 'app.html#home&run=spotify&at=done'],
       ['Open Spotify: stopped', 'app.html#home&run=spotify&at=stopped'], ['Ask: what’s on my list', 'app.html#home&ask=list'],
       ['PC offline', 'app.html#home&offline'], ['Offline: queue it?', 'app.html#home&offline&run=spotify'], ['Offline: queued', 'app.html#home&offline&run=spotify&at=queued']] },
-    { g: 'Other', items: [['Privacy', 'privacy.html'], ['Terms', 'terms.html'], ['Status', 'status.html']] }
+    { g: 'Other', items: [['Privacy', 'privacy.html'], ['Terms', 'terms.html'], ['Status', 'status.html'],
+      ['Interaction vocabulary', 'screens.html#fx'], ['Effects gallery', 'fx-gallery.html']] }
   ];
   function mockPill() {
     const here = location.pathname.split('/').pop() || 'index.html';
@@ -173,12 +185,16 @@
     html += '<div class="all"><a href="screens.html">All screens, one page<span>screens</span></a></div></div>';
     wrap.innerHTML = html;
     document.body.appendChild(wrap);
-    const b = wrap.querySelector('button');
-    b.addEventListener('click', (e) => { e.stopPropagation(); const o = wrap.classList.toggle('open'); b.setAttribute('aria-expanded', o); });
-    document.addEventListener('click', (e) => { if (!wrap.contains(e.target)) { wrap.classList.remove('open'); b.setAttribute('aria-expanded', 'false'); } });
-    wrap.querySelectorAll('.panel a').forEach((a) => a.addEventListener('click', () => {
+    const b = wrap.querySelector('button'), panel = wrap.querySelector('.panel');
+    // closed panel is inert (and visibility:hidden in base.css): no invisible links in the tab order
+    const set = (o) => { wrap.classList.toggle('open', o); b.setAttribute('aria-expanded', o); panel.inert = !o; };
+    set(false);
+    b.addEventListener('click', (e) => { e.stopPropagation(); set(!wrap.classList.contains('open')); });
+    document.addEventListener('click', (e) => { if (!wrap.contains(e.target)) set(false); });
+    wrap.addEventListener('keydown', (e) => { if (e.key === 'Escape' && wrap.classList.contains('open')) { set(false); b.focus(); } });
+    panel.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => {
       // same page, new state: hashchange does the work, then close
-      setTimeout(() => wrap.classList.remove('open'), 0);
+      setTimeout(() => set(false), 0);
     }));
   }
 

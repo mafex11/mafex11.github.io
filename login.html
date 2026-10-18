@@ -7,6 +7,7 @@
 <meta name="theme-color" content="#0B0B0C">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/fx.css">
 <link rel="stylesheet" href="css/auth.css">
 </head>
 <body class="auth">
@@ -19,45 +20,45 @@
 <div class="split">
   <aside class="side" aria-hidden="true">
     <canvas id="field"></canvas>
-    <div class="side-top"><p class="lbl">YK&ndash;01 &nbsp;/&nbsp; Yuki on the web</p><p class="lbl">fig. &mdash; the mark, listening</p></div>
+    <div class="side-top"><p class="lbl">fig. &mdash; the mark, listening</p></div>
     <div class="side-cap">
       <div><p class="lbl">Your PC is the brain</p><p class="big">The web shows what your PC streams. Nothing more.</p></div>
-      <p class="lbl">End-to-end encrypted &middot; while your PC is on</p>
+      <p class="lbl">Encrypted end to end</p>
     </div>
   </aside>
 
   <main class="main">
-    <section class="card clear" id="card" aria-live="polite">
+    <section class="card clear" id="card" data-fx="crop" aria-live="polite">
 
       <!-- enter email / create account / invalid -->
       <div data-pane="email">
         <p class="lbl" id="e-step">Sign in &middot; step 1 of 2</p>
         <h1 id="e-h">Sign in</h1>
-        <p class="lead" id="e-lead">Use your email. We&rsquo;ll send you a link, no password needed.</p>
-        <nav class="tabs" aria-label="Sign in or create account"><a href="#email" id="tab-in" aria-current="page">Sign in</a><a href="#create" id="tab-up">Create account</a></nav>
+        <p class="lead" id="e-lead">We&rsquo;ll email you a link. No password.</p>
+        <nav class="tabs" id="tabs" aria-label="Sign in or create account"><i class="ind" aria-hidden="true"></i><a href="#email" id="tab-in" aria-current="page">Sign in</a><a href="#create" id="tab-up">Create account</a></nav>
         <form id="form" novalidate>
           <label class="fl" for="em-in">Email</label>
           <input class="field-in" id="em-in" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com" spellcheck="false">
           <p class="err" id="err" role="alert">That doesn&rsquo;t look like an email. Check for a typo.</p>
-          <button class="key pri btn-full" id="send" type="submit">Email me a sign-in link</button>
+          <button class="key pri btn-full" id="send" type="submit" data-fx="matrix"><span class="bl" id="send-l">Email me a sign-in link</span></button>
         </form>
         <div class="or">or</div>
-        <button class="key gkey" id="google" type="button">
+        <button class="key gkey" id="google" type="button"><span class="bl" id="google-l">
           <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 7.2h6" stroke="currentColor" stroke-width="1.6"/></svg>
-          Continue with Google
+          Continue with Google</span>
         </button>
-        <div class="pnote"><span data-dic="lock"></span><span><b>We store your email and your PC link. Nothing from your PC.</b> Your memory never leaves it.</span></div>
-        <p class="fine" id="e-fine">By continuing you agree to the <a href="terms.html">Terms</a> and <a href="privacy.html">Privacy</a>.</p>
+        <div class="pnote"><span data-dic="lock"></span><span><b>We keep your email and the link to your PC.</b> Your memory stays on your PC.</span></div>
+        <p class="fine">By continuing you agree to the <a href="terms.html">Terms</a> and <a href="privacy.html">Privacy</a>.</p>
       </div>
 
       <!-- check your inbox -->
       <div data-pane="sent">
         <p class="lbl">Sign in &middot; step 1 of 2</p>
         <h1>Check your inbox</h1>
-        <p class="lead">We sent a sign-in link to <b class="em-addr">alex@example.com</b>. It works once, for 15 minutes.</p>
+        <p class="lead">We sent a link to <b class="em-addr">alex@example.com</b>. It works once, for 15 minutes.</p>
         <div class="mail"><span class="env"></span><div><b>Sign in to Yuki</b><span>from hello@yuki.app &middot; just now</span></div></div>
         <div class="row2"><a class="key" href="#sent">Open Gmail</a><a class="key" href="#sent">Open Outlook</a></div>
-        <div class="resend"><a href="#email" class="t2">Use a different email</a><span class="mono" id="resend">Resend in 0:42</span></div>
+        <div class="resend"><a href="#email" data-fx="dotline">Use a different email</a><span class="cd" id="resend" aria-live="off"><span id="resend-t">Resend in</span><span class="ro" id="resend-n" aria-hidden="true"></span><span class="sr" id="resend-sr"></span></span></div>
         <a class="mockact" href="#signed-in">mock &middot; open the link</a>
         <a class="mockact" href="#expired">mock &middot; open it too late</a>
       </div>
@@ -66,23 +67,23 @@
       <div data-pane="expired">
         <p class="lbl">Sign in</p>
         <h1>That link expired</h1>
-        <p class="lead">Sign-in links work once, for 15 minutes. This one is older, or it was used already. Send a fresh one.</p>
+        <p class="lead">Links work once, for 15 minutes. Send a fresh one.</p>
         <p class="err on">Link from 13:12 &middot; expired at 13:27.</p>
-        <button class="key pri btn-full" id="resend-btn" type="button">Send a new link to alex@example.com</button>
-        <a class="alt" href="#email">Use a different email</a>
+        <button class="key pri btn-full" id="resend-btn" type="button" data-fx="matrix">Send a new link to alex@example.com</button>
+        <a class="alt" href="#email" data-fx="dotline">Use a different email</a>
       </div>
 
       <!-- signed in -->
       <div data-pane="signed-in">
         <p class="lbl">Signed in</p>
         <h1>You&rsquo;re in</h1>
-        <div class="who"><span class="av" id="who-av">A</span><div><b id="who-n">Alex Rivera</b><span class="em-addr">alex@example.com</span></div><span class="chip live"><span class="ldot"></span>just now</span></div>
+        <div class="who"><span class="av" id="who-av">A</span><div><b id="who-n">Alex Rivera</b><span class="em-addr">alex@example.com</span></div><span class="chip live" id="justnow" data-fx="pulse"><span class="ldot"></span>just now</span></div>
         <div class="next">
           <p class="lbl">Step 2 of 2</p>
-          <p><b>Now link your PC.</b>Open Yuki on your PC and type the code it shows. It takes a minute, and only once.</p>
-          <a class="key pri btn-full" href="link.html" style="margin-top:0">Link your PC</a>
+          <p><b>Now link your PC.</b>Open Yuki on your PC and type the code it shows. Once, in about a minute.</p>
+          <a class="key pri btn-full" href="link.html" style="margin-top:0" data-fx="matrix">Link your PC</a>
         </div>
-        <a class="alt" href="app.html#home">Already linked? Go to your dashboard</a>
+        <a class="alt" href="app.html#home" data-fx="dotline">Already linked? Go to your dashboard</a>
       </div>
 
     </section>
@@ -91,35 +92,56 @@
 
 <script src="js/core.js"></script>
 <script src="js/dotkit.js"></script>
+<script src="js/fx.js"></script>
 <script src="js/fieldcanvas.js"></script>
 <script>
 /* login states: #email (default), #create, #invalid, #sent, #expired, #signed-in. Port: app/(auth)/login/page.tsx +
-   Supabase signInWithOtp({ email }) / signInWithOAuth({ provider: 'google' }); the link lands on /auth/callback. */
+   Supabase signInWithOtp({ email }) / signInWithOAuth({ provider: 'google' }); the link lands on /auth/callback.
+   Hover: the field's listening ring leans in (1.5x) while the main key is hovered or focused. */
 (function () {
   const { $, $$ } = Y;
   const field = FieldCanvas.mount($('#field'), { size: 0.46 });
-  const card = $('#card'), email = $("#em-in"), err = $('#err'), send = $('#send');
-  let addr = 'alex@example.com', timer = 0, left = 42, viaGoogle = false;
+  const card = $('#card'), email = $('#em-in'), err = $('#err'), send = $('#send'), sendL = $('#send-l');
+  const googleL = $('#google-l'), googleHTML = googleL.innerHTML;
+  let addr = 'alex@example.com', timer = 0, left = 42, viaGoogle = false, first = true;
   const panes = $$('[data-pane]');
+  // the main key of whichever pane is showing makes the mark lean in
+  $$('.card .key.pri').forEach((k) => {
+    ['pointerenter', 'focus'].forEach((ev) => k.addEventListener(ev, () => field.lean(true)));
+    ['pointerleave', 'blur'].forEach((ev) => k.addEventListener(ev, () => { if (document.activeElement !== k) field.lean(false); }));
+  });
+
+  // the resend countdown: m:ss, three rolling digit columns
+  const ro = $('#resend-n'), roSr = $('#resend-sr');
+  ro.innerHTML = [0, 1, 2].map((i) => (i === 1 ? '<span>:</span>' : '') + '<span class="ro-c"><span class="ro-s">' + '0123456789'.split('').map((d) => '<span>' + d + '</span>').join('') + '</span></span>').join('');
+  const cols = $$('.ro-s', ro);
+  function showLeft(n) {
+    const m = Math.floor(n / 60), s = n % 60, ds = [m, Math.floor(s / 10), s % 10];
+    cols.forEach((c, i) => { c.style.transform = 'translateY(' + (-ds[i] * 1.15) + 'em)'; });
+    roSr.textContent = m + ':' + String(s).padStart(2, '0');
+  }
+
   function show(name) {
     panes.forEach((p) => p.classList.toggle('on', p.dataset.pane === name));
-    card.classList.remove('stage-in'); void card.offsetWidth; card.classList.add('stage-in');
+    if (!first) { card.classList.remove('stage-in'); void card.offsetWidth; card.classList.add('stage-in'); }
+    first = false;
+    Y.fx.refresh(card);
   }
   function apply() {
     const h = (location.hash.slice(1) || 'email');
     clearInterval(timer);
-    send.classList.remove('loading'); send.textContent = 'Email me a sign-in link';
+    send.classList.remove('loading');
     const create = h === 'create';
     $('#e-h').textContent = create ? 'Create account' : 'Sign in';
     $('#e-step').innerHTML = (create ? 'Create account' : 'Sign in') + ' &middot; step 1 of 2';
-    $('#e-lead').textContent = create ? 'One email is all it takes. We’ll send a link to confirm it.' : 'Use your email. We’ll send you a link, no password needed.';
-    send.textContent = create ? 'Create account' : 'Email me a sign-in link';
+    $('#e-lead').textContent = create ? 'One email is all it takes. We’ll send a link to confirm it.' : 'We’ll email you a link. No password.';
+    sendL.textContent = create ? 'Create account' : 'Email me a sign-in link';
+    $('#tabs').dataset.on = create ? 'create' : 'in';
     $('#tab-in').setAttribute('aria-current', create ? 'false' : 'page');
     $('#tab-up').setAttribute('aria-current', create ? 'page' : 'false');
     err.classList.toggle('on', h === 'invalid');
     email.setAttribute('aria-invalid', h === 'invalid' ? 'true' : 'false');
     if (h === 'invalid' && !email.value) email.value = 'alex@example';
-    if (h === 'email' || h === 'create') { email.setAttribute('aria-invalid', 'false'); }
     $$('.em-addr').forEach((e) => { e.textContent = addr; });
     // the expired pane resends to the address you typed; signed in shows that person (Google gives a full name)
     $('#resend-btn').textContent = 'Send a new link to ' + addr;
@@ -128,27 +150,32 @@
     $('#who-n').textContent = name; $('#who-av').textContent = name.charAt(0).toUpperCase();
     field.setState(h === 'signed-in' ? 'done' : h === 'sent' ? 'busy' : 'idle');
     if (h === 'sent') {
-      left = 42; const r = $('#resend');
-      const tick = () => { r.textContent = left > 0 ? `Resend in 0:${String(left).padStart(2, '0')}` : 'Resend the link'; left--; if (left < -1) clearInterval(timer); };
+      left = 42; const t = $('#resend-t'), n = $('#resend-n');
+      const tick = () => {
+        if (left > 0) { t.textContent = 'Resend in'; n.hidden = false; showLeft(left); }
+        else { t.innerHTML = '<a href="#sent" id="resend-a" data-fx="dotline">Resend the link</a>'; n.hidden = true; roSr.textContent = ''; clearInterval(timer); }
+        left--;
+      };
       tick(); timer = setInterval(tick, 1000);
     }
     show(['email', 'create', 'invalid'].includes(h) ? 'email' : h);
+    if (h === 'signed-in') setTimeout(() => Y.fx.pulse($('#justnow')), 450);
   }
   $('#form').addEventListener('submit', (e) => {
     e.preventDefault();
     const v = email.value.trim();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) { if (location.hash === '#invalid') apply(); else location.hash = 'invalid'; email.focus(); return; }
     addr = v; viaGoogle = false;
-    send.classList.add('loading'); send.innerHTML = '<span class="spin"><i></i><i></i><i></i></span>Sending the link';
+    send.classList.add('loading'); sendL.innerHTML = '<span class="spin"><i></i><i></i><i></i></span>Sending the link';
     setTimeout(() => { location.hash = 'sent'; }, 900);
   });
   email.addEventListener('input', () => { if (email.getAttribute('aria-invalid') === 'true') { email.setAttribute('aria-invalid', 'false'); err.classList.remove('on'); } });
-  $('#google').addEventListener('click', (e) => {
-    const b = e.currentTarget; b.innerHTML = '<span class="spin"><i></i><i></i><i></i></span>Opening Google';
-    setTimeout(() => { viaGoogle = true; addr = 'alex@example.com'; location.hash = 'signed-in'; b.innerHTML = b.dataset.html; }, 1000);
+  $('#google').addEventListener('click', () => {
+    googleL.innerHTML = '<span class="spin"><i></i><i></i><i></i></span>Opening Google';
+    setTimeout(() => { viaGoogle = true; addr = 'alex@example.com'; location.hash = 'signed-in'; googleL.innerHTML = googleHTML; }, 1000);
   });
-  $('#google').dataset.html = $('#google').innerHTML;
   $('#resend-btn').addEventListener('click', () => { location.hash = 'sent'; });
+  $('#resend').addEventListener('click', (e) => { if (e.target.closest('#resend-a')) { e.preventDefault(); apply(); } });
   addEventListener('hashchange', apply);
   apply();
 })();

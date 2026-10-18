@@ -87,6 +87,51 @@
     draw(performance.now() / 1000, true);
   }
 
+  /* your pings (round 2): one ring of brighter dots from a point, drawn only on the rows it crosses */
+  const pings = [], PING_LIFE = 1.5, PW2 = 40;
+  let swell = 0, lastPing = 0;
+  function drawRing(cx, cy, R, fade, fox, foy, skip, ocx, ocy, holeR, vy0) {
+    const pOut = R + PW2, pIn = Math.max(0, R - PW2), baseR = BASE_R();
+    const jA = Math.max(Math.floor((cy - pOut - foy) / P), Math.floor((vy0 - P - foy) / P)), jB = Math.min(Math.ceil((cy + pOut - foy) / P), Math.ceil((H - foy) / P) + 1);
+    for (let j = jA; j <= jB; j++) {
+      const y = j * P + P / 2 + foy, dy = y - cy;
+      if (Math.abs(dy) >= pOut) continue;
+      const xo = Math.sqrt(pOut * pOut - dy * dy), xi = Math.abs(dy) < pIn ? Math.sqrt(pIn * pIn - dy * dy) : 0;
+      for (let side = 0; side < 2; side++) {
+        const a0 = side ? cx + xi : cx - xo, a1 = side ? cx + xo : cx - xi;
+        for (let i = Math.ceil((Math.max(a0, -P) - fox - P / 2) / P); ; i++) {
+          const x = i * P + P / 2 + fox;
+          if (x > a1 || x > W + P) break;
+          if (skip(x, y) || Math.hypot(x - ocx, y - ocy) < holeR) continue;
+          const dd = Math.abs(Math.hypot(x - cx, dy) - R);
+          if (dd >= PW2) continue;
+          const f = (1 - dd / PW2) * fade;
+          if (f > 0.05) small.dot(ctx, x, y, baseR * (1 + 1.2 * f), ROW.mid, Math.min(1, 0.25 + f * 0.85));
+        }
+      }
+    }
+  }
+  function ping(clientX, clientY) {
+    if (reduced) return;
+    const t = performance.now() / 1000;
+    if (t - lastPing < 0.6) return;
+    lastPing = t;
+    const r = hero.getBoundingClientRect();
+    pings.push({ x: clientX - r.left, y: clientY - r.top + Math.min(view.y, H * 1.2), sy: Math.min(view.y, H * 1.2), t0: t });
+    if (pings.length > 3) pings.shift();
+    loop.kick();
+  }
+  hero.addEventListener('pointerdown', (ev) => {
+    if (ev.button > 0 || (ev.target.closest && ev.target.closest('a, button, .hero-copy, .hero-meta, .hero-strip, [data-spec]'))) return;
+    ping(ev.clientX, ev.clientY);
+  }, { passive: true });
+  const cta = document.getElementById('hero-dl');
+  if (cta) cta.addEventListener('focus', () => {
+    let fv = false; try { fv = cta.matches(':focus-visible'); } catch (_) { fv = true; }
+    if (!fv) return;
+    const b = cta.getBoundingClientRect(); lastPing = 0; ping(b.left + b.width / 2, b.top + b.height / 2);
+  });
+
   const perf = window.__heroPerf = { n: 0, field: 0, orb: 0, word: 0 };
   function draw(now, still) {
     const T0 = performance.now();
@@ -229,6 +274,12 @@
           }
         }
       }
+      // your pings: a tap or click on open field (or focus on the Download key) sends one ring from that point
+      for (let n = pings.length - 1; n >= 0; n--) {
+        const pg = pings[n], age = now - pg.t0;
+        if (age > PING_LIFE || age < 0) { pings.splice(n, 1); continue; }
+        drawRing(pg.x, pg.y + (sy - pg.sy) * 0.3, age * 560, 1 - age / PING_LIFE, fox, foy, skip, ocx, ocy, holeR, vy0);
+      }
     }
 
     const T1 = performance.now();
@@ -282,6 +333,10 @@
       }
       ctx.globalAlpha = offA; ctx.fill(); ctx.globalAlpha = 1;
     }
+    // hovering the wordmark's box swells its dots to 1.25x (eased per frame)
+    const inMark = pointer.seen && !reduced && px >= mx0 && px <= mx1 && py >= my0 && py <= my1 && leave < 0.2;
+    swell += ((inMark ? 1 : 0) - swell) * 0.14;
+    const swK = 1 + 0.25 * swell;
     for (const d of word) {
       let k = clamp((e - d.when) / 0.45, 0, 1);
       let flick = 1;
@@ -291,7 +346,7 @@
       k = flick < 1 ? 0.3 : 1 - Math.pow(1 - k, 3);
       let x = d.x + wox, y = d.y + woy;
       x += d.vx * scatter * 190 * (0.5 + d.seed); y += d.vy * scatter * 230 * (0.5 + d.seed);
-      let r = G * 0.34 * k * (1 - scatter * 0.55);
+      let r = G * 0.34 * k * (1 - scatter * 0.55) * swK;
       if (pointer.seen) {
         const dx = x - px, dy = y - py, d2 = dx * dx + dy * dy, LW = LR * 1.25;
         if (d2 < LW * LW) { const f = 1 - Math.sqrt(d2) / LW; r *= 1 + f * f * 0.22; }
