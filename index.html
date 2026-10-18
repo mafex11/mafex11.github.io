@@ -64,21 +64,21 @@
 
       <div class="demo demo-sees" id="sees-demo">
         <p class="fig"><span class="lbl">fig. 1</span></p>
-        <!-- the product shot: the window and what Yuki reads, on a flat ground, with guide callouts (js/guide.js) -->
-        <div class="pstage clear" data-fx="crop" data-guide data-lit-scope>
+        <!-- the product shot: the window and what Yuki reads, on a flat ground -->
+        <div class="pstage clear">
           <div class="sees-wrap">
-            <div class="fakewin prod" id="fw" data-n="0" data-lit-pair="s0">
+            <div class="fakewin prod" id="fw" data-n="0">
               <div class="fw-bar"><span class="dots"><i></i><i></i><i></i></span><span class="ttl">Messages</span><span class="fw-tag"><span class="ldot off" id="fw-dot"></span><span id="fw-read">window in front</span></span></div>
               <div class="fw-body">
                 <aside class="fw-list">
-                  <div class="fw-item on" data-n="1" data-lit-pair="s1"><span class="av">M</span><span><b>Maya Chen</b><em>2 new</em></span></div>
+                  <div class="fw-item on" data-n="1"><span class="av">M</span><span><b>Maya Chen</b><em>2 new</em></span></div>
                   <div class="fw-item"><span class="av">L</span><span><b>Leo Park</b><em>Looks good</em></span></div>
                   <div class="fw-item"><span class="av">P</span><span><b>Priya Shah</b><em>Budget sheet</em></span></div>
                 </aside>
                 <div class="fw-chat">
                   <div class="fw-head">Maya Chen <span>online</span></div>
-                  <div class="bub them" data-n="2" data-lit-pair="s2">Are we still on for lunch Thursday?</div>
-                  <div class="bub them" data-n="3" data-lit-pair="s3">Bring the Lisbon photos if you can!</div>
+                  <div class="bub them" data-n="2">Are we still on for lunch Thursday?</div>
+                  <div class="bub them" data-n="3">Bring the Lisbon photos if you can!</div>
                   <div class="fw-input">Type a message</div>
                 </div>
               </div>
@@ -86,17 +86,13 @@
             <div class="tree prod" id="tree">
               <p class="tree-h">What Yuki reads</p>
               <ol class="tr-list" aria-label="The window, as Yuki reads it">
-                <li class="tr" data-n="0" data-lit-pair="s0" tabindex="0"><i>window</i><span>&ldquo;Messages&rdquo;</span></li>
-                <li class="tr d1" data-n="1" data-lit-pair="s1" tabindex="0"><i>item</i><span>&ldquo;Maya Chen, 2 new&rdquo;</span></li>
-                <li class="tr d1" data-n="2" data-lit-pair="s2" tabindex="0"><i>text</i><span>&ldquo;Are we still on for lunch Thursday?&rdquo;</span></li>
-                <li class="tr d1" data-n="3" data-lit-pair="s3" tabindex="0"><i>text</i><span>&ldquo;Bring the Lisbon photos if you can!&rdquo;</span></li>
+                <li class="tr" data-n="0" tabindex="0"><i>window</i><span>&ldquo;Messages&rdquo;</span></li>
+                <li class="tr d1" data-n="1" tabindex="0"><i>item</i><span>&ldquo;Maya Chen, 2 new&rdquo;</span></li>
+                <li class="tr d1" data-n="2" tabindex="0"><i>text</i><span>&ldquo;Are we still on for lunch Thursday?&rdquo;</span></li>
+                <li class="tr d1" data-n="3" tabindex="0"><i>text</i><span>&ldquo;Bring the Lisbon photos if you can!&rdquo;</span></li>
               </ol>
             </div>
           </div>
-          <button class="gd" type="button" data-gn="1" data-lit-pair="s1" data-for="#fw .fw-item.on" data-at="0,.5" data-via="l" data-side="t"><b>01</b><span>Who wrote</span></button>
-          <button class="gd" type="button" data-gn="0" data-lit-pair="s0" data-for="#fw" data-at=".035,0" data-side="t"><b>02</b><span>Window name</span></button>
-          <button class="gd" type="button" data-gn="2" data-lit-pair="s2" data-for="#fw [data-n='2']" data-at="1,.5" data-via="r" data-via-el="#fw" data-via-el-s="" data-side="t"><b>03</b><span>Her question</span></button>
-          <button class="gd" type="button" data-gn="3" data-lit-pair="s3" data-for="#fw [data-n='3']" data-at="1,.5" data-via="r" data-via-el="#fw" data-via-el-s="" data-side="b" data-side-s="t"><b>04</b><span>Her ask</span></button>
         </div>
         <div class="sees-out">
           <div class="noted clear" id="noted" data-fx="crop">
@@ -126,8 +122,8 @@
     </header>
     <div class="demo demo-mem" id="mem-demo">
       <p class="fig"><span class="lbl">fig. 2</span></p>
-      <div class="pstage clear" data-fx="crop" data-guide data-lit-scope>
-      <div class="mem-search" data-lit-pair="m1"><span data-dic="dot"></span><span class="q"><span class="tyw"><span id="mem-typed"></span><i class="tycv" aria-hidden="true"></i></span><i class="caret"></i></span><span class="chip" data-lit-pair="m3">on this PC</span></div>
+      <div class="pstage clear">
+      <div class="mem-search"><span data-dic="dot"></span><span class="q"><span class="tyw"><span id="mem-typed"></span><i class="tycv" aria-hidden="true"></i></span><i class="caret"></i></span><span class="chip">on this PC</span></div>
       <div class="qkeys" role="group" aria-label="Try a question">
         <button class="key sm" type="button" data-q="leo" aria-pressed="false">What do I owe Leo?</button>
         <button class="key sm" type="button" data-q="late" aria-pressed="false">What&rsquo;s late?</button>
@@ -136,7 +132,7 @@
       <div class="objs" id="objs">
         <!-- A · badge -->
         <div class="mslot s-a">
-          <article class="mobj badge" data-k="leo" data-lit-pair="m2" data-fx="tilt lit" data-tilt="3" tabindex="0" aria-label="Person: Leo Park. Works at Northwind, prefers email. From Mail, 28 Sep.">
+          <article class="mobj badge" data-k="leo" data-fx="tilt lit" data-tilt="3" tabindex="0" aria-label="Person: Leo Park. Works at Northwind, prefers email. From Mail, 28 Sep.">
             <span class="punch" aria-hidden="true"></span>
             <span class="disc" aria-hidden="true"><b class="doto">LP</b></span>
             <div class="o-txt">
@@ -195,11 +191,7 @@
           <div class="gone-chip" role="status"><span class="gt">Forgotten on this PC</span><button class="key xs undo" type="button">Undo</button></div>
         </div>
       </div>
-      <p class="mem-ans" id="mem-ans" data-lit-pair="m4"><span class="who lbl">Yuki</span><span class="tyw"><span id="mem-ans-t">You said you&rsquo;d send Leo the Q4 deck by Friday. He prefers email, so I can draft it there.</span><i class="tycv" aria-hidden="true"></i></span></p>
-        <button class="gd" type="button" data-lit-pair="m2" data-for=".badge" data-at="0,.32" data-via="l" data-side="t"><b>01</b><span>Forget anything</span></button>
-        <button class="gd" type="button" data-lit-pair="m1" data-for=".mem-search" data-at=".3,0" data-side="t"><b>02</b><span>Ask in plain words</span></button>
-        <button class="gd" type="button" data-lit-pair="m3" data-for=".mem-search .chip" data-at=".5,0" data-side="t"><b>03</b><span>Kept on this PC</span></button>
-        <button class="gd" type="button" data-lit-pair="m4" data-for="#mem-ans .who" data-at=".5,1" data-side="b"><b>04</b><span>Yuki answers</span></button>
+      <p class="mem-ans" id="mem-ans"><span class="who lbl">Yuki</span><span class="tyw"><span id="mem-ans-t">You said you&rsquo;d send Leo the Q4 deck by Friday. He prefers email, so I can draft it there.</span><i class="tycv" aria-hidden="true"></i></span></p>
       </div>
     </div>
   </div>
@@ -219,7 +211,7 @@
 
       <div class="demo demo-acts">
         <p class="fig"><span class="lbl">fig. 3</span></p>
-        <div class="pstage clear" data-fx="crop" data-guide data-lit-scope>
+        <div class="pstage clear">
         <div class="desk prod" id="desk">
           <div class="desk-wall"></div>
           <div class="desk-icons" aria-hidden="true"><span><i></i>Notes</span><span><i></i>Photos</span><span><i></i>Bin</span></div>
@@ -260,22 +252,22 @@
           <!-- Taskbar -->
           <div class="taskbar"><span class="tb-start" id="t-start"><i></i><i></i><i></i><i></i></span><span class="tb-i"></span><span class="tb-i"></span><span class="tb-i"></span><span class="tb-i sp" id="tb-spot"></span><span class="tb-clock">14:06</span></div>
           <!-- Yuki's run card, as on the PC -->
-          <div class="runcard" id="runcard" data-lit-pair="a1">
+          <div class="runcard" id="runcard">
             <div class="rc-top">
               <span class="rc-fig" id="rc-fig"><i></i><i></i><i></i><i></i><i></i></span>
-              <span class="rc-t"><b id="rc-title">Play a playlist &middot; Morning focus</b><em class="rc-why" data-lit-pair="a2">your usual &middot; you call it &ldquo;my focus one&rdquo;</em><em id="rc-sub" class="rc-sub">Reading the screen</em></span>
+              <span class="rc-t"><b id="rc-title">Play a playlist &middot; Morning focus</b><em class="rc-why">your usual &middot; you call it &ldquo;my focus one&rdquo;</em><em id="rc-sub" class="rc-sub">Reading the screen</em></span>
             </div>
-            <ol class="rc-steps" id="rc-steps" data-lit-pair="a3">
-              <li data-s="1" data-fx="lit" data-spec="Matched to a skill it already has"><span class="st">Understood: play a playlist</span><span class="chg">Skill found</span></li>
-              <li data-s="2" data-fx="lit" data-spec="Filled in from what you usually pick"><span class="st">Filled in: Morning focus (your usual)</span><span class="chg">Your usual pick</span></li>
-              <li data-s="3" data-fx="lit" data-spec="Checked on screen: Spotify is in front"><span class="st">Open Spotify</span><span class="chg">Spotify is in front</span></li>
-              <li data-s="4" data-fx="lit" data-spec="Checked on screen: Morning focus is showing"><span class="st">Open Morning focus</span><span class="chg">Morning focus is showing</span></li>
-              <li data-s="5" data-fx="lit" data-spec="Checked on screen: music is playing"><span class="st">Play it, then check</span><span class="chg">Music is playing</span></li>
+            <ol class="rc-steps" id="rc-steps">
+              <li data-s="1" data-fx="lit"><span class="st">Understood: play a playlist</span><span class="chg">Skill found</span></li>
+              <li data-s="2" data-fx="lit"><span class="st">Filled in: Morning focus (your usual)</span><span class="chg">Your usual pick</span></li>
+              <li data-s="3" data-fx="lit"><span class="st">Open Spotify</span><span class="chg">Spotify is in front</span></li>
+              <li data-s="4" data-fx="lit"><span class="st">Open Morning focus</span><span class="chg">Morning focus is showing</span></li>
+              <li data-s="5" data-fx="lit"><span class="st">Play it, then check</span><span class="chg">Music is playing</span></li>
             </ol>
             <div class="rc-pause" id="rc-pause"><span class="pz"><i></i><i></i></span><span><b>Paused. You moved the mouse.</b><em>Yuki waits until you&rsquo;re done.</em></span><span class="key sm" id="t-resume">Resume</span></div>
             <div class="rc-done" id="rc-done"><span data-dic="check"></span><span><b>Morning focus is playing.</b><em>5 steps &middot; checked after each</em></span></div>
             <p class="rc-learn" id="rc-learn"><span class="term" data-fx="dotline" data-spec="Needs Record how I work, which is off until you turn it on. It never records what you type." data-spec-tap>Learns your ways</span>: three times on three days, or once if you tell it</p>
-            <div class="rc-keys" id="rc-keys"><span class="key stop sm" data-lit-pair="a4"><span data-dic="stop"></span>Stop</span><span class="kbd" data-lit-pair="a4">Alt Shift X</span></div>
+            <div class="rc-keys" id="rc-keys"><span class="key stop sm"><span data-dic="stop"></span>Stop</span><span class="kbd">Alt Shift X</span></div>
           </div>
           <!-- cursors -->
           <div class="mcur yk" id="cur-y"><svg viewBox="0 0 16 22"><path d="M1 1v17l4.5-4.2 3 7 3-1.3-3-6.8H15z"/></svg><span>Yuki</span></div>
@@ -283,10 +275,6 @@
           <div class="ripple" id="ripple"></div>
           <div class="keycap" id="keycap">Enter</div>
         </div>
-          <button class="gd" type="button" data-lit-pair="a1" data-for="#runcard" data-at=".14,0" data-side="t"><b>01</b><span>Run card</span></button>
-          <button class="gd" type="button" data-lit-pair="a2" data-for=".rc-why" data-alt="#rc-title" data-at="1,.5" data-dx="6" data-via="r" data-side="t"><b>02</b><span>Your usual</span></button>
-          <button class="gd" type="button" data-lit-pair="a4" data-for="#rc-keys .kbd" data-for-s="#rc-keys .stop" data-at="1,.5" data-at-s="0,.5" data-via="r" data-via-s="l" data-side="b" data-side-s="t" data-watch="#runcard"><b>03</b><span>Stop key</span></button>
-          <button class="gd" type="button" data-lit-pair="a3" data-for="#rc-steps li[data-s='3']" data-alt="#rc-steps" data-at="1,.5" data-via="r" data-side="b" data-side-s="t" data-watch="#runcard"><b>04</b><span>Checked each step</span></button>
         </div>
       </div>
     </div>
@@ -304,16 +292,16 @@
     </header>
     <div class="demo demo-talk" id="talk-demo">
       <p class="fig"><span class="lbl">fig. 4</span></p>
-      <div class="pstage clear" data-fx="crop" data-guide data-lit-scope>
+      <div class="pstage clear">
       <div class="voice prod">
         <div class="v-top">
-          <div class="leds" id="leds" data-lit-pair="t1">
+          <div class="leds" id="leds">
             <span data-m="listening" data-spec="Waiting for &ldquo;Yuki&rdquo;" data-spec-notab><i></i>Listening</span><span data-m="hearing" data-spec="What you say after &ldquo;Yuki&rdquo;" data-spec-notab><i></i>Hearing you</span><span data-m="thinking" data-spec="Picking the skill" data-spec-notab><i></i>Thinking</span><span data-m="speaking" data-spec="Says each step as it goes" data-spec-notab><i></i>Speaking</span>
           </div>
-          <button class="key xs v-pause" type="button" id="v-pause" aria-pressed="false" data-lit-pair="t3"><span class="pz" aria-hidden="true"><i></i><i></i></span><span class="vp-l">Pause</span></button>
+          <button class="key xs v-pause" type="button" id="v-pause" aria-pressed="false"><span class="pz" aria-hidden="true"><i></i><i></i></span><span class="vp-l">Pause</span></button>
         </div>
-        <div class="wave-w" data-lit-pair="t2"><canvas class="wave" id="wave" aria-hidden="true"></canvas></div>
-        <div class="tx-w" data-lit-pair="t4"><div class="tx" id="tx" aria-live="off"></div></div>
+        <canvas class="wave" id="wave" aria-hidden="true"></canvas>
+        <div class="tx" id="tx" aria-live="off"></div>
       </div>
       <div class="offer prod" id="offer">
         <p class="lbl">A quiet card &middot; it never speaks first</p>
@@ -321,10 +309,6 @@
         <div class="row"><button class="key sm" type="button" data-a="play">Play</button><button class="key ghost sm" type="button" data-a="no">Not now</button></div>
         <p class="o-res cap" id="o-res" aria-live="polite"></p>
       </div>
-        <button class="gd" type="button" data-lit-pair="t4" data-for=".tx-w" data-at="0,.75" data-dx="-7" data-via="l" data-side="t"><b>01</b><span>Every word, live</span></button>
-        <button class="gd" type="button" data-lit-pair="t1" data-for="#leds > span:first-child > i" data-at=".5,0" data-side="t"><b>02</b><span>Status lights</span></button>
-        <button class="gd" type="button" data-lit-pair="t2" data-for="#wave" data-at=".72,.3" data-at-s="1,.5" data-via-s="r" data-side="t"><b>03</b><span>Its voice</span></button>
-        <button class="gd" type="button" data-lit-pair="t3" data-for="#v-pause" data-at=".5,0" data-side="t"><b>04</b><span>Pause anytime</span></button>
       </div>
     </div>
   </div>
@@ -417,13 +401,13 @@
         </dl>
         <p class="dl-not">Mac and phone apps: not yet. <a href="link.html" data-fx="dotline">How linking works</a></p>
       </div>
-      <!-- the family lineup (TE): Yuki's pieces, flat, at one scale, on one row. Drawn by js/guide.js -->
+      <!-- the family lineup (TE): Yuki's pieces, flat, at one scale, on one row. Drawn by js/lineup.js -->
       <div class="pstage lineup" data-reveal role="group" aria-label="Yuki's pieces">
         <div class="lu-row">
-          <figure class="lu-item" tabindex="0" style="--vw: 360" aria-label="01, the app window"><div class="lu-obj" data-piece="app"></div><span class="lu-sh" aria-hidden="true"></span><figcaption><b>01</b>App window</figcaption></figure>
-          <figure class="lu-item" tabindex="0" style="--vw: 150" aria-label="02, the voice pill"><div class="lu-obj pill" data-piece="pill"></div><span class="lu-sh" aria-hidden="true"></span><figcaption><b>02</b>Voice pill</figcaption></figure>
-          <figure class="lu-item" tabindex="0" style="--vw: 130" aria-label="03, the tray menu"><div class="lu-obj" data-piece="tray"></div><span class="lu-sh" aria-hidden="true"></span><figcaption><b>03</b>Tray menu</figcaption></figure>
-          <figure class="lu-item" tabindex="0" style="--vw: 100" aria-label="04, the web dashboard on a phone"><div class="lu-obj phone" data-piece="phone"></div><span class="lu-sh" aria-hidden="true"></span><figcaption><b>04</b>Web, on a phone</figcaption></figure>
+          <figure class="lu-item" tabindex="0" style="--vw: 360" aria-label="The app window"><div class="lu-obj" data-piece="app"></div><span class="lu-sh" aria-hidden="true"></span><figcaption>App window</figcaption></figure>
+          <figure class="lu-item" tabindex="0" style="--vw: 150" aria-label="The voice pill"><div class="lu-obj pill" data-piece="pill"></div><span class="lu-sh" aria-hidden="true"></span><figcaption>Voice pill</figcaption></figure>
+          <figure class="lu-item" tabindex="0" style="--vw: 130" aria-label="The tray menu"><div class="lu-obj" data-piece="tray"></div><span class="lu-sh" aria-hidden="true"></span><figcaption>Tray menu</figcaption></figure>
+          <figure class="lu-item" tabindex="0" style="--vw: 100" aria-label="The web dashboard on a phone"><div class="lu-obj phone" data-piece="phone"></div><span class="lu-sh" aria-hidden="true"></span><figcaption>Web, on a phone</figcaption></figure>
         </div>
       </div>
     </div>
@@ -453,6 +437,6 @@
 <script src="js/fx.js"></script>
 <script src="js/hero.js"></script>
 <script src="js/landing.js"></script>
-<script src="js/guide.js"></script>
+<script src="js/lineup.js"></script>
 </body>
 </html>

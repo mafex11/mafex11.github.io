@@ -92,41 +92,13 @@ html.fx-hover .links a:hover { background: rgba(242,239,233,.05); }
 .fig .cap { color: var(--text-2); }
 .demo { position: relative; min-width: 0; }
 
-/* ---------------- product shots + guide callouts (18 Oct: the teenage-engineering touch) ----------------
+/* ---------------- product shots (18 Oct: the teenage-engineering touch) ----------------
    Each demo is shown the way TE shows a product: a flat ground (lifted dark on the dark modules, no gradient,
    no shadow), generous space, the object crisp on it, straight on, with a soft contact shadow under it only
-   (.prod). Numbered callouts sit in the ground's top / bottom margins on hairline leaders, labels of 1-4 words;
-   js/guide.js places them, js/fx.js pairs each number with its part (data-lit-pair: the white lit border).
-   The ground is a clearing (crop marks, lock-on on hover). Motion stays in the demos, never on this chrome. */
-.pstage { --stage: var(--raise-2); --gd-row: 58px; --ps-x: clamp(20px, 2.4vw, 36px); position: relative; padding: var(--ps-x); background-color: var(--stage); }
-.pstage.gd-has-t { padding-top: var(--gd-row); }
-.pstage.gd-has-b { padding-bottom: var(--gd-row); }
+   (.prod). No callouts: the parts speak for themselves (19 Oct). The ground keeps its still crop marks but
+   doesn't lock on hover, so a hover lights one thing only. Motion stays in the demos, never on this chrome. */
+.pstage { --stage: var(--raise-2); --ps-x: clamp(20px, 2.4vw, 36px); position: relative; padding: var(--ps-x); background-color: var(--stage); }
 .prod { box-shadow: 0 1px 0 rgba(0,0,0,.45), 0 30px 30px -24px rgba(0,0,0,.95), inset 0 1px 0 rgba(255,255,255,.035); }
-.gd {
-  position: absolute; z-index: 30; left: 0; top: 0; display: inline-flex; align-items: center; gap: 8px; height: 30px; margin: 0; padding: 0 6px 0 0;
-  border: 0; border-radius: 6px; background: none; color: var(--text-2); font: 500 var(--t-cap)/1 var(--f-ui); white-space: nowrap; cursor: default;
-  transition: color var(--d-fast), opacity var(--d-fast);
-}
-.gd b {
-  position: relative; display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; border: 1px solid #5E636A;
-  background: var(--stage); color: var(--text); font: 500 13px/1 var(--f-mono); letter-spacing: .02em;
-  transition: background var(--d-fast), color var(--d-fast), border-color var(--d-fast);
-}
-.gd span { position: relative; }
-.gd > .fx-ring { display: none; }                        /* the number lights itself; the ring is for the part */
-.gd:focus-visible { outline: none; }
-.gd-ln { position: absolute; left: 0; top: 0; z-index: -1; width: 1px; height: 1px; overflow: visible; pointer-events: none; }
-.gd-ln path { fill: none; stroke: #5E636A; stroke-width: 1; transition: stroke var(--d-fast); }
-.gd-ln circle { fill: var(--text-2); stroke: var(--stage); stroke-width: 1.5; transition: fill var(--d-fast); }
-.gd.on, .gd.fx-paired, html.fx-hover .gd:hover, .gd:focus-visible { color: var(--text); }
-.gd.on b, .gd.fx-paired b, html.fx-hover .gd:hover b, .gd:focus-visible b { background: var(--lit); border-color: var(--lit); color: var(--ink); }
-.gd.on .gd-ln path, .gd.fx-paired .gd-ln path, html.fx-hover .gd:hover .gd-ln path, .gd:focus-visible .gd-ln path { stroke: var(--lit); }
-.gd.on .gd-ln circle, .gd.fx-paired .gd-ln circle, html.fx-hover .gd:hover .gd-ln circle, .gd:focus-visible .gd-ln circle { fill: var(--lit); }
-.gd.fx-paired, .gd:focus-visible { z-index: 31; }       /* an open label sits over its neighbours */
-.gd.gd-off, .gd.gd-off b { color: var(--text-3); }      /* its part isn't shown right now: quieter, still readable */
-.gd.gd-off b { border-color: var(--hair-2); }
-.gd.gd-gone { display: none; }
-.gd.gd-off .gd-ln { display: none; }
 
 /* ---------------- 01 sees ---------------- */
 .sees-wrap { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 16px; align-items: stretch; }
@@ -163,7 +135,7 @@ html.fx-hover .links a:hover { background: rgba(242,239,233,.05); }
 .tr > span { min-width: 0; }
 .tr::before { content: ''; position: absolute; left: -14px; top: 15px; width: 7px; height: 7px; margin-left: 1px; border-radius: 50%; background: var(--hair-2); transition: background var(--d-med); }
 .tr.d1::before { left: -30px; }
-.tr i { flex: none; font: 500 12.5px/1 var(--f-mono); font-style: normal; letter-spacing: .05em; text-transform: uppercase; color: var(--text-2); padding: 4px 6px 3px; border: 1px solid var(--hair-2); border-radius: 5px; }
+.tr > i:not(.fx-ring) { flex: none; font: 500 12.5px/1 var(--f-mono); font-style: normal; letter-spacing: .05em; text-transform: uppercase; color: var(--text-2); padding: 4px 6px 3px; border: 1px solid var(--hair-2); border-radius: 5px; }
 .tr.read, .demo-sees.live .tr { opacity: 1; transform: none; }
 .tr.read::before { background: var(--text-3); }
 .tr.cur, .tr.is-lit { color: var(--text); background: var(--raise); }
@@ -183,10 +155,10 @@ html.fx-hover .links a:hover { background: rgba(242,239,233,.05); }
 .zero .fx-odo.go .fx-odo-s { transform: translateY(0); transition-duration: 1400ms; }
 
 /* ---------------- 02 remembers: four memory objects ---------------- */
-.mem-search { position: relative; display: flex; align-items: center; gap: 10px; height: 48px; padding: 0 8px 0 14px; border: 1px solid var(--hair-2); border-radius: 12px; background: var(--raise); color: var(--text-3); }
+.mem-search { display: flex; align-items: center; gap: 10px; height: 48px; padding: 0 8px 0 14px; border: 1px solid var(--hair-2); border-radius: 12px; background: var(--raise); color: var(--text-3); }
 .mem-search .q { flex: 1; min-width: 0; color: var(--text); font-size: 16px; display: flex; align-items: center; }
 .mem-search #mem-typed:empty::before { content: 'Ask about anyone or anything'; color: var(--text-3); }
-.mem-search .chip { position: relative; height: 30px; font-size: 13px; }
+.mem-search .chip { height: 30px; font-size: 13px; }
 .caret { display: inline-block; width: 1.5px; height: 18px; background: var(--live); margin-left: 2px; animation: blink 1s steps(2, jump-none) infinite; flex: none; }
 /* type-on: the text is set at once and a cover slides off it in steps (transform only) */
 .tyw { position: relative; display: inline-block; overflow: hidden; vertical-align: top; max-width: 100%; }
@@ -202,7 +174,6 @@ html.fx-hover .links a:hover { background: rgba(242,239,233,.05); }
 .mslot { position: relative; min-width: 0; transition: opacity var(--d-med) var(--ease); will-change: transform; }
 .mslot::after { content: ''; position: absolute; z-index: -1; left: 6%; right: 6%; bottom: -9px; height: 18px; border-radius: 50%; background: radial-gradient(closest-side, rgba(0,0,0,.62), transparent); pointer-events: none; transition: opacity var(--d-med); }
 .mslot.forgot::after { opacity: 0; }
-.mobj.fx-paired .fgt { opacity: 1; }                     /* callout 02 "Forget anything" shows where the key is */
 .mslot.s-a { grid-area: a; } .mslot.s-b { grid-area: b; } .mslot.s-c { grid-area: c; } .mslot.s-d { grid-area: d; }
 /* a non-match stays readable: its text steps down one tone (never under --text-3, about 5:1), only the decoration
    fades; the matches carry the lit border */
@@ -262,13 +233,13 @@ html.fx-touch .mobj.armed .fgt, html.fx-kb .mobj:focus-within .fgt { opacity: 1;
 .slip .fgt { top: 10px; }
 .slip { border-bottom-color: transparent; }
 .slip > .fx-ring { bottom: 7px; border-bottom: 0; border-radius: 12px 12px 0 0; }
-.mem-ans { position: relative; display: grid; grid-template-columns: 56px 1fr; gap: 10px; align-items: baseline; margin: 18px 0 0; padding: 14px 0 0; border-top: 1px solid var(--hair); font-size: var(--t-read); line-height: 1.5; color: var(--text); opacity: 0; transform: translateY(6px); transition: opacity var(--d-slow) var(--ease), transform var(--d-slow) var(--ease); }
+.mem-ans { display: grid; grid-template-columns: 56px 1fr; gap: 10px; align-items: baseline; margin: 18px 0 0; padding: 14px 0 0; border-top: 1px solid var(--hair); font-size: var(--t-read); line-height: 1.5; color: var(--text); opacity: 0; transform: translateY(6px); transition: opacity var(--d-slow) var(--ease), transform var(--d-slow) var(--ease); }
 .mem-ans.on { opacity: 1; transform: none; }
 .mem-ans .who { color: var(--text); }
 .mem-ans .tyw { display: block; --ty-bg: var(--stage, var(--bg)); }
 
 /* ---------------- 03 acts ---------------- */
-.desk { position: relative; aspect-ratio: 16 / 10; max-height: calc(100svh - 236px); margin: 0 auto; border: 1px solid var(--hair-2); border-radius: 14px; overflow: hidden;
+.desk { position: relative; aspect-ratio: 16 / 10; max-height: calc(100svh - 182px); margin: 0 auto; border: 1px solid var(--hair-2); border-radius: 14px; overflow: hidden;
   background: radial-gradient(circle, #1C1E21 1px, transparent 1.4px) 0 0 / 14px 14px, radial-gradient(120% 90% at 70% 0%, #15171A, #0C0D0E); }
 .desk-icons { position: absolute; left: 2.2%; top: 4%; display: flex; flex-direction: column; gap: 16px; }
 .desk-icons span { display: flex; flex-direction: column; align-items: center; gap: 5px; font-size: 11px; color: var(--text-3); width: 46px; }
@@ -352,9 +323,9 @@ html.fx-touch .mobj.armed .fgt, html.fx-kb .mobj:focus-within .fgt { opacity: 1;
 .rc-fig.paused i.cur { background: var(--text); }
 .rc-t { min-width: 0; }
 .rc-t b { display: block; font-size: 14px; font-weight: 600; line-height: 1.3; }
-.rc-t em { position: relative; font-style: normal; display: block; margin-top: 3px; font-size: 13px; line-height: 1.35; color: var(--text-2); }
+.rc-t em { font-style: normal; display: block; margin-top: 3px; font-size: 13px; line-height: 1.35; color: var(--text-2); }
 .rc-t .rc-sub { font: 500 12.5px/1.3 var(--f-mono); color: var(--text-3); margin-top: 6px; }
-.rc-steps { position: relative; list-style: none; margin: 0; padding: 6px 0 0; }
+.rc-steps { list-style: none; margin: 0; padding: 6px 0 0; }
 .rc-steps li { position: relative; display: grid; grid-template-columns: 12px 1fr; column-gap: 8px; padding: 5px 6px; margin: 0 -6px; border-radius: 7px; font-size: 14px; line-height: 1.35; color: var(--text-3); transition: color var(--d-med); outline: none; }
 .rc-steps li::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: #2B2E32; margin: 7px 0 0 2px; grid-row: span 2; transition: background var(--d-med); }
 .rc-steps li.on { color: var(--text); }
@@ -377,7 +348,6 @@ html.fx-touch .mobj.armed .fgt, html.fx-kb .mobj:focus-within .fgt { opacity: 1;
 .rc-learn.on { opacity: 1; transform: none; }
 .rc-learn:not(.on) .term { pointer-events: none; visibility: hidden; }
 .rc-keys { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
-.rc-keys .key, .rc-keys .kbd { position: relative; }
 .runcard.done .rc-keys, .runcard.paused .rc-keys { display: none; }
 .runcard:not(.done) .rc-learn { display: none; }
 .mcur { position: absolute; left: 0; top: 0; z-index: 5; pointer-events: none; will-change: transform, opacity; display: flex; align-items: flex-start; gap: 2px; opacity: 0; }
@@ -393,9 +363,8 @@ html.fx-touch .mobj.armed .fgt, html.fx-kb .mobj:focus-within .fgt { opacity: 1;
 
 /* ---------------- 04 talks ---------------- */
 .voice { position: relative; padding: 18px 20px 8px; border: 1px solid var(--hair-2); border-radius: 14px; background: #111214; }
-.wave-w, .tx-w { position: relative; }
 .v-top { display: flex; align-items: center; gap: 14px; padding-bottom: 12px; border-bottom: 1px solid var(--hair); }
-.leds { position: relative; display: flex; flex-wrap: wrap; gap: 6px 18px; flex: 1; }
+.leds { display: flex; flex-wrap: wrap; gap: 6px 18px; flex: 1; }
 .leds span { display: inline-flex; align-items: center; gap: 8px; font: 500 var(--t-lbl)/1 var(--f-mono); letter-spacing: .05em; text-transform: uppercase; color: var(--text-3); padding: 5px 0; transition: color var(--d-fast); }
 .leds > span > i { width: 7px; height: 7px; border-radius: 50%; background: var(--dot); transition: background var(--d-fast), box-shadow var(--d-fast); }
 .leds span.on { color: var(--text); }
@@ -567,11 +536,10 @@ html.fx-hover .knob:hover .knob-cap { box-shadow: 0 10px 24px rgba(0,0,0,.5), in
 .lu-obj .lv { fill: var(--live); }                       /* the one colour, only on live things (the accent system) */
 .lu-obj .lvs { stroke: var(--live); }
 .lu-sh { display: block; width: 94%; height: 16px; margin-top: -8px; border-radius: 50%; background: radial-gradient(closest-side, rgba(0,0,0,.75), transparent); pointer-events: none; transition: opacity 300ms var(--ease), scale 300ms var(--ease-out); }
-.lu-item figcaption { width: calc(100% + 26 * var(--u)); height: 2.8em; margin-top: 10px; text-align: center; font-size: var(--t-cap); line-height: 1.4; color: var(--text-2); transition: color var(--d-fast); }
-.lu-item figcaption b { display: block; font: 500 13px/1.4 var(--f-mono); letter-spacing: .06em; color: var(--text-2); transition: color var(--d-fast); }
+.lu-item figcaption { width: max-content; white-space: nowrap; height: 1.4em; margin-top: 10px; text-align: center; font-size: var(--t-cap); line-height: 1.4; color: var(--text-2); transition: color var(--d-fast); }
 .lu-item.on .lu-obj { translate: 0 calc(-12 * var(--u)); }
 .lu-item.on .lu-sh { opacity: .45; scale: .84 1; }
-.lu-item.on figcaption, .lu-item.on figcaption b { color: var(--text); }
+.lu-item.on figcaption { color: var(--text); }
 [data-motion="reduced"] .lu-item.on .lu-obj { translate: none; }
 [data-motion="reduced"] .lu-item.on .lu-sh { opacity: 1; scale: none; }
 
@@ -700,19 +668,14 @@ html.fx-hover .knob:hover .knob-cap { box-shadow: 0 10px 24px rgba(0,0,0,.5), in
   .mod-head h2 { font-size: 27px; }
   .fig { margin-bottom: 10px; }
 
-  /* product shots: a tighter ground; callout numbers only (40 px targets), the label shows on tap */
-  .pstage { --gd-row: 46px; --ps-x: 12px; }
-  .pstage:not(.gd-has-b):not(.lineup) { padding-bottom: 8px; }
+  /* product shots: a tighter ground */
+  .pstage { --ps-x: 12px; }
   /* the pinned scenes need the room on a phone: their fig tags go, their numeral sits small on the label's line */
   #sees .demo > .fig, #acts .demo > .fig { display: none; }
   #sees.mod.scene .mod-head .mod-num, #acts.mod.scene .mod-head .mod-num { float: left; font-size: 22px; margin: 9px 10px 0 -2px; padding: 0; }
-  .gd { width: 40px; height: 40px; justify-content: center; padding: 0; gap: 0; }
-  .gd span { position: absolute; left: calc(100% - 2px); top: 50%; translate: 0 -50%; padding: 7px 9px; border-radius: 6px; border: 1px solid var(--hair-2); background: var(--raise); color: var(--text); opacity: 0; pointer-events: none; transition: opacity var(--d-fast); }
-  .gd.gd-flip span { left: auto; right: calc(100% - 2px); }
-  .gd.fx-paired span, .gd:focus-visible span { opacity: 1; }
   /* the lineup: the app window on its own row, the three small pieces under it, same scale */
   .lu-row { --u: calc(100cqi / 452); flex-wrap: wrap; row-gap: 18px; }
-  .lu-item figcaption { height: 4.2em; }
+  .lu-item figcaption { width: calc(100% + 26 * var(--u)); white-space: normal; height: 2.8em; }
   /* 01: window on top, the four tree rows under it, then the note and the counter */
   .sees-wrap { grid-template-columns: minmax(0, 1fr); gap: 10px; }
   .fakewin { min-height: 0; }
@@ -732,7 +695,7 @@ html.fx-hover .knob:hover .knob-cap { box-shadow: 0 10px 24px rgba(0,0,0,.5), in
   .tr-list { gap: 3px; }
   .tr { font-size: 13px; line-height: 1.3; padding: 4px 8px; gap: 7px; }
   .tr.d1 { margin-left: 10px; } .tr.d1::before { left: -24px; }
-  .tr i { font-size: 11.5px; padding: 3px 5px 2px; }
+  .tr > i:not(.fx-ring) { font-size: 11.5px; padding: 3px 5px 2px; }
   .tr::before { top: 11px; }
   .sees-out { margin-top: 10px; gap: 10px; }
   .noted { padding: 10px 12px; min-height: 0; } .noted .nt { font-size: 14.5px; margin: 4px 0 6px; }
@@ -753,7 +716,7 @@ html.fx-hover .knob:hover .knob-cap { box-shadow: 0 10px 24px rgba(0,0,0,.5), in
   .qkeys .key { height: 40px; }
   /* 03: on a phone the desk is three bands: the run card on top, the app in the middle, Start + taskbar at the
      bottom. The cursors work in the lower two bands, so they never cross the card (only the Resume click does). */
-  .desk { aspect-ratio: auto; height: min(560px, calc(100svh - 284px)); min-height: 410px; }
+  .desk { aspect-ratio: auto; height: min(560px, calc(100svh - 260px)); min-height: 410px; }
   .appwin { left: 4%; top: 150px; width: 92%; height: auto; bottom: 52px; }
   .ask-cap { white-space: normal; width: 88%; justify-content: center; text-align: center; border-radius: 14px; bottom: 54px; font-size: 13.5px; }
   .aw-body { grid-template-columns: 38% 62%; }

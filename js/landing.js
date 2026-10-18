@@ -3,7 +3,7 @@
    Hover, press, focus and touch come from js/fx.js (Y.fx); scenes only toggle .is-lit / Y.fx.lit or write a
    ring's opacity, they never draw their own outline. Everything that moves registers with Y.loop.
    Modules: 01 Sees, 02 Remembers, 03 Acts, 04 Talks, 05 Your PC (the diagram + the Any AI console), 06 Download.
-   The product-shot grounds, guide callouts and the Download lineup live in js/guide.js (18 Oct, the TE touch).
+   The Download lineup drawings live in js/lineup.js (18 Oct, the TE touch).
    Port: one React component per module (components/landing/Sees.tsx ...), each taking `p`. */
 (function () {
   'use strict';
@@ -93,9 +93,6 @@
     const sec = $('#sees'), demo = $('#sees-demo'), fw = $('#fw'), lab = $('#fw-read'), dot = $('#fw-dot');
     const parts = [fw, ...[1, 2, 3].map((n) => fw.querySelector(`[data-n="${n}"]`))];
     const rows = $$('#tree .tr'), noted = $('#noted');
-    // the guide callouts (js/guide.js): the number of the node being read lights with it, in the scene and live
-    const gds = $$('#sees .gd');
-    const gdOn = (n) => gds.forEach((g) => g.classList.toggle('on', Number(g.dataset.gn) === n));
     const ROLE = ['window “Messages”', 'item “Maya Chen”', 'text “Are we still on…”', 'text “Bring the Lisbon…”'];
     const rings = [...parts, ...rows].map((el) => FX.ring(el));
     const A = 0.08, B = 0.78, N = 4;
@@ -115,7 +112,6 @@
       if (cur >= 0) { FX.lit(parts[cur], false); FX.lit(rows[cur], false); }
       cur = n;
       if (n >= 0) { FX.lit(parts[n], true); FX.lit(rows[n], true); }
-      gdOn(n);
       if (mode === 'live') label(n);
     }
     function toScene() {
@@ -126,7 +122,7 @@
       mode = 'live'; demo.removeAttribute('data-fx-off');
       rings.forEach((r) => { r.style.transition = ''; r.style.opacity = ''; r.style.transform = ''; });
       rows.forEach((r) => { r.classList.add('read'); r.classList.remove('cur'); });
-      gdOn(cur); label(-1);
+      label(-1);
     }
     function frame(p, still) {
       const live = still || p >= B;
@@ -145,13 +141,12 @@
         if (sh !== lastShow) {
           lastShow = sh;
           rows.forEach((r, i) => { r.classList.toggle('read', sh >= 0 && i <= sh); r.classList.toggle('cur', i === sh); });
-          label(sh); gdOn(sh); if (sh >= 0) FX.pulse(dot);
+          label(sh); if (sh >= 0) FX.pulse(dot);
         }
       }
       noted.classList.toggle('on', live);
     }
-    // a part, its tree row or its callout number
-    const nodeAt = (t) => { const el = t && t.closest ? t.closest('[data-n], [data-gn]') : null; return el && demo.contains(el) ? Number(el.dataset.n || el.dataset.gn) : -1; };
+    const nodeAt = (t) => { const el = t && t.closest ? t.closest('[data-n]') : null; return el && demo.contains(el) ? Number(el.dataset.n) : -1; };
     demo.addEventListener('pointerover', (e) => { if (e.pointerType !== 'touch' && mode === 'live') show(nodeAt(e.target)); });
     demo.addEventListener('pointerleave', (e) => { if (e.pointerType !== 'touch' && mode === 'live' && !demo.contains(document.activeElement)) show(-1); });
     demo.addEventListener('focusin', (e) => { if (mode === 'live') { const n = nodeAt(e.target); if (n >= 0) show(n); } });
