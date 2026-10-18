@@ -585,7 +585,7 @@
       `<circle cx="-124" cy="-86" r="3.4" fill="#0B0B0C"/><circle cx="-112" cy="-86" r="3.4" fill="#0B0B0C" opacity=".4"/><circle cx="-100" cy="-86" r="3.4" fill="#0B0B0C" opacity=".2"/>` +
       `<rect x="-80" y="-92" width="150" height="12" rx="6" fill="#FBFAF7" stroke="#0B0B0C" stroke-width=".8"/>` +
       `<rect x="-124" y="-60" width="58" height="146" fill="url(#pdots)" stroke="#0B0B0C" stroke-width=".6"/>` +
-      `<rect x="-54" y="-60" width="180" height="30" rx="4" fill="#0B0B0C"/><circle cx="110" cy="-45" r="4.5" fill="#6FEBC4"/>` +
+      `<rect x="-54" y="-60" width="180" height="30" rx="4" fill="#0B0B0C"/><circle cx="110" cy="-45" r="4.5" fill="${(window.YAccent && YAccent.hex) || '#6FEBC4'}"/>` +
       `<rect x="-54" y="-18" width="180" height="12" rx="2" fill="#0B0B0C" opacity=".7"/><rect x="-54" y="2" width="140" height="12" rx="2" fill="#0B0B0C" opacity=".35"/>` +
       `<rect x="-54" y="22" width="160" height="12" rx="2" fill="#0B0B0C" opacity=".35"/>` +
       `<rect x="-54" y="46" width="180" height="40" rx="4" fill="none" stroke="#0B0B0C" stroke-dasharray="2 3"/>`,

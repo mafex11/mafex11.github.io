@@ -12,8 +12,9 @@
    Port: a plain TS module (lib/dotkit.ts) shared by the hero, the login field and the dashboard field. */
 (function () {
   'use strict';
-  const RAMP = ['#284A50', '#2F7570', '#43AE94', '#6FEBC4', '#C2F3DF', '#F2EFE9'];   // Mint: steel, mint, bone
-  const COL = { base: '#26292C', base2: '#3A3E43', mid: '#96938C', bone: '#F2EFE9', live: '#6FEBC4', ink: '#0B0B0C' };
+  const ACC = window.YAccent;   // js/accent.js: the chosen accent and its ramp (default mint)
+  const RAMP = ACC ? ACC.ramp.slice() : ['#284A50', '#2F7570', '#43AE94', '#6FEBC4', '#C2F3DF', '#F2EFE9'];   // dark tint, accent, bone
+  const COL = { base: '#26292C', base2: '#3A3E43', mid: '#96938C', bone: '#F2EFE9', live: ACC ? ACC.hex : '#6FEBC4', ink: '#0B0B0C' };
 
   function atlas(colors, maxR, levels, dpr) {
     const S = Math.ceil(maxR * 2 * dpr) + 2;

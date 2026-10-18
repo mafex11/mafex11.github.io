@@ -20,9 +20,10 @@
   --hair: #1E2023;
   --hair-2: #2B2E32;
   --mark: #474B50;
-  --live: #6FEBC4;          /* the only colour, and only for live things */
+  --live: #6FEBC4;          /* the only colour, and only for live things (js/accent.js may change it) */
+  --live-rgb: 111, 235, 196;
   --live-ink: #062419;
-  --live-dim: rgba(111, 235, 196, .12);
+  --live-dim: rgba(var(--live-rgb), .12);
   /* bone sections (for rhythm) */
   --bone: #F2EFE9;
   --bone-2: #E7E3DB;
@@ -139,7 +140,7 @@ html:root .key:active, html:root .key.is-down, html:root [data-fx~="press"]:acti
 .key.pri:hover { background: #fff; }
 .key.ghost { background: transparent; border-color: transparent; color: var(--text-2); }
 .key.ghost:hover { color: var(--text); background: var(--raise); }
-.key.stop { border-color: rgba(111,235,196,.45); color: var(--live); background: var(--live-dim); }
+.key.stop { border-color: rgba(var(--live-rgb), .45); color: var(--live); background: var(--live-dim); }
 .key.lg { height: 48px; padding: 0 20px; font-size: 15px; border-radius: 10px; }
 .key.sm { height: 28px; padding: 0 10px; font-size: 12.5px; }
 .key.xs { height: 24px; padding: 0 9px; font-size: 12px; border-radius: 6px; }
@@ -151,7 +152,7 @@ html:root .key:active, html:root .key.is-down, html:root [data-fx~="press"]:acti
   display: inline-flex; align-items: center; gap: 7px; height: 26px; padding: 0 10px; border-radius: var(--r-pill);
   border: 1px solid var(--hair-2); color: var(--text-2); font: 500 12.5px/1 var(--f-mono); white-space: nowrap;
 }
-.chip.live { border-color: rgba(111,235,196,.4); color: var(--live); }
+.chip.live { border-color: rgba(var(--live-rgb), .4); color: var(--live); }
 .ldot { position: relative; width: 7px; height: 7px; border-radius: 50%; background: var(--live); flex: none; }
 /* the ring slot for fx "pulse" (one mint ring, twice); idle until js/fx.js adds .fx-pulse */
 .ldot::after { content: ''; position: absolute; inset: -1px; border-radius: 50%; border: 1px solid var(--live); opacity: 0; pointer-events: none; }
@@ -166,7 +167,7 @@ html:root .key:active, html:root .key.is-down, html:root [data-fx~="press"]:acti
   color: var(--text); font-size: 15px; transition: border-color var(--d-fast), background var(--d-fast);
 }
 .field-in::placeholder { color: var(--text-3); }
-.field-in:focus { outline: 0; border-color: rgba(111,235,196,.6); background: var(--bg); }
+.field-in:focus { outline: 0; border-color: rgba(var(--live-rgb), .6); background: var(--bg); }
 .field-in[aria-invalid="true"] { border-color: #E7B7A0; }
 
 /* dot icons: tiny grids of dots, drawn as SVG */

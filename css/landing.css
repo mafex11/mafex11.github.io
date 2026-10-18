@@ -608,6 +608,12 @@ html.fx-hover .knob:hover .knob-cap { box-shadow: 0 10px 24px rgba(0,0,0,.5), in
   .xp-list { display: block; }
   .console { max-width: 640px; }
 }
+/* tablets and small laptop windows: the planet sat centred on top of the wordmark here; keep them side by side,
+   as on desktop (a narrower wordmark on the left, the planet on the right, the copy below both) */
+@media (max-width: 1100px) and (min-width: 761px) {
+  .hero-mark { width: calc(62vw - var(--gut)); }
+  .hero-orb { width: min(36vw, 420px); top: 84px; bottom: auto; right: calc(var(--gut) - 24px); translate: 0 0; }
+}
 @media (max-width: 760px) {
   :root { --gut: 18px; }
   .topnav { height: 56px; gap: 10px; }

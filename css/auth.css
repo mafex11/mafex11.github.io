@@ -112,7 +112,7 @@ html.fx-hover .tabs a:not([aria-current="page"]):hover { color: var(--text); }
 .lsteps { display: flex; gap: 22px; font: 500 var(--t-lbl)/1.3 var(--f-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--text-3); }
 .lsteps b { color: var(--text); font-weight: 500; margin-right: 6px; }
 .lsteps .done { color: var(--text-2); }
-.banner { display: none; align-items: center; gap: 14px; padding: 14px 16px; margin-bottom: 22px; border-radius: 12px; border: 1px solid rgba(111,235,196,.35); background: var(--live-dim); }
+.banner { display: none; align-items: center; gap: 14px; padding: 14px 16px; margin-bottom: 22px; border-radius: 12px; border: 1px solid rgba(var(--live-rgb), .35); background: var(--live-dim); }
 .banner.on { display: flex; animation: stin .45s var(--ease-out); }
 .banner b { font-weight: 600; font-size: 15px; }
 .banner span.t2 { font-size: 14px; }
@@ -141,7 +141,7 @@ html.fx-hover .code input:hover:not(:focus):not(:disabled) { border-color: #3A3E
 .code .dash { width: 12px; height: 3px; flex: none; background: radial-gradient(circle, var(--text-3) 1.2px, transparent 1.5px) 0 0 / 6px 3px repeat-x; }
 .code.bad input { border-color: var(--lit); border-style: dashed; }
 .code.bad { animation: shake .42s var(--ease); }
-.code.ok input { border-color: rgba(111,235,196,.55); color: var(--live); }
+.code.ok input { border-color: rgba(var(--live-rgb), .55); color: var(--live); }
 .code.dead input { color: var(--text-3); }
 @keyframes shake { 20% { transform: translateX(-6px); } 40% { transform: translateX(5px); } 60% { transform: translateX(-3px); } 80% { transform: translateX(2px); } }
 .pane .key.pri.btn-full { margin-top: 18px; }
@@ -175,7 +175,7 @@ html.fx-hover button.pc-code:hover, button.pc-code:focus-visible { border-color:
 .pc-wait .spin { color: var(--live); }
 .pc-meta { display: flex; justify-content: space-between; margin-top: 12px; font: 500 12px/1.3 var(--f-mono); color: var(--text-3); }
 .pc-card .key { margin-top: 14px; }
-.pc-done { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 10px; border: 1px solid rgba(111,235,196,.35); background: var(--live-dim); font-size: 14px; }
+.pc-done { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 10px; border: 1px solid rgba(var(--live-rgb), .35); background: var(--live-dim); font-size: 14px; }
 .pc-done b { display: block; font-weight: 600; }
 .pc-done span span { font: 500 12px/1.4 var(--f-mono); color: var(--text-2); }
 .pc-dead .doto { color: var(--text-3); text-decoration: line-through; text-decoration-thickness: 2px; }
@@ -241,7 +241,7 @@ html.fx-hover .dev:hover { background: var(--raise); }
 .abar { transition: background var(--d-med), border-color var(--d-med); border-bottom: 1px solid transparent; }
 .scrolled .abar { background: rgba(11,11,12,.86); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom-color: var(--hair); }
 /* link: done key, PC start screen, mock row */
-.key.pri.done[disabled] { opacity: 1; background: transparent; color: var(--live); border-color: rgba(111,235,196,.45); }
+.key.pri.done[disabled] { opacity: 1; background: transparent; color: var(--live); border-color: rgba(var(--live-rgb), .45); }
 .key.pri.done .dic { width: 13px; height: 13px; }
 /* link #expired: the waiting key is a dark key with a dashed edge and full-strength --text-2 (about 9:1), never a faded bone key */
 .key.pri.wait[disabled] { opacity: 1; background: var(--raise); color: var(--text-2); border: 1px dashed #4A4E54; font-weight: 500; }

@@ -46,7 +46,7 @@ body.app { background: var(--bg); min-height: 100vh; --t-src: 13px; }
 .tb-brand .doto { font-size: 22px; font-weight: 900; letter-spacing: .04em; }
 .tb-crumb { font: 500 12.5px/1 var(--f-mono); color: var(--text-3); letter-spacing: .06em; text-transform: uppercase; }
 .tb-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
-.pcchip { min-width: 0; display: inline-flex; align-items: center; gap: 8px; height: 32px; padding: 0 12px; border-radius: 999px; border: 1px solid rgba(111,235,196,.4); background: rgba(11,11,12,.8); font: 500 12.5px/1 var(--f-mono); color: var(--text); white-space: nowrap; }
+.pcchip { min-width: 0; display: inline-flex; align-items: center; gap: 8px; height: 32px; padding: 0 12px; border-radius: 999px; border: 1px solid rgba(var(--live-rgb), .4); background: rgba(11,11,12,.8); font: 500 12.5px/1 var(--f-mono); color: var(--text); white-space: nowrap; }
 .pcchip .k { color: var(--live); }
 .pcchip .s { color: var(--text-2); }
 .pcchip .enc { display: none; color: var(--text-2); }
@@ -183,7 +183,7 @@ body[data-pc="offline"] .live-only, body[data-pc="offline"] .live-only .live { c
 .msearch { display: flex; align-items: center; gap: 10px; height: 48px; padding: 0 14px; border: 1px solid var(--hair-2); border-radius: 12px; background: var(--raise); margin-bottom: 14px; }
 .msearch input { flex: 1; align-self: stretch; min-width: 0; border: 0; background: transparent; font-size: 15px; color: var(--text); }
 .msearch input:focus { outline: 0; }
-.msearch:focus-within { border-color: rgba(111,235,196,.55); }
+.msearch:focus-within { border-color: rgba(var(--live-rgb), .55); }
 .cats { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; }
 .cats button { height: 32px; padding: 0 12px; border-radius: 999px; border: 1px solid var(--hair-2); background: transparent; color: var(--text-2); font: 500 12.5px/1 var(--f-mono); transition: background var(--d-fast), border-color var(--d-fast), color var(--d-fast), translate var(--d-release) var(--ease-spring), scale var(--d-release) var(--ease-spring); }
 .cats button:hover { color: var(--text); border-color: var(--text-3); }
@@ -263,7 +263,7 @@ body[data-pc="offline"] .live-only, body[data-pc="offline"] .live-only .live { c
 .ans li em { font: 500 var(--t-src)/21px var(--f-mono); color: var(--text-3); font-style: normal; }
 .ans .from { margin-top: 10px; font: 500 var(--t-src)/1.4 var(--f-mono); color: var(--text-3); }
 .ask { pointer-events: auto; width: 100%; max-width: 780px; display: flex; align-items: center; gap: 10px; height: 58px; padding: 0 8px 0 18px; border: 1px solid #34373C; border-radius: 18px; background: rgba(14,15,16,.97); box-shadow: 0 18px 50px rgba(0,0,0,.55); transition: border-color var(--d-fast); }
-.ask:focus-within { border-color: rgba(111,235,196,.55); }
+.ask:focus-within { border-color: rgba(var(--live-rgb), .55); }
 .ask .yd { width: 20px; height: 20px; flex: none; }
 .ask input { flex: 1; align-self: stretch; min-width: 0; border: 0; background: transparent; font-size: 15.5px; color: var(--text); text-overflow: ellipsis; }
 .ask input:focus { outline: 0; }
@@ -410,7 +410,7 @@ html.fx-hover .nav a:not([aria-current]):hover::before, .nav a:not([aria-current
 /* the PC status: a live dot in the rail box (pulses with the chip) */
 .pcl { display: inline-flex; align-items: center; gap: 6px; }
 .pcchip, .pcbox { transition: border-color var(--d-hover) var(--ease); }
-html.fx-hover .pcchip:hover, .pcchip:focus-visible { border-color: rgba(111, 235, 196, .7); }
+html.fx-hover .pcchip:hover, .pcchip:focus-visible { border-color: rgba(var(--live-rgb), .7); }
 .pcchip:focus-visible { outline: none; }
 html.fx-hover .pcbox[data-fx]:hover { border-color: #3A3E43; }
 

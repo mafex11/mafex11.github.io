@@ -167,7 +167,7 @@
       ['Open Spotify: stopped', 'app.html#home&run=spotify&at=stopped'], ['Ask: what’s on my list', 'app.html#home&ask=list'],
       ['PC offline', 'app.html#home&offline'], ['Offline: queue it?', 'app.html#home&offline&run=spotify'], ['Offline: queued', 'app.html#home&offline&run=spotify&at=queued']] },
     { g: 'Other', items: [['Privacy', 'privacy.html'], ['Terms', 'terms.html'], ['Status', 'status.html'],
-      ['Interaction vocabulary', 'screens.html#fx'], ['Effects gallery', 'fx-gallery.html']] }
+      ['Interaction vocabulary', 'screens.html#fx'], ['Effects gallery', 'fx-gallery.html'], ['Accent colour', 'accent.html']] }
   ];
   function mockPill() {
     const here = location.pathname.split('/').pop() || 'index.html';
@@ -204,7 +204,7 @@
     opt = opt || {};
     const tile = opt.tile === false ? '' : `<rect x=".5" y=".5" width="63" height="63" rx="13" fill="#0B0B0C" stroke="#2A2D31"/>`;
     const ink = opt.ink || '#F2EFE9';
-    return `<svg class="${opt.cls || 'ymark'}" viewBox="0 0 64 64" aria-hidden="true">${tile}${Y_DOTS.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="3.5" fill="${ink}"/>`).join('')}<circle cx="31.5" cy="28.5" r="3.5" fill="#6FEBC4"/></svg>`;
+    return `<svg class="${opt.cls || 'ymark'}" viewBox="0 0 64 64" aria-hidden="true">${tile}${Y_DOTS.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="3.5" fill="${ink}"/>`).join('')}<circle cx="31.5" cy="28.5" r="3.5" fill="${(window.YAccent && YAccent.hex) || '#6FEBC4'}"/></svg>`;
   }
   function fillMarks() { document.querySelectorAll('[data-ymark]').forEach((el) => { el.innerHTML = ymarkSVG({ tile: el.dataset.ymark !== 'bare', cls: el.dataset.cls || 'ymark' }); }); }
 

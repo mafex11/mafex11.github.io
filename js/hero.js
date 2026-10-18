@@ -30,6 +30,17 @@
     if (!a) { a = []; for (let i = -3; i <= nCols + 3; i++) { const h = hash(i, j, 11); if (h > 0.986) a.push(i, h); } twRows.set(j, a); }
     return a;
   };
+  // the wordmark's glow: one soft halo sprite per colour (pre-rendered radial gradient), drawn under each lit dot
+  let glowBone = null, glowLive = null, glowR = 0;
+  const rgba = (hex, a) => { const n = parseInt(hex.slice(1), 16); return `rgba(${n >> 16 & 255},${n >> 8 & 255},${n & 255},${a})`; };
+  function glowSprite(col, R) {
+    const s = Math.max(8, Math.ceil(R * 2 * DPR));
+    const c = document.createElement('canvas'); c.width = c.height = s;
+    const g = c.getContext('2d'), gr = g.createRadialGradient(s / 2, s / 2, 0, s / 2, s / 2, s / 2);
+    gr.addColorStop(0, rgba(col, 0.55)); gr.addColorStop(0.28, rgba(col, 0.26)); gr.addColorStop(0.6, rgba(col, 0.08)); gr.addColorStop(1, rgba(col, 0));
+    g.fillStyle = gr; g.fillRect(0, 0, s, s);
+    return c;
+  }
   const ROW = { base: 0, base2: 1, mid: 2, bone: 3 };
   const BASE_R = () => P * 0.1;          // small atlas rows
   const o = { v: 0, t: 0, r: 0 };
@@ -70,6 +81,7 @@
       off.push({ x: mark.x + (gx + 0.5) * G, y: mark.y + (gy + 0.5) * G, when: 0.3 + (gx / K.WORD_COLS) * 0.5 + hash(gx, gy, 2) * 0.1 });
     }
     mark.w = m.width; mark.h = m.height;
+    glowR = G * 1.25; glowBone = glowSprite(K.COL.bone, glowR); glowLive = glowSprite(K.COL.live, glowR * 1.25);
     // the planet: its own grid, sized so the longest ray reaches the box edge
     const ob = orbBox.getBoundingClientRect();
     orb = { x: ob.left - r.left + ob.width / 2, y: ob.top - r.top + ob.height / 2, P: (ob.width / 2) / K.PLANET.EXTENT };
@@ -337,6 +349,7 @@
     const inMark = pointer.seen && !reduced && px >= mx0 && px <= mx1 && py >= my0 && py <= my1 && leave < 0.2;
     swell += ((inMark ? 1 : 0) - swell) * 0.14;
     const swK = 1 + 0.25 * swell;
+    const lit = [];
     for (const d of word) {
       let k = clamp((e - d.when) / 0.45, 0, 1);
       let flick = 1;
@@ -354,9 +367,24 @@
       if (r < 0.4) continue;
       let alpha = (1 - scatter * 0.7) * (flick < 1 ? 0.5 : 1);
       if (d.acc) { alpha *= reduced ? 1 : 0.82 + 0.18 * Math.sin(t * 2.2); }
-      ctx.globalAlpha = alpha;
-      ctx.fillStyle = d.acc ? K.COL.live : K.COL.bone;
-      ctx.beginPath(); ctx.arc(x, y, r, 0, 6.2832); ctx.fill();
+      lit.push(x, y, r, alpha, d.acc ? 1 : 0);
+    }
+    // glow pass first (additive on the dark field), then the dots on top; hovering the word lifts the glow
+    if (glowBone) {
+      ctx.globalCompositeOperation = 'lighter';
+      const rest = G * 0.34, lift = 0.85 + 0.35 * swell;
+      for (let n = 0; n < lit.length; n += 5) {
+        const x = lit[n], y = lit[n + 1], r = lit[n + 2], a = lit[n + 3], acc = lit[n + 4];
+        const R = (acc ? glowR * 1.25 : glowR) * (r / rest);
+        ctx.globalAlpha = a * (acc ? 0.95 : 0.42) * lift;
+        ctx.drawImage(acc ? glowLive : glowBone, x - R, y - R, R * 2, R * 2);
+      }
+      ctx.globalCompositeOperation = 'source-over';
+    }
+    for (let n = 0; n < lit.length; n += 5) {
+      ctx.globalAlpha = lit[n + 3];
+      ctx.fillStyle = lit[n + 4] ? K.COL.live : K.COL.bone;
+      ctx.beginPath(); ctx.arc(lit[n], lit[n + 1], lit[n + 2], 0, 6.2832); ctx.fill();
     }
     ctx.globalAlpha = 1;
     ctx.restore();

@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script src="js/accent.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yuki · Accent colour</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/fx.css">
+<style>
+  body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--text); display: grid; grid-template-columns: 380px 1fr; }
+  @media (max-width: 900px) { body { grid-template-columns: 1fr; } .stage { height: 70vh; } }
+  aside { padding: 28px 26px 40px; border-right: 1px solid var(--hair-2); display: flex; flex-direction: column; gap: 22px; overflow: auto; max-height: 100vh; box-sizing: border-box; }
+  .brand { display: flex; align-items: center; gap: 10px; font: 600 15px/1 var(--f-mono); letter-spacing: .02em; }
+  .brand i { width: 10px; height: 10px; border-radius: 50%; background: var(--live); box-shadow: 0 0 14px 2px rgba(var(--live-rgb), .55); }
+  h1 { font: 600 30px/1.08 var(--f-ui); margin: 0; letter-spacing: -.01em; }
+  p.sub { margin: 0; color: var(--text-2); font-size: 15px; line-height: 1.5; }
+  .lbl2 { font: 500 12.5px/1 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); margin-bottom: 10px; }
+  .swatches { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .sw { position: relative; display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--hair-2); background: #111214; color: var(--text); cursor: pointer; text-align: left; font: 500 14px/1.2 var(--f-ui); transition: border-color .18s, transform .18s, background .18s; }
+  .sw:hover, .sw:focus-visible { border-color: var(--c); transform: translateY(-1px); background: #15171a; outline: none; }
+  .sw .dot { width: 18px; height: 18px; border-radius: 50%; background: var(--c); box-shadow: 0 0 12px 1px color-mix(in srgb, var(--c) 55%, transparent); flex: none; }
+  .sw small { display: block; color: var(--text-3); font: 500 11.5px/1.3 var(--f-mono); margin-top: 2px; }
+  .sw[aria-pressed="true"] { border-color: var(--c); background: color-mix(in srgb, var(--c) 10%, #111214); }
+  .sw[aria-pressed="true"]::after { content: '✓'; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: var(--c); font-size: 14px; }
+  .custom { display: flex; gap: 10px; align-items: center; }
+  .custom input[type=color] { width: 46px; height: 42px; padding: 0; border: 1px solid var(--hair-2); border-radius: 10px; background: #111214; cursor: pointer; }
+  .custom input[type=text] { flex: 1; height: 42px; padding: 0 12px; border-radius: 10px; border: 1px solid var(--hair-2); background: #111214; color: var(--text); font: 500 15px/1 var(--f-mono); letter-spacing: .04em; }
+  .custom input[type=text]:focus { outline: none; border-color: var(--live); }
+  .sample { display: grid; gap: 10px; padding: 16px; border-radius: 12px; border: 1px solid var(--hair-2); background: #0F1012; }
+  .row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 14px; color: var(--text-2); }
+  .live-chip { display: inline-flex; align-items: center; gap: 8px; height: 30px; padding: 0 12px; border-radius: 999px; border: 1px solid rgba(var(--live-rgb), .45); color: var(--live); font: 500 13px/1 var(--f-mono); }
+  .live-chip i { width: 7px; height: 7px; border-radius: 50%; background: var(--live); box-shadow: 0 0 0 4px var(--live-dim); }
+  .fill { display: inline-flex; align-items: center; height: 34px; padding: 0 14px; border-radius: 9px; background: var(--live); color: var(--live-ink); font: 600 14px/1 var(--f-ui); }
+  .contrast { font: 500 12.5px/1.5 var(--f-mono); color: var(--text-3); }
+  .contrast b { color: var(--text); font-weight: 600; }
+  .acts { display: flex; gap: 8px; flex-wrap: wrap; }
+  .btn { height: 40px; padding: 0 16px; border-radius: 10px; border: 1px solid var(--hair-2); background: #111214; color: var(--text); font: 500 14px/1 var(--f-ui); cursor: pointer; transition: border-color .18s, background .18s; }
+  .btn:hover, .btn:focus-visible { border-color: var(--live); outline: none; }
+  .btn.pri { background: var(--live); color: var(--live-ink); border-color: var(--live); font-weight: 600; }
+  .saved { font-size: 13.5px; color: var(--live); min-height: 18px; }
+  .stage { position: relative; display: flex; flex-direction: column; height: 100vh; }
+  .tabs { display: flex; gap: 4px; padding: 12px 14px; border-bottom: 1px solid var(--hair-2); flex-wrap: wrap; }
+  .tab { height: 32px; padding: 0 12px; border-radius: 8px; border: 1px solid transparent; background: none; color: var(--text-2); font: 500 13.5px/1 var(--f-ui); cursor: pointer; }
+  .tab:hover, .tab:focus-visible { color: var(--text); border-color: var(--hair-2); outline: none; }
+  .tab[aria-selected="true"] { color: var(--text); border-color: rgba(var(--live-rgb), .5); background: var(--live-dim); }
+  .tabs .open { margin-left: auto; color: var(--text-3); font-size: 13px; align-self: center; text-decoration: none; }
+  .tabs .open:hover { color: var(--live); }
+  .view { flex: 1; position: relative; overflow: hidden; background: #0B0B0C; }
+  /* the page is rendered at a desktop width (1440 px) and scaled down to fit, so the preview shows the desktop layout */
+  .view iframe { position: absolute; left: 0; top: 0; width: 1440px; border: 0; background: #0B0B0C; transform-origin: 0 0; }
+</style>
+</head>
+<body>
+<aside>
+  <div class="brand"><i></i>yuki · accent</div>
+  <div>
+    <h1>Pick the accent colour.</h1>
+    <p class="sub">It is the one colour on the site, used only for live things: the dot on the i, live chips, pulses, focus rings. Pick one and the preview on the right follows. Save it and every page you open on this computer uses it.</p>
+  </div>
+  <div>
+    <div class="lbl2">Bright and a little off</div>
+    <div class="swatches" id="swatches"></div>
+  </div>
+  <div>
+    <div class="lbl2">Any colour</div>
+    <div class="custom">
+      <input type="color" id="picker" aria-label="Choose any colour">
+      <input type="text" id="hex" maxlength="7" spellcheck="false" aria-label="Hex colour, like #FF6A1A">
+    </div>
+  </div>
+  <div class="sample" aria-label="How the accent looks">
+    <div class="row"><span class="live-chip"><i></i>Online · encrypted</span><span class="fill">Download</span></div>
+    <div class="contrast" id="contrast"></div>
+  </div>
+  <div class="acts">
+    <button class="btn pri" id="save" type="button">Use on every page</button>
+    <button class="btn" id="reset" type="button">Back to mint</button>
+  </div>
+  <div class="saved" id="saved" role="status"></div>
+</aside>
+<main class="stage">
+  <div class="tabs" role="tablist" aria-label="Preview page">
+    <button class="tab" role="tab" data-page="index.html" aria-selected="true">Landing</button>
+    <button class="tab" role="tab" data-page="app.html">Dashboard</button>
+    <button class="tab" role="tab" data-page="login.html">Sign in</button>
+    <button class="tab" role="tab" data-page="link.html">Link your PC</button>
+    <button class="tab" role="tab" data-page="fx-gallery.html">Effects</button>
+    <a class="open" id="open" href="index.html" target="_blank" rel="noopener">Open this page full size ↗</a>
+  </div>
+  <div class="view" id="view"><iframe id="frame" title="Preview of the site with this accent" src="about:blank"></iframe></div>
+</main>
+<script>
+(function () {
+  'use strict';
+  var A = window.YAccent, KEY = A.key, norm = A.norm;
+  var PRESETS = [
+    ['Ember orange', '#FF6A1A'], ['Fire red', '#FF3B30'], ['Forest green', '#2FA55A'], ['Moss', '#7DBA3A'],
+    ['Signal amber', '#FFB020'], ['Hot coral', '#FF5A5F'], ['Acid lime', '#C6F432'], ['Magenta', '#FF2D95'],
+    ['Ultraviolet', '#8B5CFF'], ['Cobalt', '#3D6BFF'], ['Ice cyan', '#2EE6FF'], ['Mint (today)', '#6FEBC4']
+  ];
+  var cur = A.hex, page = 'index.html', timer = 0;
+  var sw = document.getElementById('swatches'), picker = document.getElementById('picker'), hex = document.getElementById('hex');
+  var frame = document.getElementById('frame'), open = document.getElementById('open'), saved = document.getElementById('saved');
+  PRESETS.forEach(function (p) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'sw'; b.style.setProperty('--c', p[1]); b.dataset.hex = p[1];
+    b.innerHTML = '<span class="dot"></span><span>' + p[0] + '<small>' + p[1] + '</small></span>';
+    b.addEventListener('click', function () { set(p[1], true); });
+    sw.appendChild(b);
+  });
+  function rgbOf(h) { var n = parseInt(h.slice(1), 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; }
+  function lum(c) { var s = c.map(function (x) { x /= 255; return x <= 0.03928 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4); }); return 0.2126 * s[0] + 0.7152 * s[1] + 0.0722 * s[2]; }
+  function ratio(a, b) { var x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); }
+  function mixHex(c, d, t) { return '#' + c.map(function (v, i) { return ('0' + Math.round(v + (d[i] - v) * t).toString(16)).slice(-2); }).join(''); }
+  // apply to this page at once (the same rules as js/accent.js)
+  function paint(h) {
+    var c = rgbOf(h), st = document.documentElement.style, L = lum(c);
+    st.setProperty('--live', h); st.setProperty('--live-rgb', c.join(', '));
+    st.setProperty('--live-dim', 'rgba(' + c.join(', ') + ', .12)');
+    st.setProperty('--live-ink', L > 0.36 ? mixHex(c, [0, 0, 0], 0.88) : '#F2EFE9');
+    var onDark = ratio(c, [11, 11, 12]), onBone = ratio(c, [242, 239, 233]);
+    document.getElementById('contrast').innerHTML = 'On the dark page <b>' + onDark.toFixed(1) + ':1</b>' + (onDark < 3 ? ' (too dim for text)' : '') +
+      ' · on bone <b>' + onBone.toFixed(1) + ':1</b>' + (onBone < 3 ? ' (live dots only, not text)' : '');
+  }
+  function preview() {
+    var src = page + (page.indexOf('?') < 0 ? '?' : '&') + 'accent=' + cur.slice(1);
+    frame.src = src; open.href = src;
+  }
+  function set(h, fromPreset) {
+    h = norm(h); if (!h) return;
+    cur = h; picker.value = h.toLowerCase(); if (document.activeElement !== hex || fromPreset) hex.value = h;
+    Array.prototype.forEach.call(sw.children, function (b) { b.setAttribute('aria-pressed', String(b.dataset.hex === h)); });
+    paint(h); saved.textContent = '';
+    clearTimeout(timer); timer = setTimeout(preview, 180);
+  }
+  picker.addEventListener('input', function () { set(picker.value); });
+  hex.addEventListener('input', function () { var h = norm(hex.value); if (h) set(h); });
+  hex.addEventListener('blur', function () { hex.value = cur; });
+  document.getElementById('save').addEventListener('click', function () {
+    try { localStorage.setItem(KEY, cur); saved.textContent = 'Saved. Every page you open on this computer now uses ' + cur + '.'; }
+    catch (e) { saved.textContent = 'Could not save here; add ?accent=' + cur.slice(1) + ' to a page address instead.'; }
+  });
+  document.getElementById('reset').addEventListener('click', function () {
+    try { localStorage.removeItem(KEY); } catch (e) {}
+    set('#6FEBC4', true); saved.textContent = 'Back to mint.';
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('.tab'), function (t) {
+    t.addEventListener('click', function () {
+      Array.prototype.forEach.call(document.querySelectorAll('.tab'), function (x) { x.setAttribute('aria-selected', String(x === t)); });
+      page = t.dataset.page; preview();
+    });
+  });
+  // fit the 1440 px wide page into the preview area
+  var view = document.getElementById('view');
+  function fit() {
+    var s = Math.min(1, view.clientWidth / 1440);
+    frame.style.transform = 'scale(' + s + ')';
+    frame.style.height = Math.ceil(view.clientHeight / s) + 'px';
+  }
+  if (window.ResizeObserver) new ResizeObserver(fit).observe(view); else window.addEventListener('resize', fit);
+  fit();
+  set(cur, true); preview();
+})();
+</script>
+</body>
+</html>
