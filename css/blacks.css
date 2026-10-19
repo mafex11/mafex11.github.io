@@ -1,8 +1,8 @@
 /* =====================================================================
    Yuki website / blacks: the black palettes. Linked right after css/base.css in every page.
    19 Oct, the user: "the colour pallette of black feels too bland ... it should look rich black. not bland and dull
-   black". Four rich blacks were designed and judged; jet won (the only one that reads as black everywhere, not navy,
-   brown or teal) and is the default. The others stay here to compare.
+   black". Four rich blacks were designed and judged (the judges picked jet); the user saw all five and said
+   "obsidian is good", so obsidian is the default. The others stay here to compare.
    The tokens (css/base.css :root, darkest first): --k-well, --bg + --bg-rgb, --raise, --raise-2, --raise-3, --hair,
    --dot, --hair-2, --edge, --edge-2, --mark, --shade-rgb, and --ink + --ink-rgb for black ink on the bone sections.
    Every black and dark grey on the site, the canvases included, comes from them, so a palette overrides them.
@@ -14,12 +14,28 @@
    Canvases read the tokens when they lay out (YAccent.tok in js/accent.js). The accent, bone, light text and status
    colours are not part of a palette.
    Picking one: ?black=jet | ink | umber | obsidian | flat on any page address. It is saved on this computer
-   (localStorage 'yuki-black') and every page uses it; ?black=reset goes back to the default (jet).
+   (localStorage 'yuki-black') and every page uses it; ?black=reset goes back to the default (obsidian).
    ===================================================================== */
 
-/* ---------- jet (the default): piano black. A near-pure black page (#050505), wide clear steps up to the panels,
-   a thin lacquer sheen on raised surfaces and deep soft shadows under them; almost no hue. Its tokens are the
-   css/base.css :root values; only its depth rules live here. ---------- */
+/* ---------- jet (the judges' pick): piano black. A near-pure black page (#050505), wide clear steps up to the
+   panels, a thin lacquer sheen on raised surfaces and deep soft shadows under them; almost no hue. ---------- */
+html[data-black="jet"] {
+  --k-well: #010101;
+  --bg: #050505;
+  --bg-rgb: 5, 5, 5;
+  --raise: #0F0F10;
+  --raise-2: #19191B;
+  --raise-3: #1E1E21;
+  --hair: #202023;
+  --dot: #252528;
+  --hair-2: #2D2D31;
+  --edge: #37373C;
+  --edge-2: #404045;
+  --mark: #4E4E54;
+  --shade-rgb: 0, 0, 0;
+  --ink: #060606;
+  --ink-rgb: 6, 6, 6;
+}
 /* the product-shot grounds: a lacquered plate under an overhead light (a bright top edge, a soft band of light at
    the top, a deeper floor) */
 html[data-black="jet"] .pstage {
@@ -52,7 +68,7 @@ html[data-black="jet"] .lcd { box-shadow: inset 0 2px 8px rgba(0, 0, 0, .7); }
 html[data-black="jet"] :is(.runcard, .thread) { box-shadow: inset 0 1px 0 rgba(255, 255, 255, .07), 0 30px 70px rgba(0, 0, 0, .8); }
 html[data-black="jet"] :is(.ask-cap, .ask, .pcwin) { box-shadow: inset 0 1px 0 rgba(255, 255, 255, .07), 0 20px 50px rgba(0, 0, 0, .75); }
 
-/* ---------- the runners-up, to compare (each read as a colour, not black: ink navy, umber brown, obsidian teal) ---------- */
+/* ---------- ink, umber, obsidian (the default: its tokens are also the css/base.css :root values) ---------- */
 
 /* ink: rich black, the print kind (C60 M40 Y40 K100). A deep page with a cool lean you feel in the darkest tones only;
    the lifted steps stay near neutral so it never reads navy. Depth comes from light, not colour: each dark module is

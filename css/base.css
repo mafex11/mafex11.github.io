@@ -11,8 +11,9 @@
   /* colour: one product with the app.
      The blacks (19 Oct): every black and dark grey on the site comes from the tokens below, a ladder from darkest
      to lightest, so a black palette (css/blacks.css, ?black=NAME) re-colours the whole site by overriding them.
-     The values are "jet", the default since 19 Oct (the user: "rich black, not bland and dull black"): a near-pure
-     black page, wide steps up to the panels, almost no hue; its lacquer (sheens, deep shadows) is in css/blacks.css.
+     The values are "obsidian", the default since 19 Oct (the user wanted "rich black, not bland and dull black",
+     saw five and said "obsidian is good"): volcanic glass, black with a deep teal undertone; its glass (sheens,
+     deep shadows, a faint light from above) is in css/blacks.css.
      The old flat grey-black is the "flat" palette there.
      CSS, inline SVG (style="fill: var(--x)") and the canvases (read at load through YAccent.tok) all use them. Dark
      literals left on purpose: alpha masks (#000 / #0000), the accent's dark tints, JS fallbacks, the favicon file.
@@ -31,23 +32,23 @@
        --shade-rgb  shadows: rgba(var(--shade-rgb), a)
        --ink, --ink-rgb  black ink on bone sections and bone-faced drawings, and shadows cast onto bone: near --bg,
                     another role (a palette may keep ink neutral while the page goes deep) */
-  --k-well: #010101;
-  --bg: #050505;
-  --bg-rgb: 5, 5, 5;
-  --raise: #0F0F10;
-  --raise-2: #19191B;
-  --raise-3: #1E1E21;
-  --dot: #252528;
+  --k-well: #020505;
+  --bg: #050A09;
+  --bg-rgb: 5, 10, 9;
+  --raise: #0C1212;
+  --raise-2: #141A1A;
+  --raise-3: #192020;
+  --dot: #232B2B;
   --lit: #F2EFE9;
   --text: #F2EFE9;
   --text-2: #B4B0A8;
   --text-3: #8A8780;
-  --hair: #202023;
-  --hair-2: #2D2D31;
-  --edge: #37373C;
-  --edge-2: #404045;
-  --mark: #4E4E54;
-  --shade-rgb: 0, 0, 0;
+  --hair: #1B2222;
+  --hair-2: #28302F;
+  --edge: #303938;
+  --edge-2: #37403F;
+  --mark: #454E4D;
+  --shade-rgb: 0, 3, 3;
   --live: #6FEBC4;          /* the only colour, and only for live things (js/accent.js may change it) */
   --live-rgb: 111, 235, 196;
   --live-ink: #062419;
@@ -55,8 +56,8 @@
   /* bone sections (for rhythm) */
   --bone: #F2EFE9;
   --bone-2: #E7E3DB;
-  --ink: #060606;
-  --ink-rgb: 6, 6, 6;
+  --ink: #050A09;
+  --ink-rgb: 5, 10, 9;
   --ink-2: #4A4741;
   --ink-3: #5C5851;         /* about 6.1:1 on --bone (was #75716A, 4.2:1); tags only */
   --bone-hair: #D6D1C7;
