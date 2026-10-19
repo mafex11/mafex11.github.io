@@ -16,8 +16,8 @@
   let timer = 0, flow = 0, left = 581, state = 'waiting', removed = new Set();
 
   const DEV = {
-    desktop: { name: 'DESKTOP-4KD7Q2M', line: 'Windows 11 · Yuki 0.9.2 · linked today, 14:06', chip: '<span class="chip live"><span class="ldot"></span>Online</span>' },
-    studio: { name: 'STUDIO-LAPTOP', line: 'Windows 11 · Yuki 0.9.1 · last seen 2 days ago', chip: '<span class="chip"><span class="ldot off"></span>Offline</span>' }
+    desktop: { name: 'DESKTOP-4KD7Q2M', line: 'Windows 11 · Yuki 0.9.2 · linked today, 14:06', chip: '<span class="chip live">Online</span>' },
+    studio: { name: 'STUDIO-LAPTOP', line: 'Windows 11 · Yuki 0.9.1 · last seen 2 days ago', chip: '<span class="chip">Offline</span>' }
   };
   function renderDevs(linked, confirmFor, fresh) {
     const list = (linked ? ['desktop', 'studio'] : ['studio']).filter((d) => !removed.has(d));

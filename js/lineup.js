@@ -24,7 +24,7 @@
       for (let i = 0; i < 5; i++) s += `<rect x="20.5" y="${42.5 + i * 28}" width="16" height="16" rx="4" fill="${i ? 'none' : D}" stroke="${i ? D : T}"/>`;
       s += bar(74, 42, 74, 8, L, 0.9) + bar(74, 57, 128, 5, T);
       s += `<rect x="74.5" y="74.5" width="128" height="62" rx="7" fill="#151618" stroke="${D}"/><rect x="212.5" y="74.5" width="130" height="62" rx="7" fill="#151618" stroke="${D}"/>`;
-      s += bar(86, 86, 40, 4, T2) + `<circle class="lv" cx="190" cy="88" r="3"/>` + bar(86, 100, 86, 7, L, 0.85) + bar(86, 114, 60, 4, T);
+      s += bar(86, 86, 40, 4, T2) + bar(86, 100, 86, 7, L, 0.85) + bar(86, 114, 60, 4, T);
       for (let i = 0; i < 6; i++) for (let j = 0; j < 3; j++) s += `<circle cx="${226 + i * 8}" cy="${92 + j * 8}" r="1.7" fill="${(i + j) % 3 ? T : L}"/>`;
       s += bar(282, 92, 48, 4, T2) + bar(282, 104, 36, 4, T);
       s += `<rect x="74.5" y="150.5" width="268" height="74" rx="9" fill="#0D0E0F" stroke="${E}"/>`;
@@ -41,7 +41,7 @@
     } },
     tray: { vb: '0 0 130 190', svg: () => {
       let s = `<rect x=".5" y=".5" width="129" height="148" rx="10" fill="${B}" stroke="${E}"/>` + ymark(17, 18, 0.24) + bar(30, 15, 46, 6, L, 0.9) +
-        `<circle class="lv" cx="113" cy="18" r="3"/><path d="M1 34.5H129" stroke="${D}"/>`;
+        `<path d="M1 34.5H129" stroke="${D}"/>`;
       const rows = [[48, 62], [72, 54], [96, 46], [128, 30]];
       rows.forEach(([y, w], i) => {
         s += `<rect x="14.5" y="${y - 4.5}" width="9" height="9" rx="2.5" fill="none" stroke="${T}"/>` + bar(31, y - 2.5, w, 5, T2);
@@ -56,9 +56,9 @@
     phone: { vb: '0 0 100 206', svg: () => {
       let s = `<rect x=".5" y=".5" width="99" height="205" rx="17" fill="#0C0D0E" stroke="${E}"/><rect x="5" y="5" width="90" height="196" rx="13" fill="${B}"/>` +
         `<rect x="40" y="10" width="20" height="6" rx="3" fill="#000"/>` + bar(12, 11, 12, 3, T2) + bar(80, 11, 9, 3, T2);
-      s += ymark(17, 32, 0.2) + `<rect x="57.5" y="26.5" width="31" height="11" rx="5.5" fill="none" class="lvs"/><circle class="lv" cx="63.5" cy="32" r="2"/>` + bar(68, 31, 15, 2.4, T2);
+      s += ymark(17, 32, 0.2) + `<rect x="57.5" y="26.5" width="31" height="11" rx="5.5" fill="none" class="lvs"/>` + bar(65.5, 31, 15, 2.4, T2);
       s += bar(12, 46, 52, 6, L, 0.9) + bar(12, 57, 66, 3.5, T);
-      s += `<rect x="12.5" y="68.5" width="75" height="36" rx="6" fill="#151618" stroke="${D}"/><circle class="lv" cx="80" cy="76" r="2.2"/>` + bar(19, 74, 26, 3, T2) + bar(19, 83, 52, 5, L, 0.85) + bar(19, 94, 36, 3, T);
+      s += `<rect x="12.5" y="68.5" width="75" height="36" rx="6" fill="#151618" stroke="${D}"/>` + bar(19, 74, 26, 3, T2) + bar(19, 83, 52, 5, L, 0.85) + bar(19, 94, 36, 3, T);
       s += `<rect x="12.5" y="110.5" width="35" height="30" rx="6" fill="#151618" stroke="${D}"/><rect x="52.5" y="110.5" width="35" height="30" rx="6" fill="#151618" stroke="${D}"/>` +
         bar(18, 117, 18, 3, T2) + bar(18, 126, 22, 5, L, 0.8) + bar(58, 117, 16, 3, T2) + bar(58, 126, 20, 5, L, 0.8);
       for (let i = 0; i < 3; i++) s += `<circle cx="16" cy="${153 + i * 8}" r="1.6" fill="${T2}"/>` + bar(22, 151.5 + i * 8, [54, 42, 48][i], 3, T);

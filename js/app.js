@@ -37,10 +37,10 @@
     chip.setAttribute('data-spec', S.online ? `Sealed end to end with ${D.pc.name}'s key. The relay passes it on and can't read it.` : `Last seen at ${D.pc.lastSeen}. Tasks you type can wait in a queue until it's back.`);
     chip.setAttribute('data-spec-tap', '');
     chip.innerHTML = S.online
-      ? `<span class="ldot blink"></span><span class="k">Online</span><span class="full">· ${D.pc.name}</span><span class="s">· streaming, encrypted</span><span class="enc">· encrypted</span>`
-      : `<span class="ldot off"></span><span class="k">Offline</span><span class="full">· ${D.pc.name}</span><span class="s">· last seen ${D.pc.lastSeen}</span><span class="enc">· last seen ${D.pc.lastSeen}</span>`;
-    box.innerHTML = `<p class="lbl"><span>Your PC</span><span>${S.online ? '<span class="live pcl"><span class="ldot"></span>live</span>' : 'off'}</span></p><b>${D.pc.name}</b><span class="t3">${S.online ? 'Streaming, end-to-end encrypted' : 'Last seen ' + D.pc.lastSeen + '. Tasks wait in a queue.'}</span>`;
-    $('#rail-st').innerHTML = S.online ? '<span class="ldot blink"></span>on the web · live' : '<span class="ldot off"></span>PC is off';
+      ? `<span class="k">Online</span><span class="full">· ${D.pc.name}</span><span class="s">· streaming, encrypted</span><span class="enc">· encrypted</span>`
+      : `<span class="k">Offline</span><span class="full">· ${D.pc.name}</span><span class="s">· last seen ${D.pc.lastSeen}</span><span class="enc">· last seen ${D.pc.lastSeen}</span>`;
+    box.innerHTML = `<p class="lbl"><span>Your PC</span><span>${S.online ? '<span class="live">live</span>' : 'off'}</span></p><b>${D.pc.name}</b><span class="t3">${S.online ? 'Streaming, end-to-end encrypted' : 'Last seen ' + D.pc.lastSeen + '. Tasks wait in a queue.'}</span>`;
+    $('#rail-st').innerHTML = S.online ? 'on the web · live' : 'PC is off';
     $('#mocktog').setAttribute('aria-pressed', String(!S.online));
     $('#ask-where').innerHTML = S.online ? `${dic('lock')}runs on ${D.pc.name}` : `${dic('dot')}${D.pc.name} is off`;
     const q = S.queued.length; $('#queued').classList.toggle('on', q > 0); $('#queued-n').textContent = `${q} queued`;
@@ -78,7 +78,7 @@
       const n = D.now;
       return head('Home', `<span>${D.today} · <b>${D.clock}</b></span><span><b>3</b> need you</span>${liveMeta()}`, '<div class="fig" data-figure="num" data-value="3" data-scale="2"></div>', 'need you') +
         `<div class="now">
-          <div class="clear" data-clear data-fx="crop tilt" data-tilt="2.5"><div class="lbl2">${S.online ? '<span class="ldot blink"></span>' : '<span class="ldot off"></span>'}${S.online ? n.front.label : 'Last in front · at 14:06'}</div><div class="big">${n.front.title}</div><div class="sm">${n.front.note}</div></div>
+          <div class="clear" data-clear data-fx="crop tilt" data-tilt="2.5"><div class="lbl2">${S.online ? n.front.label : 'Last in front · at 14:06'}</div><div class="big">${n.front.title}</div><div class="sm">${n.front.note}</div></div>
           <div class="clear" data-clear data-fx="crop tilt" data-tilt="2.5"><div class="lbl2">${dic('play')}${n.playing.label}</div><div class="big">${n.playing.title}</div><div class="sm">${n.playing.note}</div></div>
           <div class="clear" data-clear data-fx="crop tilt" data-tilt="2.5"><div class="lbl2">${dic('dot')}${n.next.label}</div><div class="big">${n.next.title}</div><div class="sm">${n.next.note}</div></div>
         </div>

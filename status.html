@@ -35,7 +35,7 @@
 <main class="doc">
   <p class="lbl">Trust &middot; updated every minute</p>
   <h1>Status</h1>
-  <p><span class="chip live" data-fx="pulse" data-spec="Checked every minute. Hover a day for its record."><span class="ldot"></span>Everything is working</span></p>
+  <p><span class="chip live" data-fx="pulse" data-spec="Checked every minute. Hover a day for its record.">Everything is working</span></p>
   <div class="rows" id="rows"></div>
   <h2>Your PC</h2>
   <p>Everything else runs on your PC, so it works even when we don&rsquo;t. If the relay is down, Yuki on your PC carries on; only the web view waits.</p>
@@ -67,7 +67,7 @@
       return '<i' + (x ? ' class="d"' : '') + ' data-spec="' + label + '" data-spec-notab aria-hidden="true"></i>';
     }).join('');
     return '<div class="srow" data-fx="lit"><div><b>' + s.name + '</b><span class="what">' + s.what + '</span></div>' +
-      '<span class="chip live"><span class="ldot"></span>Working</span>' +
+      '<span class="chip live">Working</span>' +
       '<div class="bars">' + bars + '</div>' +
       '<div class="bars-l"><span>90 days ago</span><span class="up" data-spec="' + sum + '" data-spec-tap aria-label="' + s.up + ' uptime">' + s.up + '</span><span>today</span></div></div>';
   }).join('');

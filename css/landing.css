@@ -104,11 +104,9 @@ html.fx-hover .links a:hover { background: rgba(242,239,233,.05); }
 .sees-wrap { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 16px; align-items: stretch; }
 .fakewin { position: relative; border: 1px solid var(--hair-2); border-radius: 12px; background: #121315; min-height: 300px; display: flex; flex-direction: column; }
 .fw-bar { height: 36px; display: flex; align-items: center; gap: 10px; padding: 0 12px; border-bottom: 1px solid var(--hair); }
-.fw-bar .dots { display: flex; gap: 5px; } .fw-bar .dots i { width: 7px; height: 7px; border-radius: 50%; background: #2B2E32; }
 .fw-bar .ttl { font-size: 13px; font-weight: 600; color: var(--text-2); }
 .fw-tag { margin-left: auto; display: inline-flex; align-items: center; gap: 7px; min-width: 0; font: 500 12.5px/1 var(--f-mono); color: var(--text-2); white-space: nowrap; }
 .fw-tag #fw-read { overflow: hidden; text-overflow: ellipsis; }
-.fw-tag .ldot.off { border-color: var(--mark); }
 .fw-body { flex: 1; display: grid; grid-template-columns: 40% 60%; min-height: 0; }
 .fw-list { border-right: 1px solid var(--hair); padding: 8px; display: flex; flex-direction: column; gap: 4px; }
 .fw-item { position: relative; display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 9px; align-items: center; padding: 8px; border-radius: 8px; font-size: 12.5px; }
@@ -552,7 +550,6 @@ html.fx-hover .knob:hover .knob-cap { box-shadow: 0 10px 24px rgba(0,0,0,.5), in
 .foot nav .lbl { margin: 0 0 6px; }
 .foot nav a { color: var(--text-2); text-decoration: none; font-size: 14.5px; padding-bottom: 3px; transition: color var(--d-fast); }
 .foot nav a:hover, .foot nav a:focus-visible { color: var(--text); }
-.foot .stat { display: inline-flex; align-items: center; gap: 8px; }
 .foot-word { display: block; font-size: clamp(110px, 26vw, 470px); line-height: 1.05; color: #17181A; margin: 40px 0 10px -0.05em; font-weight: 900; user-select: none; }
 .foot-word .fx-ln-t { color: #303338; }
 .foot-base { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; border-top: 1px solid var(--hair); padding-top: 16px; font-size: var(--t-cap); color: var(--text-3); }
@@ -680,8 +677,7 @@ html.fx-hover .knob:hover .knob-cap { box-shadow: 0 10px 24px rgba(0,0,0,.5), in
   .sees-wrap { grid-template-columns: minmax(0, 1fr); gap: 10px; }
   .fakewin { min-height: 0; }
   .fw-bar { height: 32px; }
-  .fw-tag #fw-read { display: none; }
-  .fw-tag::after { content: 'reading'; }
+  .fw-tag { font-size: 12px; }
   .fw-item { grid-template-columns: 22px 1fr; padding: 5px; gap: 7px; }
   .fw-item .av { width: 22px; height: 22px; font-size: 11px; }
   .fw-item b { font-size: 13px; } .fw-item em { font-size: 12.5px; }

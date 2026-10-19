@@ -90,7 +90,7 @@
   // frame writes), and its tree row appears and lights with it. After the scene (p >= B, and always in reduced
   // motion) the window and the tree are live: hover, focus or tap a part and it lights with its row.
   (function sees() {
-    const sec = $('#sees'), demo = $('#sees-demo'), fw = $('#fw'), lab = $('#fw-read'), dot = $('#fw-dot');
+    const sec = $('#sees'), demo = $('#sees-demo'), fw = $('#fw'), lab = $('#fw-read');
     const parts = [fw, ...[1, 2, 3].map((n) => fw.querySelector(`[data-n="${n}"]`))];
     const rows = $$('#tree .tr'), noted = $('#noted');
     const ROLE = ['window “Messages”', 'item “Maya Chen”', 'text “Are we still on…”', 'text “Bring the Lisbon…”'];
@@ -104,8 +104,7 @@
       r.style.transform = o > 0 && o < 1 ? `scale(${(1 + 0.012 * (1 - o)).toFixed(4)})` : 'none';
     }
     function label(n) {
-      if (n >= 0) { lab.textContent = 'reading ' + ROLE[n]; dot.classList.remove('off'); }
-      else { lab.textContent = mode === 'live' ? 'read · point at any part' : 'window in front'; dot.classList.add('off'); }
+      lab.textContent = n >= 0 ? 'reading ' + ROLE[n] : mode === 'live' ? 'read · point at any part' : 'window in front';
     }
     function show(n) {
       if (n === cur) return;
@@ -141,7 +140,7 @@
         if (sh !== lastShow) {
           lastShow = sh;
           rows.forEach((r, i) => { r.classList.toggle('read', sh >= 0 && i <= sh); r.classList.toggle('cur', i === sh); });
-          label(sh); if (sh >= 0) FX.pulse(dot);
+          label(sh);
         }
       }
       noted.classList.toggle('on', live);

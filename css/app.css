@@ -126,7 +126,6 @@ body[data-pc="offline"] .live-only, body[data-pc="offline"] .live-only .live { c
 .strip-track .blk { position: absolute; top: 8px; height: 30px; border-radius: 4px; background: radial-gradient(circle, var(--text-2) 1.3px, transparent 1.7px) 0 0 / 6px 6px; opacity: .9; }
 .strip-track .blk.k-call { background: radial-gradient(circle, var(--lit) 1.6px, transparent 2px) 0 0 / 6px 6px; }
 .strip-track .blk.k-away { background: radial-gradient(circle, var(--hair-2) 1.2px, transparent 1.6px) 0 0 / 6px 6px; }
-.strip-track .blk.k-live::after { content: ''; position: absolute; right: -3px; top: 50%; width: 7px; height: 7px; margin-top: -3.5px; border-radius: 50%; background: var(--live); animation: blink 1.6s steps(2, jump-none) infinite; }
 .strip-track .tip { position: absolute; top: 44px; font: 500 12.5px/1 var(--f-mono); color: var(--text-3); transform: translateX(-50%); }
 .strip-axis { position: relative; height: 20px; border-top: 1px solid var(--hair); font: 500 12.5px/1 var(--f-mono); color: var(--text-3); }
 .strip-axis span { position: absolute; top: 6px; transform: translateX(-50%); }
@@ -408,7 +407,6 @@ html.fx-hover .nav a:not([aria-current]):hover::before, .nav a:not([aria-current
 @media (max-width: 420px) { .tabs-m a::after { left: 8px; right: 8px; } }
 
 /* the PC status: a live dot in the rail box (pulses with the chip) */
-.pcl { display: inline-flex; align-items: center; gap: 6px; }
 .pcchip, .pcbox { transition: border-color var(--d-hover) var(--ease); }
 html.fx-hover .pcchip:hover, .pcchip:focus-visible { border-color: rgba(var(--live-rgb), .7); }
 .pcchip:focus-visible { outline: none; }

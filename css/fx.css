@@ -22,7 +22,7 @@
                  --dl-y moves the bright line, --dl-rest the faint one (both 0).
      8  spec     data-spec="text": the shared #fx-tip (13px mono). data-spec-tap: plain tap opens it on touch
                  (else long-press 450ms). data-spec-notab: fx won't add tabindex="0". Never the only copy.
-     9  pulse    on .ldot or anything holding one (live things only): one mint ring, twice. Fires "fx:pulse".
+     9  pulse    live things only: one mint ring from the element's own edge, twice. Fires "fx:pulse".
     10  reveal   data-reveal="rise|wipe|stagger" (core.js), data-odo="1,284" (fx.js): digits roll in columns.
    ===================================================================== */
 
@@ -141,9 +141,10 @@ html.fx-touch :is(.doc a, .foot nav a, .fine a, .mod-p a, [data-fx~="dotline"]):
 html.fx-touch [data-spec] { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
 [data-spec]:not(a):not(button):not(.key) { cursor: help; }
 
-/* ---------- 9: live pulse (the ring slot is .ldot::after in base.css) ---------- */
-.fx-pulse.ldot::after, .fx-pulse .ldot::after { animation: fx-pulse 900ms var(--ease-out) 2; }
-@keyframes fx-pulse { from { transform: scale(1); opacity: .55; } to { transform: scale(3); opacity: 0; } }
+/* ---------- 9: live pulse (19 Oct: there are no status dots, so the ring leaves the element's own edge) ---------- */
+.fx-pulse { position: relative; }
+.fx-pulse::after { content: ''; position: absolute; inset: -1px; border-radius: inherit; pointer-events: none; animation: fx-pulse 900ms var(--ease-out) 2; }
+@keyframes fx-pulse { from { box-shadow: 0 0 0 0 rgba(var(--live-rgb), .55); } to { box-shadow: 0 0 0 7px rgba(var(--live-rgb), 0); } }
 
 /* ---------- 10: reveals (rise kept low-specificity so a page's own rise wins) + odometer ---------- */
 :where([data-reveal]) { opacity: 0; transform: translateY(18px); transition: opacity .8s var(--ease-out), transform .8s var(--ease-out); }

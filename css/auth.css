@@ -74,7 +74,6 @@ html.fx-hover .tabs a:not([aria-current="page"]):hover { color: var(--text); }
 @keyframes stin { from { opacity: 0; transform: translateY(8px); } }
 .mail { display: flex; align-items: center; gap: 12px; padding: 14px; margin: 0 0 18px; border: 1px solid var(--hair-2); border-radius: 12px; background: var(--raise); }
 .mail .env { width: 40px; height: 30px; flex: none; position: relative; border-radius: 4px; background: radial-gradient(circle, var(--text-3) 1px, transparent 1.4px) 0 0 / 5px 5px; }
-.mail .env::after { content: ''; position: absolute; left: 50%; top: -3px; width: 8px; height: 8px; margin-left: -4px; border-radius: 50%; background: var(--live); animation: blink 1.6s steps(2, jump-none) infinite; }
 .mail b { display: block; font-size: 15px; font-weight: 600; }
 .mail span { font-size: var(--t-cap); color: var(--text-2); }
 .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }

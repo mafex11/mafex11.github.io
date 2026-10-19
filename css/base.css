@@ -153,12 +153,7 @@ html:root .key:active, html:root .key.is-down, html:root [data-fx~="press"]:acti
   border: 1px solid var(--hair-2); color: var(--text-2); font: 500 12.5px/1 var(--f-mono); white-space: nowrap;
 }
 .chip.live { border-color: rgba(var(--live-rgb), .4); color: var(--live); }
-.ldot { position: relative; width: 7px; height: 7px; border-radius: 50%; background: var(--live); flex: none; }
-/* the ring slot for fx "pulse" (one mint ring, twice); idle until js/fx.js adds .fx-pulse */
-.ldot::after { content: ''; position: absolute; inset: -1px; border-radius: 50%; border: 1px solid var(--live); opacity: 0; pointer-events: none; }
-.ldot.off::after { display: none; }
-.ldot.blink { animation: blink 1.6s steps(2, jump-none) infinite; }
-.ldot.off { background: transparent; border: 1px solid var(--text-3); }
+/* no status dots (19 Oct): live is said in words and mint text, never a dot beside them */
 @keyframes blink { 50% { opacity: .3; } }
 
 /* inputs */

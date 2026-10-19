@@ -17,7 +17,7 @@
         Y.fx.ring(el)             ensure and return the <i class="fx-ring">; scenes may write ring.style.opacity.
         Y.fx.lockOn(el, on|ms)    crop lock-on on a .clear: true = hold, false = release, number = hold for ms.
         Y.fx.tip(el, text?)       show the spec readout for el (text defaults to data-spec). Y.fx.hideTip().
-        Y.fx.pulse(el)            one mint ring from el's .ldot (live things only); el fires 'fx:pulse'
+        Y.fx.pulse(el)            one mint ring from el's edge (live things only); el fires 'fx:pulse'
                                   {detail: {x, y}} at most once per 2.5 s (the dashboard field listens).
    Port: a client-side hook (useFx) plus the same CSS in the Next.js build. */
 (function () {
@@ -215,16 +215,17 @@
 
   /* ---------------- 9: live pulse ---------------- */
   function pulse(el) {
-    if (!el) return; const dot = el.classList.contains('ldot') ? el : el.querySelector('.ldot');
+    if (!el) return;
     const t = performance.now();
     if (!(el._fxPt > t - 2500)) {
       el._fxPt = t;
-      const r = (dot || el).getBoundingClientRect();
+      const r = el.getBoundingClientRect();
       el.dispatchEvent(new CustomEvent('fx:pulse', { bubbles: true, detail: { x: r.left + r.width / 2, y: r.top + r.height / 2 } }));
     }
-    if (reduced || !dot || el.classList.contains('fx-pulse')) return;
-    const done = () => { el.classList.remove('fx-pulse'); clearTimeout(el._fxPu); };
-    el.classList.add('fx-pulse'); dot.addEventListener('animationend', done, { once: true }); el._fxPu = setTimeout(done, 2000);
+    if (reduced || el.classList.contains('fx-pulse')) return;
+    const end = (e) => { if (e.animationName === 'fx-pulse') done(); };
+    const done = () => { el.classList.remove('fx-pulse'); clearTimeout(el._fxPu); el.removeEventListener('animationend', end); };
+    el.classList.add('fx-pulse'); el.addEventListener('animationend', end); el._fxPu = setTimeout(done, 2000);
   }
 
   /* ---------------- 8: spec readout ---------------- */
