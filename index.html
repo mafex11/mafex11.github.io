@@ -6,9 +6,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Yuki · a helper that lives on your PC</title>
 <meta name="description" content="Yuki is a personal assistant for Windows. It sees your screen, remembers your day and does things when you ask. Your memory stays on your PC.">
-<meta name="theme-color" content="#0B0B0C">
+<meta name="theme-color" content="#050505">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/blacks.css">
 <link rel="stylesheet" href="css/fx.css">
 <link rel="stylesheet" href="css/landing.css">
 </head>
@@ -333,8 +334,8 @@
           <div class="xp-stack" id="xp" role="img" aria-label="Diagram: your PC at the bottom, a sealed relay in the middle, your browser on top.">
             <svg class="xp" id="xl-lines" viewBox="0 0 640 700" aria-hidden="true">
               <defs>
-                <pattern id="pdots" width="10" height="10" patternUnits="userSpaceOnUse"><circle cx="5" cy="5" r="1.1" fill="#0B0B0C" opacity=".22"/></pattern>
-                <pattern id="pdots2" width="8" height="8" patternUnits="userSpaceOnUse"><circle cx="4" cy="4" r="1.2" fill="#0B0B0C" opacity=".5"/></pattern>
+                <pattern id="pdots" width="10" height="10" patternUnits="userSpaceOnUse"><circle cx="5" cy="5" r="1.1" style="fill: var(--ink)" opacity=".22"/></pattern>
+                <pattern id="pdots2" width="8" height="8" patternUnits="userSpaceOnUse"><circle cx="4" cy="4" r="1.2" style="fill: var(--ink)" opacity=".5"/></pattern>
               </defs>
               <g id="xp-lines" class="xp-lines"></g>
             </svg>
@@ -371,12 +372,11 @@
               <div class="plink"><span class="pl-line"><i></i><i></i><i></i></span></div>
               <div class="pbox p-cloud"><span class="pb-l">Cloud</span><span class="pb-g"></span></div>
               <span class="ai-chip" id="ai-chip"><span class="gl" data-gl="chip"></span></span>
-              <span class="pl-cap" id="pl-cap">only what a question needs</span>
+              <span class="pl-cap" id="pl-cap">only what&rsquo;s needed</span>
             </div>
           </div>
         </div>
-        <p class="ai-say" id="ai-say" aria-live="polite">Claude thinks in the cloud (Anthropic or Amazon Bedrock), with your key or AWS sign-in. Your key and your memory stay on this PC; only what a question needs is sent.</p>
-        <p class="ai-fine">Use one for everything, or a different one per job.</p>
+        <p class="ai-say" id="ai-say" aria-live="polite">Your key and memory stay on this PC.</p>
       </div>
     </div>
   </div>
@@ -400,15 +400,6 @@
           <div data-fx="lit"><dt>Memory</dt><dd>8 GB RAM or more</dd></div>
         </dl>
         <p class="dl-not">Mac and phone apps: not yet. <a href="link.html" data-fx="dotline">How linking works</a></p>
-      </div>
-      <!-- the family lineup (TE): Yuki's pieces, flat, at one scale, on one row. Drawn by js/lineup.js -->
-      <div class="pstage lineup" data-reveal role="group" aria-label="Yuki's pieces">
-        <div class="lu-row">
-          <figure class="lu-item" tabindex="0" style="--vw: 360" aria-label="The app window"><div class="lu-obj" data-piece="app"></div><span class="lu-sh" aria-hidden="true"></span><figcaption>App window</figcaption></figure>
-          <figure class="lu-item" tabindex="0" style="--vw: 150" aria-label="The voice pill"><div class="lu-obj pill" data-piece="pill"></div><span class="lu-sh" aria-hidden="true"></span><figcaption>Voice pill</figcaption></figure>
-          <figure class="lu-item" tabindex="0" style="--vw: 130" aria-label="The tray menu"><div class="lu-obj" data-piece="tray"></div><span class="lu-sh" aria-hidden="true"></span><figcaption>Tray menu</figcaption></figure>
-          <figure class="lu-item" tabindex="0" style="--vw: 100" aria-label="The web dashboard on a phone"><div class="lu-obj phone" data-piece="phone"></div><span class="lu-sh" aria-hidden="true"></span><figcaption>Web, on a phone</figcaption></figure>
-        </div>
       </div>
     </div>
   </div>
@@ -437,6 +428,5 @@
 <script src="js/fx.js"></script>
 <script src="js/hero.js"></script>
 <script src="js/landing.js"></script>
-<script src="js/lineup.js"></script>
 </body>
 </html>

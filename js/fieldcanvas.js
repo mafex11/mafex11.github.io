@@ -22,7 +22,7 @@
     const ctx = cv.getContext('2d', { alpha: false });
     const DPR = Math.min(2, window.devicePixelRatio || 1);
     const vis = window.Y.watch(cv, '0px');
-    let W = 0, H = 0, P = 14, A = null, box = { x: 0, y: 0 }, scale = 1, state = 'idle', st0 = performance.now() / 1000;
+    let BG = '#0B0B0C', W = 0, H = 0, P = 14, A = null, box = { x: 0, y: 0 }, scale = 1, state = 'idle', st0 = performance.now() / 1000;
     const t0 = performance.now() / 1000;
     // the ring's phase is integrated so a speed change (lean) never makes the head jump
     let ph = 0, speed = 1, speedTo = 1, lastT = 0;
@@ -32,7 +32,8 @@
       W = Math.max(1, Math.round(r.width)); H = Math.max(1, Math.round(r.height));
       cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
       P = W < 500 ? 12 : 14;
-      A = K.atlas(['#2B2E32', '#3A3E43', K.COL.mid, K.COL.bone, K.COL.live], P * 0.34, 20, DPR);
+      BG = K.tok('--bg', '#0B0B0C');
+      A = K.atlas([K.tok('--hair-2', '#2B2E32'), K.COL.base2, K.COL.mid, K.COL.bone, K.COL.live], P * 0.34, 20, DPR);
       const side = Math.min(W, H) * (opt.size || 0.5);
       scale = side / 64;
       if (opt.anchor) { const a = opt.anchor.getBoundingClientRect(); box = { x: a.left - r.left + a.width / 2 - side / 2, y: a.top - r.top + a.height / 2 - side / 2 }; }
@@ -46,7 +47,7 @@
       speed += (speedTo - speed) * (1 - Math.pow(0.02, dt));
       ph += dt * speed;
       ctx.setTransform(1, 0, 0, 1, 0, 0);
-      ctx.fillStyle = '#0B0B0C'; ctx.fillRect(0, 0, cv.width, cv.height);
+      ctx.fillStyle = BG; ctx.fillRect(0, 0, cv.width, cv.height);
       const px = pointer.sx - (cv._left || 0), py = pointer.sy - (cv._top || 0);
       const LR = 150, baseR = P * 0.09;
       const jx = box.x + JOINT[0] * scale, jy = box.y + JOINT[1] * scale;

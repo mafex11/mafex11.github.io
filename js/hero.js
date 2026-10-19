@@ -22,6 +22,9 @@
   const vis = Y.watch(hero, '0px');
   const t0 = performance.now() / 1000;
 
+  // the blacks (css/base.css tokens), read when the hero is laid out: the page, the field's resting dots, the
+  // wordmark's unlit pixels
+  let BG = '#0B0B0C', FIELD = '#34373C', OFF = '#1C1E21';
   let W = 0, H = 0, P = 14, base = null, small, orbA, word = [], off = [], G = 40, mark = { x: 0, y: 0 }, orb = { x: 0, y: 0, P: 10 }, orbCells = [];
   let nCols = 0, twRows = new Map();
   // twinkling cells, found once per row (grid space, so parallax never changes them): [i, h] pairs
@@ -40,12 +43,13 @@
     cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
     cv.style.width = W + 'px'; cv.style.height = H + 'px';
     P = W < 600 ? 11 : W < 1100 ? 13 : W > 1760 ? 15 : 14;
-    small = K.atlas(['#303337', K.COL.base2, K.COL.mid, K.COL.bone], P * 0.32, 20, DPR);
+    BG = K.tok('--bg', '#0B0B0C'); FIELD = K.tok('--edge', '#34373C'); OFF = K.tok('--raise-3', '#1C1E21');
+    small = K.atlas([FIELD, K.COL.base2, K.COL.mid, K.COL.bone], P * 0.32, 20, DPR);
     // the resting grid, drawn once: one canvas a cell larger than the hero on every side
     base = document.createElement('canvas');
     base.width = Math.round((W + 2 * P) * DPR); base.height = Math.round((H + 2 * P) * DPR);
     const bx = base.getContext('2d');
-    bx.fillStyle = '#0B0B0C'; bx.fillRect(0, 0, base.width, base.height);    // opaque, so a frame starts with one copy
+    bx.fillStyle = BG; bx.fillRect(0, 0, base.width, base.height);    // opaque, so a frame starts with one copy
     small.begin(bx);
     nCols = Math.ceil(W / P) + 2; twRows = new Map();
     for (let j = 0; j < Math.ceil(H / P) + 2; j++) for (let i = 0; i < Math.ceil(W / P) + 2; i++) small.dot(bx, i * P + P / 2, j * P + P / 2, BASE_R(), ROW.base, 1);
@@ -169,7 +173,7 @@
     ctx.drawImage(base, 0, dy0 - boy, base.width, bh, box, dy0, base.width, bh);
     ctx.save();
     ctx.beginPath(); ctx.rect(0, dy0, cv.width, bh); ctx.clip();
-    ctx.fillStyle = '#0B0B0C';
+    ctx.fillStyle = BG;
     const erase = (x, y, r) => { ctx.beginPath(); ctx.arc(x * DPR, y * DPR, r * DPR, 0, 6.2832); ctx.fill(); };
     const clearAt = (x, y) => {                                    // 1 = untouched, 0 = gone
       if (!clearing) return 1;
@@ -321,7 +325,7 @@
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
     const scatter = leave;
     // unlit pixels first
-    ctx.fillStyle = '#1D1F22';
+    ctx.fillStyle = OFF;
     const offA = 1 - leave;
     if (offA > 0.02) {
       ctx.beginPath();

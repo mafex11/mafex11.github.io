@@ -87,7 +87,7 @@ html.fx-hover .tabs a:not([aria-current="page"]):hover { color: var(--text); }
 .ro-c { display: inline-block; height: 1.15em; overflow: hidden; line-height: 1.15em; }
 .ro-s { display: flex; flex-direction: column; transition: transform 380ms var(--ease-out); }
 .ro-s span { height: 1.15em; line-height: 1.15em; text-align: center; }
-.mockact { display: inline-flex; align-items: center; gap: 8px; margin-top: 18px; height: 32px; padding: 0 12px; border-radius: 8px; border: 1px dashed #4A4E54; background: transparent; color: var(--text-2); font: 500 12.5px/1 var(--f-mono); text-decoration: none; }
+.mockact { display: inline-flex; align-items: center; gap: 8px; margin-top: 18px; height: 32px; padding: 0 12px; border-radius: 8px; border: 1px dashed var(--mark); background: transparent; color: var(--text-2); font: 500 12.5px/1 var(--f-mono); text-decoration: none; }
 .mockact:hover, .mockact:focus-visible { color: var(--text); border-color: var(--text-3); }
 .who { display: flex; align-items: center; gap: 12px; padding: 14px; border: 1px solid var(--hair-2); border-radius: 12px; margin-bottom: 14px; }
 .who .av { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; border: 1px solid var(--hair-2); background: var(--raise-2); font: 800 18px/1 var(--f-display); font-variation-settings: 'ROND' 100; }
@@ -135,7 +135,7 @@ html.fx-hover .tabs a:not([aria-current="page"]):hover { color: var(--text); }
 .cb.pop { animation: cbpop 140ms var(--ease-out); }
 @keyframes cbpop { from { transform: scale(.92); } to { transform: none; } }
 .code input { width: 100%; height: 72px; text-align: center; border-radius: 10px; border: 1px solid var(--hair-2); background: var(--raise); font: 800 34px/1 var(--f-display); font-variation-settings: 'ROND' 100; text-transform: uppercase; color: var(--text); caret-color: transparent; transition: border-color var(--d-fast), background var(--d-fast); }
-html.fx-hover .code input:hover:not(:focus):not(:disabled) { border-color: #3A3E43; }
+html.fx-hover .code input:hover:not(:focus):not(:disabled) { border-color: var(--edge-2); }
 .code input:focus { outline: 0; border-color: var(--text-2); background: var(--bg); }
 .code .dash { width: 12px; height: 3px; flex: none; background: radial-gradient(circle, var(--text-3) 1.2px, transparent 1.5px) 0 0 / 6px 3px repeat-x; }
 .code.bad input { border-color: var(--lit); border-style: dashed; }
@@ -152,9 +152,9 @@ html.fx-hover .code input:hover:not(:focus):not(:disabled) { border-color: #3A3E
 .openpc { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 14px; font-size: 14px; color: var(--text-2); }
 
 /* the PC app's own sign-in screen (Lattice look). Chrome inside this mock may be 12 px; what it says is 13.5 px+ */
-.pcwin { position: relative; flex: 1; min-height: 400px; border-radius: 12px; border: 1px solid #34373C; background: var(--bg); overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 24px 60px rgba(0,0,0,.45); }
+.pcwin { position: relative; flex: 1; min-height: 400px; border-radius: 12px; border: 1px solid var(--edge); background: var(--bg); overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 24px 60px rgba(var(--shade-rgb), .45); }
 .pcwin canvas { position: absolute; inset: 34px 0 0 0; width: 100%; height: calc(100% - 34px); }
-.pc-bar { position: relative; z-index: 2; height: 34px; display: flex; align-items: center; gap: 8px; padding: 0 0 0 12px; border-bottom: 1px solid var(--hair); background: rgba(11,11,12,.9); }
+.pc-bar { position: relative; z-index: 2; height: 34px; display: flex; align-items: center; gap: 8px; padding: 0 0 0 12px; border-bottom: 1px solid var(--hair); background: rgba(var(--bg-rgb), .9); }
 .pc-bar .ymark { width: 16px; height: 16px; }
 .pc-bar .doto { font-size: 15px; font-weight: 900; letter-spacing: .04em; }
 .pc-bar .lbl { margin-left: 6px; font-size: 12px; }
@@ -238,12 +238,12 @@ html.fx-hover .dev:hover { background: var(--raise); }
 
 /* header: a quiet backdrop once the page scrolls */
 .abar { transition: background var(--d-med), border-color var(--d-med); border-bottom: 1px solid transparent; }
-.scrolled .abar { background: rgba(11,11,12,.86); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom-color: var(--hair); }
+.scrolled .abar { background: rgba(var(--bg-rgb), .86); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom-color: var(--hair); }
 /* link: done key, PC start screen, mock row */
 .key.pri.done[disabled] { opacity: 1; background: transparent; color: var(--live); border-color: rgba(var(--live-rgb), .45); }
 .key.pri.done .dic { width: 13px; height: 13px; }
 /* link #expired: the waiting key is a dark key with a dashed edge and full-strength --text-2 (about 9:1), never a faded bone key */
-.key.pri.wait[disabled] { opacity: 1; background: var(--raise); color: var(--text-2); border: 1px dashed #4A4E54; font-weight: 500; }
+.key.pri.wait[disabled] { opacity: 1; background: var(--raise); color: var(--text-2); border: 1px dashed var(--mark); font-weight: 500; }
 .key.pri.wait .spin i { opacity: .35; }
 [data-motion="reduced"] .key.pri.wait .spin i { animation: none; opacity: .8; }
 @media (prefers-reduced-motion: reduce) { .key.pri.wait .spin i { animation: none; opacity: .8; } }

@@ -34,13 +34,15 @@
     const octx = ov.getContext('2d', { alpha: false });
     const hoverMQ = window.matchMedia('(hover: hover) and (pointer: fine)');
     let lensOn = false, gutter = false, inside = true, tap = null, tapT = 0, lastLx = -1, lastLy = -1, lastOx = 1e9, lastOy = 1e9;
+    let BG = '#0B0B0C';   // the page black (--bg), read when the field is sized
     function size() {
       W = innerWidth; H = innerHeight;
+      BG = K.tok('--bg', '#0B0B0C');
       cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
       cv.style.width = W + 'px'; cv.style.height = H + 'px';
       C = Math.ceil(W / P); R = Math.ceil(H / P);
       mask = new Float32Array(C * R); lit = new Float32Array(C * R); tone = new Uint8Array(C * R);
-      A = K.atlas(['#26292C', '#3A3E43', K.COL.mid, K.COL.bone, K.COL.live], P * 0.32, 18, DPR);
+      A = K.atlas([K.COL.base, K.COL.base2, K.COL.mid, K.COL.bone, K.COL.live], P * 0.32, 18, DPR);
       ov.width = Math.round(N * P * DPR); ov.height = Math.round(N * P * DPR);
       ov.style.width = N * P + 'px'; ov.style.height = N * P + 'px';
       lastOx = 1e9;
@@ -115,7 +117,7 @@
     }
     function draw(t) {
       ctx.setTransform(1, 0, 0, 1, 0, 0);
-      ctx.fillStyle = '#0B0B0C'; ctx.fillRect(0, 0, cv.width, cv.height);
+      ctx.fillStyle = BG; ctx.fillRect(0, 0, cv.width, cv.height);
       A.begin(ctx);
       const e = reduced ? 99 : t - t0;
       for (let j = 0; j < R; j++) for (let i = 0; i < C; i++) cell(ctx, i, j, t, e, 0, 0, null);
@@ -133,7 +135,7 @@
       const i0 = Math.floor((L.x - LR) / P), j0 = Math.floor((L.y - LR) / P), ox = i0 * P, oy = j0 * P;
       if (ox !== lastOx || oy !== lastOy) { ov.style.transform = `translate3d(${ox}px,${oy}px,0)`; lastOx = ox; lastOy = oy; }
       octx.setTransform(1, 0, 0, 1, 0, 0);
-      octx.fillStyle = '#0B0B0C'; octx.fillRect(0, 0, ov.width, ov.height);
+      octx.fillStyle = BG; octx.fillRect(0, 0, ov.width, ov.height);
       A.begin(octx);
       const e = reduced ? 99 : t - t0;
       for (let j = Math.max(0, j0); j < Math.min(R, j0 + N); j++) for (let i = Math.max(0, i0); i < Math.min(C, i0 + N); i++) cell(octx, i, j, t, e, ox, oy, L);

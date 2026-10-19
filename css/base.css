@@ -8,18 +8,46 @@
    Port: this file becomes app/globals.css in the Next.js build.
    ===================================================================== */
 :root {
-  /* colour: one product with the app */
-  --bg: #0B0B0C;
-  --raise: #121214;
-  --raise-2: #18191B;
-  --dot: #26292C;
+  /* colour: one product with the app.
+     The blacks (19 Oct): every black and dark grey on the site comes from the tokens below, a ladder from darkest
+     to lightest, so a black palette (css/blacks.css, ?black=NAME) re-colours the whole site by overriding them.
+     The values are "jet", the default since 19 Oct (the user: "rich black, not bland and dull black"): a near-pure
+     black page, wide steps up to the panels, almost no hue; its lacquer (sheens, deep shadows) is in css/blacks.css.
+     The old flat grey-black is the "flat" palette there.
+     CSS, inline SVG (style="fill: var(--x)") and the canvases (read at load through YAccent.tok) all use them. Dark
+     literals left on purpose: alpha masks (#000 / #0000), the accent's dark tints, JS fallbacks, the favicon file.
+       --k-well     the deepest wells, below the page: the console's LCD, the Acts desk's far corner, the knob's edge
+       --bg         the page; dark panels that sit flush (.console, .tree, .pcwin), the canvases' ground, the Y tile
+       --bg-rgb     the page as "r, g, b", for see-through bars, cards and fades over it: rgba(var(--bg-rgb), a)
+       --raise      panels on the page (.mobj, .fakewin, .voice, the Spotify window, keys, inputs)
+       --raise-2    product-shot grounds (.pstage), hover on --raise, the footer word
+       --raise-3    tiles on a raised surface (chat bubbles, desk icons, the key cap, the wordmark's unlit dots)
+       --hair       hairlines; the ticket stub and the taskbar's icon tiles sit at this step too
+       --dot        off dots (LEDs, the dashboard field, the waveform), small tiles and bars at that step
+       --hair-2     borders of panels and keys, dotted rules, the sign-in field's dots
+       --edge       borders of floating panels (run card, ask bar, thread); the hero field's resting dots
+       --edge-2     hover borders, lit rows, the second dot step of every field
+       --mark       crop marks, dashed mock-only buttons
+       --shade-rgb  shadows: rgba(var(--shade-rgb), a)
+       --ink, --ink-rgb  black ink on bone sections and bone-faced drawings, and shadows cast onto bone: near --bg,
+                    another role (a palette may keep ink neutral while the page goes deep) */
+  --k-well: #010101;
+  --bg: #050505;
+  --bg-rgb: 5, 5, 5;
+  --raise: #0F0F10;
+  --raise-2: #19191B;
+  --raise-3: #1E1E21;
+  --dot: #252528;
   --lit: #F2EFE9;
   --text: #F2EFE9;
   --text-2: #B4B0A8;
   --text-3: #8A8780;
-  --hair: #1E2023;
-  --hair-2: #2B2E32;
-  --mark: #474B50;
+  --hair: #202023;
+  --hair-2: #2D2D31;
+  --edge: #37373C;
+  --edge-2: #404045;
+  --mark: #4E4E54;
+  --shade-rgb: 0, 0, 0;
   --live: #6FEBC4;          /* the only colour, and only for live things (js/accent.js may change it) */
   --live-rgb: 111, 235, 196;
   --live-ink: #062419;
@@ -27,7 +55,8 @@
   /* bone sections (for rhythm) */
   --bone: #F2EFE9;
   --bone-2: #E7E3DB;
-  --ink: #0B0B0C;
+  --ink: #060606;
+  --ink-rgb: 6, 6, 6;
   --ink-2: #4A4741;
   --ink-3: #5C5851;         /* about 6.1:1 on --bone (was #75716A, 4.2:1); tags only */
   --bone-hair: #D6D1C7;
@@ -88,7 +117,7 @@ img, svg, canvas { display: block; }
 .read { font-size: var(--t-read); line-height: 1.5; color: var(--text-2); }
 /* bone surfaces: ink text, ink lit border, darker crop marks. Put data-tone="dark" on a dark panel inside bone */
 .bone, [data-tone="bone"] {
-  --lit-c: var(--ink); --lit-halo: rgba(11, 11, 12, .08); --crop-c: #A39D92; --crop-on: var(--ink-2);
+  --lit-c: var(--ink); --lit-halo: rgba(var(--ink-rgb), .08); --crop-c: #A39D92; --crop-on: var(--ink-2);
 }
 .bone .cap, .bone .read, [data-tone="bone"] .cap, [data-tone="bone"] .read { color: var(--ink-2); }
 [data-tone="dark"] {
@@ -126,7 +155,7 @@ img, svg, canvas { display: block; }
   transition: background var(--d-fast), border-color var(--d-fast), color var(--d-fast),
     translate var(--d-release) var(--ease-spring), scale var(--d-release) var(--ease-spring);
 }
-.key:hover { background: var(--raise-2); border-color: #3A3E43; }
+.key:hover { background: var(--raise-2); border-color: var(--edge-2); }
 html.fx-hover .key:hover, html.fx-hover [data-fx~="press"]:hover { translate: 0 -1px; }
 html:root .key:active, html:root .key.is-down, html:root [data-fx~="press"]:active, html:root [data-fx~="press"].is-down {
   translate: 0 1.5px; scale: .985;
@@ -176,17 +205,17 @@ html:root .key:active, html:root .key.is-down, html:root [data-fx~="press"]:acti
 .mockpill > button {
   position: absolute; left: 0; top: 0; transform: translateY(-50%); writing-mode: vertical-rl;
   display: inline-flex; align-items: center; gap: 8px; padding: 12px 6px; border-radius: 0 8px 8px 0;
-  border: 1px dashed #4A4E54; border-left: 0; background: rgba(11,11,12,.9); color: var(--text-3);
+  border: 1px dashed var(--mark); border-left: 0; background: rgba(var(--bg-rgb), .9); color: var(--text-3);
   letter-spacing: .1em; text-transform: uppercase; font-size: 10.5px; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
 }
 .mockpill > button:hover { color: var(--text); border-color: var(--text-3); }
 .mockpill > button i { width: 5px; height: 5px; border-radius: 50%; background: var(--text-3); }
 .mockpill .panel {
   position: absolute; left: 34px; top: 0; transform: translateY(-50%); width: 300px; max-height: min(80vh, 640px); overflow: auto; padding: 14px;
-  border: 1px solid var(--hair-2); border-radius: 14px; background: rgba(11,11,12,.97); box-shadow: 0 20px 60px rgba(0,0,0,.6);
+  border: 1px solid var(--hair-2); border-radius: 14px; background: rgba(var(--bg-rgb), .97); box-shadow: 0 20px 60px rgba(var(--shade-rgb), .6);
   opacity: 0; translate: -6px 0; pointer-events: none; visibility: hidden;
   transition: opacity var(--d-fast), translate var(--d-fast), visibility 0s linear var(--d-fast); /* closed = out of the tab order */
-  scrollbar-width: thin; scrollbar-color: #2B2E32 transparent;
+  scrollbar-width: thin; scrollbar-color: var(--hair-2) transparent;
 }
 .mockpill.open .panel { opacity: 1; translate: 0 0; pointer-events: auto; visibility: visible; transition-delay: 0s; }
 .mockpill .panel h6 { margin: 12px 0 6px; font: 500 11px/1 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); }
@@ -217,7 +246,7 @@ html:root .key:active, html:root .key.is-down, html:root [data-fx~="press"]:acti
 .doc p.lbl { font-size: var(--t-lbl); line-height: 1.3; color: var(--text-3); margin: 0; }
 
 /* ---------- the stub pages' header (privacy, terms, status) ---------- */
-.dtop { position: fixed; top: 0; left: 0; right: 0; height: 60px; display: flex; align-items: center; padding: 0 var(--gut); background: rgba(11,11,12,.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 10; border-bottom: 1px solid var(--hair); }
+.dtop { position: fixed; top: 0; left: 0; right: 0; height: 60px; display: flex; align-items: center; padding: 0 var(--gut); background: rgba(var(--bg-rgb), .85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 10; border-bottom: 1px solid var(--hair); }
 .dtop a.brand { display: inline-flex; align-items: center; gap: 10px; min-height: 40px; text-decoration: none; }
 .dtop .doto { font-size: 24px; font-weight: 900; letter-spacing: .04em; }
 .dtop .r { margin-left: auto; display: flex; gap: 4px; }

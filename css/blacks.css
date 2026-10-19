@@ -1,0 +1,206 @@
+/* =====================================================================
+   Yuki website / blacks: the black palettes. Linked right after css/base.css in every page.
+   19 Oct, the user: "the colour pallette of black feels too bland ... it should look rich black. not bland and dull
+   black". Four rich blacks were designed and judged; jet won (the only one that reads as black everywhere, not navy,
+   brown or teal) and is the default. The others stay here to compare.
+   The tokens (css/base.css :root, darkest first): --k-well, --bg + --bg-rgb, --raise, --raise-2, --raise-3, --hair,
+   --dot, --hair-2, --edge, --edge-2, --mark, --shade-rgb, and --ink + --ink-rgb for black ink on the bone sections.
+   Every black and dark grey on the site, the canvases included, comes from them, so a palette overrides them.
+   A palette:
+     html[data-black="NAME"] { --bg: ...; --bg-rgb: ...; ... }    token overrides (keep each -rgb token in step)
+     html[data-black="NAME"] .selector { ... }                    optional depth rules, scoped the same way
+   Depth goes on panels, grounds and modules, never on the page ground itself: the hero, app and sign-in canvases
+   are opaque and paint a flat --bg, and the fades and see-through bars assume one flat page colour.
+   Canvases read the tokens when they lay out (YAccent.tok in js/accent.js). The accent, bone, light text and status
+   colours are not part of a palette.
+   Picking one: ?black=jet | ink | umber | obsidian | flat on any page address. It is saved on this computer
+   (localStorage 'yuki-black') and every page uses it; ?black=reset goes back to the default (jet).
+   ===================================================================== */
+
+/* ---------- jet (the default): piano black. A near-pure black page (#050505), wide clear steps up to the panels,
+   a thin lacquer sheen on raised surfaces and deep soft shadows under them; almost no hue. Its tokens are the
+   css/base.css :root values; only its depth rules live here. ---------- */
+/* the product-shot grounds: a lacquered plate under an overhead light (a bright top edge, a soft band of light at
+   the top, a deeper floor) */
+html[data-black="jet"] .pstage {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .07), inset 0 240px 160px -150px rgba(255, 255, 255, .035),
+    inset 0 -240px 160px -150px rgba(0, 0, 0, .42);
+}
+/* objects on the grounds: lit from above (a lighter top edge, a hairline sheen inside it), a tight contact shadow
+   and a long soft one */
+html[data-black="jet"] .prod {
+  border-top-color: var(--edge);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .08), 0 1px 0 rgba(0, 0, 0, .8), 0 4px 10px rgba(0, 0, 0, .5),
+    0 44px 56px -30px rgba(0, 0, 0, 1);
+}
+/* raised panels: the lacquer gradient, lighter at the top, and a top edge that catches the light */
+html[data-black="jet"] :is(.fakewin, .voice, .offer, .mobj, .appwin, .req > div, .outc, .aibig, .msearch) {
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, .035), rgba(255, 255, 255, 0) 50%);
+}
+html[data-black="jet"] :is(.fakewin, .voice, .offer, .appwin) { border-top-color: var(--edge); }
+html[data-black="jet"] .mobj { border-top-color: var(--edge); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .07), 0 2px 6px rgba(0, 0, 0, .5); }
+html[data-black="jet"] :is(.req > div, .outc, .aibig, .msearch) { box-shadow: inset 0 1px 0 rgba(255, 255, 255, .055); }
+/* keys on the dark: the same sheen, a tight shadow under */
+html[data-black="jet"] .key:not(.pri):not(.ghost):not(.stop) { box-shadow: inset 0 1px 0 rgba(255, 255, 255, .07), 0 1px 2px rgba(0, 0, 0, .7); }
+/* the AI console on the bone page: a piano-black faceplate (its shadow falls on bone, so it is ink), the LCD a well */
+html[data-black="jet"] .console {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .1), inset 0 200px 130px -130px rgba(255, 255, 255, .04),
+    0 2px 4px rgba(var(--ink-rgb), .14), 0 24px 44px -20px rgba(var(--ink-rgb), .42);
+}
+html[data-black="jet"] .lcd { box-shadow: inset 0 2px 8px rgba(0, 0, 0, .7); }
+/* floating cards and bars: a sheen on the top edge over a deep shadow */
+html[data-black="jet"] :is(.runcard, .thread) { box-shadow: inset 0 1px 0 rgba(255, 255, 255, .07), 0 30px 70px rgba(0, 0, 0, .8); }
+html[data-black="jet"] :is(.ask-cap, .ask, .pcwin) { box-shadow: inset 0 1px 0 rgba(255, 255, 255, .07), 0 20px 50px rgba(0, 0, 0, .75); }
+
+/* ---------- the runners-up, to compare (each read as a colour, not black: ink navy, umber brown, obsidian teal) ---------- */
+
+/* ink: rich black, the print kind (C60 M40 Y40 K100). A deep page with a cool lean you feel in the darkest tones only;
+   the lifted steps stay near neutral so it never reads navy. Depth comes from light, not colour: each dark module is
+   lit softly from its top edge and sinks to a deeper floor, product grounds catch light along their top, panels get a
+   hairline sheen, wells sit deeper than the page. No glow on dots or type, no new textures. */
+html[data-black="ink"] {
+  --k-well: #020305;
+  --bg: #05070B;
+  --bg-rgb: 5, 7, 11;
+  --raise: #0C0F12;
+  --raise-2: #141619;
+  --raise-3: #191B1F;
+  --hair: #1C1E22;
+  --dot: #24272B;
+  --hair-2: #2A2D31;
+  --edge: #33363B;
+  --edge-2: #3A3D42;
+  --mark: #4A4D52;
+  --shade-rgb: 0, 1, 2;
+  --ink: #05070B;
+  --ink-rgb: 5, 7, 11;
+}
+/* dark modules: soft light from the top edge, a deeper floor at the bottom (scene modules light their sticky stage) */
+html[data-black="ink"] .mod:not(.bone):not(.scene),
+html[data-black="ink"] .mod.scene:not(.bone) .stage { background-image: radial-gradient(ellipse 1120px 600px at 50% 0%, rgba(220, 224, 232, .085), rgba(220, 224, 232, .05) 26%, rgba(220, 224, 232, .018) 52%, rgba(220, 224, 232, 0) 80%), linear-gradient(rgba(var(--shade-rgb), 0) 52%, rgba(var(--shade-rgb), .6)); }
+/* footer: the same light, weaker, and the page ends on its deepest floor */
+html[data-black="ink"] .foot { background-image: radial-gradient(ellipse 1120px 480px at 50% 0%, rgba(220, 224, 232, .06), rgba(220, 224, 232, .035) 26%, rgba(220, 224, 232, .012) 52%, rgba(220, 224, 232, 0) 80%), linear-gradient(rgba(var(--shade-rgb), 0) 40%, rgba(var(--shade-rgb), .75)); }
+/* product grounds: a top edge that catches the light (box-shadow, so the .clear crop marks stay) */
+html[data-black="ink"] .pstage { box-shadow: inset 0 1px 0 rgba(255, 255, 255, .05), inset 0 180px 140px -140px rgba(220, 224, 232, .06); }
+/* the objects on them: a slightly brighter sheen and a deeper contact shadow */
+html[data-black="ink"] .prod { box-shadow: 0 1px 0 rgba(var(--shade-rgb), .5), 0 30px 30px -24px rgb(var(--shade-rgb)), inset 0 1px 0 rgba(255, 255, 255, .055); }
+html[data-black="ink"] .mobj { box-shadow: inset 0 1px 0 rgba(255, 255, 255, .045); }
+/* the AI console on bone: an ink slab with a lacquer edge */
+html[data-black="ink"] .console { box-shadow: 0 18px 40px rgba(var(--shade-rgb), .22), inset 0 1px 0 rgba(255, 255, 255, .07); }
+/* the LCD: a recessed well */
+html[data-black="ink"] .lcd { box-shadow: inset 0 2px 8px rgba(var(--shade-rgb), .7); }
+
+/* ---------- umber: a warm black, dark-roast coffee / lacquered walnut at night ---------- */
+html[data-black="umber"] {
+  --k-well: #040302;
+  --bg: #090705;
+  --bg-rgb: 9, 7, 5;
+  --raise: #120F0C;
+  --raise-2: #1A1613;
+  --raise-3: #1F1B18;
+  --hair: #211D1A;
+  --dot: #292521;
+  --hair-2: #2F2A26;
+  --edge: #38332E;
+  --edge-2: #3E3934;
+  --mark: #4C4742;
+  --shade-rgb: 2, 1, 0;
+  --ink: #090705;
+  --ink-rgb: 9, 7, 5;
+}
+/* depth: product grounds lit from above (light on the top, a deeper floor, a fine lit top edge) */
+html[data-black="umber"] .pstage {
+  box-shadow: inset 0 1px 0 rgba(255, 232, 206, .06), inset 0 140px 140px -100px rgba(255, 240, 224, .022),
+    inset 0 -150px 150px -120px rgba(var(--shade-rgb), .32);
+}
+/* the objects on them: a lacquer sheen on the top edge and a deeper, softer shadow under */
+html[data-black="umber"] .prod {
+  box-shadow: 0 1px 0 rgba(var(--shade-rgb), .5), 0 30px 30px -24px rgba(var(--shade-rgb), .95),
+    0 40px 80px -40px rgba(var(--shade-rgb), .7), inset 0 1px 0 rgba(255, 232, 206, .07);
+}
+/* panels: lit a touch at the top, like lacquer under a lamp */
+html[data-black="umber"] :is(.fakewin, .mobj, .voice, .offer, .appwin, .dl-card .req > div) {
+  background-image: linear-gradient(rgba(255, 232, 206, .022), rgba(255, 232, 206, 0) 60%);
+}
+html[data-black="umber"] .mobj { box-shadow: inset 0 1px 0 rgba(255, 232, 206, .06); }
+html[data-black="umber"] .appwin { box-shadow: 0 20px 50px rgba(var(--shade-rgb), .6), inset 0 1px 0 rgba(255, 232, 206, .06); }
+html[data-black="umber"] :is(.runcard, .ask-cap, .thread, .ask) {
+  box-shadow: 0 24px 60px rgba(var(--shade-rgb), .62), inset 0 1px 0 rgba(255, 232, 206, .06);
+}
+/* the dark faceplate on bone: a lit top edge */
+html[data-black="umber"] .console {
+  box-shadow: 0 18px 40px rgba(var(--shade-rgb), .2), inset 0 1px 0 rgba(255, 232, 206, .07);
+}
+/* the footer: a deeper floor */
+html[data-black="umber"] .foot { background-image: linear-gradient(rgba(var(--shade-rgb), 0), rgba(var(--shade-rgb), .6)); }
+
+/* obsidian (19 Oct): volcanic glass. Black with a deep teal undertone (kin to the mint), a deeper page, and a
+   glassy sheen on raised surfaces: a thin light top edge, a faint light falling down the face, depth below. */
+html[data-black="obsidian"] {
+  --k-well: #020505;
+  --bg: #050A09;
+  --bg-rgb: 5, 10, 9;
+  --raise: #0C1212;
+  --raise-2: #141A1A;
+  --raise-3: #192020;
+  --hair: #1B2222;
+  --dot: #232B2B;
+  --hair-2: #28302F;
+  --edge: #303938;
+  --edge-2: #37403F;
+  --mark: #454E4D;
+  --shade-rgb: 0, 3, 3;
+  --ink: #050A09;
+  --ink-rgb: 5, 10, 9;
+}
+/* product-shot grounds: a lit top edge, light falling down the face, a deeper floor (inset, so the crop marks stay) */
+html[data-black="obsidian"] .pstage {
+  box-shadow: inset 0 1px 0 rgba(235, 248, 245, .06), inset 0 240px 200px -200px rgba(225, 242, 238, .035), inset 0 -160px 140px -140px rgba(var(--shade-rgb), .6);
+}
+/* glass panels: the top edge catches the light, a sheen runs down the top of the face */
+html[data-black="obsidian"] :is(.fakewin, .tree, .mobj, .voice, .offer, .req > div) {
+  border-top-color: var(--edge);
+  background-image: linear-gradient(180deg, rgba(225, 242, 238, .028), rgba(225, 242, 238, 0) 48%);
+}
+/* a lit inner top line and a deep soft shadow under the product shots */
+html[data-black="obsidian"] .prod {
+  box-shadow: 0 1px 0 rgba(var(--shade-rgb), .6), 0 34px 34px -24px rgba(var(--shade-rgb), 1), inset 0 1px 0 rgba(235, 248, 245, .07);
+}
+html[data-black="obsidian"] :is(.mobj, .req > div) { box-shadow: inset 0 1px 0 rgba(235, 248, 245, .055), 0 14px 28px -18px rgba(var(--shade-rgb), .9); }
+/* floating glass: the Spotify window, run card, ask bars, thread, the link page's PC window */
+html[data-black="obsidian"] :is(.appwin, .runcard, .ask-cap, .thread, .ask, .pcwin) {
+  border-top-color: var(--edge-2);
+  box-shadow: inset 0 1px 0 rgba(235, 248, 245, .065), 0 26px 64px -8px rgba(var(--shade-rgb), .75);
+}
+/* the AI console on bone: a slab of black glass */
+html[data-black="obsidian"] .console {
+  background-image: linear-gradient(180deg, rgba(225, 242, 238, .05), rgba(225, 242, 238, 0) 40%);
+  box-shadow: inset 0 1px 0 rgba(235, 248, 245, .09), 0 1px 1px rgba(var(--shade-rgb), .25), 0 24px 48px -14px rgba(var(--shade-rgb), .45);
+}
+/* dark modules: a faint light from above */
+html[data-black="obsidian"] :is(.mod:not(.bone):not(.scene), .mod.scene:not(.bone) .stage) {
+  background-image: radial-gradient(900px 480px at 50% 0%, rgba(215, 238, 234, .032), rgba(215, 238, 234, 0) 75%);
+}
+/* the footer: the page deepens to a floor */
+html[data-black="obsidian"] .foot { background-image: linear-gradient(180deg, rgba(var(--shade-rgb), 0), rgba(var(--shade-rgb), .55)); }
+/* dark keys: a lit top edge */
+html[data-black="obsidian"] .key:not(.pri):not(.ghost):not(.stop) { box-shadow: inset 0 1px 0 rgba(235, 248, 245, .06); }
+
+/* ---------- flat: the old black (before 19 Oct), kept to compare: flat neutral-cool grey-blacks, no depth rules ---------- */
+html[data-black="flat"] {
+  --k-well: #0C0D0E;
+  --bg: #0B0B0C;
+  --bg-rgb: 11, 11, 12;
+  --raise: #121214;
+  --raise-2: #18191B;
+  --raise-3: #1C1E21;
+  --hair: #1E2023;
+  --dot: #26292C;
+  --hair-2: #2B2E32;
+  --edge: #34373C;
+  --edge-2: #3A3E43;
+  --mark: #474B50;
+  --shade-rgb: 0, 0, 0;
+  --ink: #0B0B0C;
+  --ink-rgb: 11, 11, 12;
+}

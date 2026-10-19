@@ -202,7 +202,7 @@
   const Y_DOTS = [[13.5, 10.5], [19.5, 16.5], [25.5, 22.5], [49.5, 10.5], [43.5, 16.5], [37.5, 22.5], [31.5, 36.5], [31.5, 44.5], [31.5, 52.5]];
   function ymarkSVG(opt) {
     opt = opt || {};
-    const tile = opt.tile === false ? '' : `<rect x=".5" y=".5" width="63" height="63" rx="13" fill="#0B0B0C" stroke="#2A2D31"/>`;
+    const tile = opt.tile === false ? '' : `<rect x=".5" y=".5" width="63" height="63" rx="13" style="fill: var(--bg); stroke: var(--hair-2)"/>`;   // the app icon's tile: the page black
     const ink = opt.ink || '#F2EFE9';
     return `<svg class="${opt.cls || 'ymark'}" viewBox="0 0 64 64" aria-hidden="true">${tile}${Y_DOTS.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="3.5" fill="${ink}"/>`).join('')}<circle cx="31.5" cy="28.5" r="3.5" fill="${(window.YAccent && YAccent.hex) || '#6FEBC4'}"/></svg>`;
   }

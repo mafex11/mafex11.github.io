@@ -5,9 +5,10 @@
 <script src="js/accent.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Interaction vocabulary · Yuki website mock</title>
-<meta name="theme-color" content="#0B0B0C">
+<meta name="theme-color" content="#050505">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/blacks.css">
 <link rel="stylesheet" href="css/fx.css">
 <style>
   /* the gallery's own layout (this page only); every effect comes from css/fx.css + js/fx.js */
@@ -291,7 +292,7 @@
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0); ctx.clearRect(0, 0, W, H);
     for (let y = P / 2; y < H; y += P) for (let x = P / 2; x < W; x += P) {
       const k = reduced ? 0 : DotKit.lensK(x - lx, y - ly, 120);
-      ctx.fillStyle = k > 0.35 ? '#96938C' : k > 0.02 ? '#3A3E43' : '#26292C';
+      ctx.fillStyle = k > 0.35 ? DotKit.COL.mid : k > 0.02 ? DotKit.COL.base2 : DotKit.COL.base;
       ctx.beginPath(); ctx.arc(x, y, 1.6 * (1 + 0.8 * k), 0, 6.2832); ctx.fill();
     }
   }

@@ -40,13 +40,13 @@ body.app { background: var(--bg); min-height: 100vh; --t-src: 13px; }
 /* ---------------- top bar ---------------- */
 .mainwrap { min-width: 0; display: flex; flex-direction: column; }
 .topbar { position: sticky; top: 0; z-index: 30; height: 60px; display: flex; align-items: center; gap: 10px; padding: 0 40px 0 40px; }
-.topbar::before { content: ''; position: absolute; inset: 0; background: linear-gradient(var(--bg) 55%, rgba(11,11,12,0)); pointer-events: none; z-index: -1; }
+.topbar::before { content: ''; position: absolute; inset: 0; background: linear-gradient(var(--bg) 55%, rgba(var(--bg-rgb), 0)); pointer-events: none; z-index: -1; }
 .tb-brand { display: none; align-items: center; gap: 8px; text-decoration: none; }
 .tb-brand .ymark { width: 26px; height: 26px; }
 .tb-brand .doto { font-size: 22px; font-weight: 900; letter-spacing: .04em; }
 .tb-crumb { font: 500 12.5px/1 var(--f-mono); color: var(--text-3); letter-spacing: .06em; text-transform: uppercase; }
 .tb-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
-.pcchip { min-width: 0; display: inline-flex; align-items: center; gap: 8px; height: 32px; padding: 0 12px; border-radius: 999px; border: 1px solid rgba(var(--live-rgb), .4); background: rgba(11,11,12,.8); font: 500 12.5px/1 var(--f-mono); color: var(--text); white-space: nowrap; }
+.pcchip { min-width: 0; display: inline-flex; align-items: center; gap: 8px; height: 32px; padding: 0 12px; border-radius: 999px; border: 1px solid rgba(var(--live-rgb), .4); background: rgba(var(--bg-rgb), .8); font: 500 12.5px/1 var(--f-mono); color: var(--text); white-space: nowrap; }
 .pcchip .k { color: var(--live); }
 .pcchip .s { color: var(--text-2); }
 .pcchip .enc { display: none; color: var(--text-2); }
@@ -54,7 +54,7 @@ body[data-pc="offline"] .pcchip { border-color: var(--hair-2); }
 body[data-pc="offline"] .pcchip .k { color: var(--text-2); }
 .queued { display: none; white-space: nowrap; flex: none; height: 32px; align-items: center; gap: 6px; padding: 0 10px; border-radius: 999px; border: 1px dashed var(--hair-2); font: 500 12.5px/1 var(--f-mono); color: var(--text-2); }
 .queued.on { display: inline-flex; }
-.mocktog { display: inline-flex; flex: none; white-space: nowrap; align-items: center; gap: 8px; height: 32px; padding: 0 10px; border-radius: 999px; border: 1px dashed #4A4E54; background: transparent; color: var(--text-2); font: 500 12.5px/1 var(--f-mono); }
+.mocktog { display: inline-flex; flex: none; white-space: nowrap; align-items: center; gap: 8px; height: 32px; padding: 0 10px; border-radius: 999px; border: 1px dashed var(--mark); background: transparent; color: var(--text-2); font: 500 12.5px/1 var(--f-mono); }
 .mocktog:hover { color: var(--text); border-color: var(--text-3); }
 .mocktog .tg { width: 24px; height: 14px; border-radius: 7px; border: 1px solid var(--hair-2); position: relative; }
 .mocktog .tg::after { content: ''; position: absolute; top: 2px; left: 2px; width: 8px; height: 8px; border-radius: 50%; background: var(--text-3); transition: transform var(--d-fast); }
@@ -63,7 +63,7 @@ body[data-pc="offline"] .pcchip .k { color: var(--text-2); }
 .tabs-m { display: none; }
 
 /* offline banner */
-.offbar { display: none; margin: 4px 40px 0; padding: 12px 14px; border-radius: 12px; border: 1px dashed var(--hair-2); background: rgba(18,18,20,.9); align-items: center; gap: 12px; font-size: 13.5px; color: var(--text-2); }
+.offbar { display: none; margin: 4px 40px 0; padding: 12px 14px; border-radius: 12px; border: 1px dashed var(--hair-2); background: color-mix(in srgb, var(--raise) 90%, transparent); align-items: center; gap: 12px; font-size: 13.5px; color: var(--text-2); }
 .offbar b { color: var(--text); font-weight: 600; }
 .offbar .offq { color: var(--text); white-space: nowrap; }
 body[data-pc="offline"] .offbar { display: flex; }
@@ -221,8 +221,8 @@ body[data-pc="offline"] .live-only, body[data-pc="offline"] .live-only .live { c
 
 /* ---------------- the ask bar + thread ---------------- */
 .askdock { position: fixed; z-index: 40; left: 248px; right: 0; bottom: 0; padding: 0 40px 22px; pointer-events: none; display: flex; flex-direction: column; align-items: center; }
-.askdock::before { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 120px; background: linear-gradient(rgba(11,11,12,0), var(--bg) 70%); z-index: -1; }
-.thread { pointer-events: auto; width: 100%; max-width: 780px; max-height: min(62vh, 620px); overflow-y: auto; display: none; flex-direction: column; gap: 10px; padding: 14px; margin-bottom: 10px; border: 1px solid #34373C; border-radius: 18px; background: rgba(11,11,12,.97); box-shadow: 0 30px 80px rgba(0,0,0,.6); scrollbar-width: thin; scrollbar-color: #2B2E32 transparent; }
+.askdock::before { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 120px; background: linear-gradient(rgba(var(--bg-rgb), 0), var(--bg) 70%); z-index: -1; }
+.thread { pointer-events: auto; width: 100%; max-width: 780px; max-height: min(62vh, 620px); overflow-y: auto; display: none; flex-direction: column; gap: 10px; padding: 14px; margin-bottom: 10px; border: 1px solid var(--edge); border-radius: 18px; background: rgba(var(--bg-rgb), .97); box-shadow: 0 30px 80px rgba(var(--shade-rgb), .6); scrollbar-width: thin; scrollbar-color: var(--hair-2) transparent; }
 .thread.on { display: flex; animation: thin .35s var(--ease-out); }
 @keyframes thin { from { opacity: 0; transform: translateY(12px); } }
 .th-h { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 0 4px 4px; }
@@ -261,7 +261,7 @@ body[data-pc="offline"] .live-only, body[data-pc="offline"] .live-only .live { c
 .ans li::before { content: ''; width: 9px; height: 9px; margin-top: 6px; border-radius: 50%; border: 1.3px solid var(--text-3); }
 .ans li em { font: 500 var(--t-src)/21px var(--f-mono); color: var(--text-3); font-style: normal; }
 .ans .from { margin-top: 10px; font: 500 var(--t-src)/1.4 var(--f-mono); color: var(--text-3); }
-.ask { pointer-events: auto; width: 100%; max-width: 780px; display: flex; align-items: center; gap: 10px; height: 58px; padding: 0 8px 0 18px; border: 1px solid #34373C; border-radius: 18px; background: rgba(14,15,16,.97); box-shadow: 0 18px 50px rgba(0,0,0,.55); transition: border-color var(--d-fast); }
+.ask { pointer-events: auto; width: 100%; max-width: 780px; display: flex; align-items: center; gap: 10px; height: 58px; padding: 0 8px 0 18px; border: 1px solid var(--edge); border-radius: 18px; background: color-mix(in srgb, color-mix(in srgb, var(--bg) 60%, var(--raise)) 97%, transparent); box-shadow: 0 18px 50px rgba(var(--shade-rgb), .55); transition: border-color var(--d-fast); }
 .ask:focus-within { border-color: rgba(var(--live-rgb), .55); }
 .ask .yd { width: 20px; height: 20px; flex: none; }
 .ask input { flex: 1; align-self: stretch; min-width: 0; border: 0; background: transparent; font-size: 15.5px; color: var(--text); text-overflow: ellipsis; }
@@ -271,7 +271,7 @@ body[data-pc="offline"] .live-only, body[data-pc="offline"] .live-only .live { c
 .ask .send { width: 42px; height: 42px; padding: 0; border-radius: 12px; }
 .ask .send svg { width: 16px; height: 16px; }
 .hints { pointer-events: auto; display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 10px; }
-.hints button { height: 32px; padding: 0 13px; border-radius: 999px; border: 1px solid var(--hair-2); background: rgba(11,11,12,.9); color: var(--text-2); font-size: var(--t-cap); }
+.hints button { height: 32px; padding: 0 13px; border-radius: 999px; border: 1px solid var(--hair-2); background: rgba(var(--bg-rgb), .9); color: var(--text-2); font-size: var(--t-cap); }
 .hints button:hover, .hints button:focus-visible { color: var(--text); border-color: var(--text-3); }
 .hints { opacity: 0; transform: translateY(6px); pointer-events: none; transition: opacity var(--d-fast), transform var(--d-fast); }
 .askdock.focus .hints { opacity: 1; transform: none; pointer-events: auto; }
@@ -410,7 +410,7 @@ html.fx-hover .nav a:not([aria-current]):hover::before, .nav a:not([aria-current
 .pcchip, .pcbox { transition: border-color var(--d-hover) var(--ease); }
 html.fx-hover .pcchip:hover, .pcchip:focus-visible { border-color: rgba(var(--live-rgb), .7); }
 .pcchip:focus-visible { outline: none; }
-html.fx-hover .pcbox[data-fx]:hover { border-color: #3A3E43; }
+html.fx-hover .pcbox[data-fx]:hover { border-color: var(--edge-2); }
 
 /* the to-do circle: press (fx), the fill, then the tick drawn in five dots, 30 ms apart; hover previews it */
 .todo .ck .tk { position: absolute; left: 50%; top: 50%; width: 11px; height: 11px; margin: -5.5px 0 0 -5.5px; fill: var(--text-2); pointer-events: none; }

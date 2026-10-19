@@ -3,7 +3,6 @@
    Hover, press, focus and touch come from js/fx.js (Y.fx); scenes only toggle .is-lit / Y.fx.lit or write a
    ring's opacity, they never draw their own outline. Everything that moves registers with Y.loop.
    Modules: 01 Sees, 02 Remembers, 03 Acts, 04 Talks, 05 Your PC (the diagram + the Any AI console), 06 Download.
-   The Download lineup drawings live in js/lineup.js (18 Oct, the TE touch).
    Port: one React component per module (components/landing/Sees.tsx ...), each taking `p`. */
 (function () {
   'use strict';
@@ -180,8 +179,8 @@
       for (let i = 0; i < 36; i++) {
         const talk = leo ? i >= 11 && i <= 27 : i <= 8 || i >= 30, quote = leo && i >= 13 && i <= 25;
         const a = talk ? 0.3 + 0.7 * Math.abs(Math.sin(i * 1.7 + (leo ? 0.4 : 2.1))) * (0.55 + 0.45 * hash(i, leo ? 3 : 7, 2)) : 0;
-        const n = a > 0.68 ? 2 : a > 0.38 ? 1 : 0, fill = quote ? '#F2EFE9' : talk ? '#8A8780' : '#2B2E32', x = i * 7 + 3.5;
-        for (let k = -n; k <= n; k++) s += `<circle cx="${x}" cy="${11 + k * 4.5}" r="${k === 0 ? 1.9 : 1.5}" fill="${fill}"/>`;
+        const n = a > 0.68 ? 2 : a > 0.38 ? 1 : 0, paint = quote ? 'fill="#F2EFE9"' : talk ? 'fill="#8A8780"' : 'style="fill: var(--hair-2)"', x = i * 7 + 3.5;
+        for (let k = -n; k <= n; k++) s += `<circle cx="${x}" cy="${11 + k * 4.5}" r="${k === 0 ? 1.9 : 1.5}" ${paint}/>`;
       }
       w.innerHTML = `<svg viewBox="0 0 252 22" preserveAspectRatio="xMinYMid meet" aria-hidden="true">${s}</svg>`;
     });
@@ -560,17 +559,17 @@
       const sil = pts([A2, B2, dn(B2, 8), dn(C2, 8), dn(E2, 8), E2]);
       const L = lbl.side === 'r' ? { x: b[0] + 34, y: b[1] + th / 2 } : { x: e[0] - 34, y: e[1] + th / 2 };
       return `<polygon class="lit-h" points="${sil}"/><polygon class="lit-o" points="${sil}"/>` +
-        `<polygon class="hit" points="${pts([e, c, dn(c), dn(e)])}" fill="#D9D4CA" stroke="#0B0B0C" stroke-width="1"/>` +
-        `<polygon class="hit" points="${pts([c, b, dn(b), dn(c)])}" fill="#C9C3B8" stroke="#0B0B0C" stroke-width="1"/>` +
-        `<polygon class="hit" points="${pts([a, b, c, e])}" fill="${face}" stroke="#0B0B0C" stroke-width="1"/>` +
+        `<polygon class="hit" points="${pts([e, c, dn(c), dn(e)])}" fill="#D9D4CA" style="stroke: var(--ink)" stroke-width="1"/>` +
+        `<polygon class="hit" points="${pts([c, b, dn(b), dn(c)])}" fill="#C9C3B8" style="stroke: var(--ink)" stroke-width="1"/>` +
+        `<polygon class="hit" points="${pts([a, b, c, e])}" fill="${face}" style="stroke: var(--ink)" stroke-width="1"/>` +
         `<g transform="matrix(${C} ${S} ${-C} ${S} ${CX} 0)" pointer-events="none">${detail || ''}</g>` +
-        `<g class="slab-lbl" transform="translate(${L.x.toFixed(1)} ${L.y.toFixed(1)})"><circle r="25" fill="#0B0B0C"/><text y="9" text-anchor="middle">${lbl.t}</text></g>`;
+        `<g class="slab-lbl" transform="translate(${L.x.toFixed(1)} ${L.y.toFixed(1)})"><circle r="25" style="fill: var(--ink)"/><text y="9" text-anchor="middle">${lbl.t}</text></g>`;
     }
     // a 5 x 5 dot glyph in face space
-    const glyph = (name, cx, cy, s) => { let o = ''; GL[name].forEach((row, y) => { for (let x = 0; x < 5; x++) if (row[x] === '1') o += `<circle cx="${(cx + (x - 2) * s).toFixed(1)}" cy="${(cy + (y - 2) * s).toFixed(1)}" r="${(s * 0.36).toFixed(2)}" fill="#0B0B0C"/>`; }); return o; };
-    const tile = (x, y, w, h, g, cls) => `<g class="${cls || ''}"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="6" fill="#F2EFE9" stroke="#0B0B0C"/>` +
+    const glyph = (name, cx, cy, s) => { let o = ''; GL[name].forEach((row, y) => { for (let x = 0; x < 5; x++) if (row[x] === '1') o += `<circle cx="${(cx + (x - 2) * s).toFixed(1)}" cy="${(cy + (y - 2) * s).toFixed(1)}" r="${(s * 0.36).toFixed(2)}" style="fill: var(--ink)"/>`; }); return o; };
+    const tile = (x, y, w, h, g, cls) => `<g class="${cls || ''}"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="6" fill="#F2EFE9" style="stroke: var(--ink)"/>` +
       `<rect x="${x + 6}" y="${y + 6}" width="${w - 12}" height="${h - 12}" rx="3" fill="url(#pdots2)" opacity=".55"/>` +
-      `<rect x="${x + w / 2 - 34}" y="${y + h / 2 - 34}" width="68" height="68" rx="8" fill="#FBFAF7" stroke="#0B0B0C" stroke-width=".8"/>` + glyph(g, x + w / 2, y + h / 2, 11) + '</g>';
+      `<rect x="${x + w / 2 - 34}" y="${y + h / 2 - 34}" width="68" height="68" rx="8" fill="#FBFAF7" style="stroke: var(--ink)" stroke-width=".8"/>` + glyph(g, x + w / 2, y + h / 2, 11) + '</g>';
     // PC: memory (lock), screen (window), voice (wave), AI keys (key; it dims when the AI needs no key)
     gPC.innerHTML = slab(300, 230, 26, '#FBFAF7',
       `<rect x="-150" y="-115" width="300" height="230" fill="url(#pdots)"/>` +
@@ -578,17 +577,17 @@
       { t: 'C', side: 'l' });
     gRelay.innerHTML = slab(230, 170, 9, '#EFEBE4',
       `<rect x="-115" y="-85" width="230" height="170" fill="url(#pdots2)" opacity=".55"/>` +
-      `<circle cx="0" cy="0" r="32" fill="#FBFAF7" stroke="#0B0B0C"/>` + glyph('lock', 0, 0, 9),
+      `<circle cx="0" cy="0" r="32" fill="#FBFAF7" style="stroke: var(--ink)"/>` + glyph('lock', 0, 0, 9),
       { t: 'B', side: 'r' });
     gWeb.innerHTML = slab(280, 196, 14, '#FBFAF7',
-      `<rect x="-140" y="-98" width="280" height="24" fill="#E7E3DB" stroke="#0B0B0C"/>` +
-      `<circle cx="-124" cy="-86" r="3.4" fill="#0B0B0C"/><circle cx="-112" cy="-86" r="3.4" fill="#0B0B0C" opacity=".4"/><circle cx="-100" cy="-86" r="3.4" fill="#0B0B0C" opacity=".2"/>` +
-      `<rect x="-80" y="-92" width="150" height="12" rx="6" fill="#FBFAF7" stroke="#0B0B0C" stroke-width=".8"/>` +
-      `<rect x="-124" y="-60" width="58" height="146" fill="url(#pdots)" stroke="#0B0B0C" stroke-width=".6"/>` +
-      `<rect x="-54" y="-60" width="180" height="30" rx="4" fill="#0B0B0C"/><circle cx="110" cy="-45" r="4.5" fill="${(window.YAccent && YAccent.hex) || '#6FEBC4'}"/>` +
-      `<rect x="-54" y="-18" width="180" height="12" rx="2" fill="#0B0B0C" opacity=".7"/><rect x="-54" y="2" width="140" height="12" rx="2" fill="#0B0B0C" opacity=".35"/>` +
-      `<rect x="-54" y="22" width="160" height="12" rx="2" fill="#0B0B0C" opacity=".35"/>` +
-      `<rect x="-54" y="46" width="180" height="40" rx="4" fill="none" stroke="#0B0B0C" stroke-dasharray="2 3"/>`,
+      `<rect x="-140" y="-98" width="280" height="24" fill="#E7E3DB" style="stroke: var(--ink)"/>` +
+      `<circle cx="-124" cy="-86" r="3.4" style="fill: var(--ink)"/><circle cx="-112" cy="-86" r="3.4" style="fill: var(--ink)" opacity=".4"/><circle cx="-100" cy="-86" r="3.4" style="fill: var(--ink)" opacity=".2"/>` +
+      `<rect x="-80" y="-92" width="150" height="12" rx="6" fill="#FBFAF7" style="stroke: var(--ink)" stroke-width=".8"/>` +
+      `<rect x="-124" y="-60" width="58" height="146" fill="url(#pdots)" style="stroke: var(--ink)" stroke-width=".6"/>` +
+      `<rect x="-54" y="-60" width="180" height="30" rx="4" style="fill: var(--ink)"/><circle cx="110" cy="-45" r="4.5" fill="${(window.YAccent && YAccent.hex) || '#6FEBC4'}"/>` +
+      `<rect x="-54" y="-18" width="180" height="12" rx="2" style="fill: var(--ink)" opacity=".7"/><rect x="-54" y="2" width="140" height="12" rx="2" style="fill: var(--ink)" opacity=".35"/>` +
+      `<rect x="-54" y="22" width="160" height="12" rx="2" style="fill: var(--ink)" opacity=".35"/>` +
+      `<rect x="-54" y="46" width="180" height="40" rx="4" fill="none" style="stroke: var(--ink)" stroke-dasharray="2 3"/>`,
       { t: 'A', side: 'l' });
     // stream lines: up on the left (the live view), down on the right (your commands)
     const LX = [-46, 46], TOP = 150, BOT = 520;
@@ -673,14 +672,15 @@
   // The knob is the control (role=slider: arrows, Home, End, drag); the ring labels are a mirror you can click.
   // The readout says, per model, where the AI thinks: the AI chip slides between THIS PC and CLOUD.
   (function anyAI() {
-    const SENT = 'only what a question needs is sent.';
+    // 19 Oct: one short line per model (the user: "too much text"); the picture says the rest
+    const KEPT = 'Your key and memory stay on this PC.';
     const P = [
-      { n: 'Claude', s: 'Anthropic, or Amazon Bedrock', cloud: true, key: true, say: `Claude thinks in the cloud (Anthropic or Amazon Bedrock), with your key or AWS sign-in. Your key and your memory stay on this PC; ${SENT}` },
-      { n: 'OpenAI', s: 'GPT models', cloud: true, key: true, say: `OpenAI thinks in its cloud, with your key. Your key and your memory stay on this PC; ${SENT}` },
-      { n: 'Gemini', s: 'Google', cloud: true, key: true, say: `Gemini thinks in Google’s cloud, with your key. Your key and your memory stay on this PC; ${SENT}` },
-      { n: 'OpenRouter', s: 'Free models', cloud: true, key: true, say: `OpenRouter’s free models think in the cloud, with your key. Your key and your memory stay on this PC; ${SENT}` },
-      { n: 'Ollama', s: 'Fully local', cloud: false, key: false, say: 'Ollama thinks on this PC, even offline. No key. Nothing leaves your PC.' },
-      { n: 'Other', s: 'DeepSeek, or any OpenAI-compatible service', cloud: true, key: true, say: `Any OpenAI-compatible service, with its key kept on this PC. Your memory stays here; ${SENT}` }
+      { n: 'Claude', s: 'Anthropic, or Amazon Bedrock', cloud: true, key: true, say: KEPT },
+      { n: 'OpenAI', s: 'GPT models', cloud: true, key: true, say: KEPT },
+      { n: 'Gemini', s: 'Google', cloud: true, key: true, say: KEPT },
+      { n: 'OpenRouter', s: 'Free models', cloud: true, key: true, say: KEPT },
+      { n: 'Ollama', s: 'Fully local', cloud: false, key: false, say: 'Runs on this PC, even offline.' },
+      { n: 'Other', s: 'DeepSeek and others', cloud: true, key: true, say: KEPT }
     ];
     const ANG = [-125, -75, -25, 25, 75, 125];
     const con = $('#ai'), wrap = $('#knob-wrap'), knob = $('#knob'), cap = $('#knob-cap'), ticksEl = $('#knob-ticks'), labels = $('#knob-labels'), lcd = $('#lcd');
@@ -715,7 +715,7 @@
       knob.setAttribute('aria-valuenow', String(i)); knob.setAttribute('aria-valuetext', `${p.n}: ${p.say}`);
       nEl.textContent = p.n; sEl.textContent = p.s; say.textContent = p.say;
       picto.classList.toggle('local', !p.cloud); picto.classList.toggle('nokey', !p.key);
-      plCap.textContent = p.cloud ? 'only what a question needs' : 'nothing leaves';
+      plCap.textContent = p.cloud ? 'only what’s needed' : 'nothing leaves';
       chip.style.transform = `translateX(${chipX[p.cloud ? 1 : 0]}px)`;
       brainApi.noKey(!p.key);
       if (changed && !reduced) { [lcd, con].forEach((x) => { x.classList.remove('swap'); void x.offsetWidth; x.classList.add('swap'); }); }

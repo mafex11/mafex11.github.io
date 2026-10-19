@@ -50,7 +50,7 @@ html.fx-kb [data-fx~="lit"]:focus-within > .fx-ring {
 .fx-mx.on { opacity: 1; transition-duration: var(--d-fast); }
 .fx-mx-l { position: absolute; left: 0; top: 0; width: 96px; height: 96px; border-radius: 50%; overflow: hidden; }
 .fx-mx-g { position: absolute; left: 0; top: 0; background: radial-gradient(circle, var(--mx-c, rgba(242,239,233,.22)) 1px, transparent 1.35px) 0 0 / 4px 4px; }
-.key.pri, [data-fx~="matrix"].pri { --mx-c: rgba(11, 11, 12, .2); }
+.key.pri, [data-fx~="matrix"].pri { --mx-c: rgba(var(--ink-rgb), .2); }
 .bone .key.pri, [data-tone="bone"] .key.pri { --mx-c: rgba(242, 239, 233, .24); }
 .fx-mx.pop .fx-mx-l { animation: fx-mxpop 320ms var(--ease-out) forwards; }
 @keyframes fx-mxpop { from { scale: .6; opacity: 1; } to { scale: 1.2; opacity: 0; } }
@@ -129,7 +129,7 @@ html.fx-touch :is(.doc a, .foot nav a, .fine a, .mod-p a, [data-fx~="dotline"]):
     linear-gradient(var(--m), var(--m)) 3px calc(100% - 3px) / 6px 1px no-repeat, linear-gradient(var(--m), var(--m)) 3px calc(100% - 3px) / 1px 6px no-repeat,
     linear-gradient(var(--m), var(--m)) calc(100% - 3px) calc(100% - 3px) / 6px 1px no-repeat, linear-gradient(var(--m), var(--m)) calc(100% - 3px) calc(100% - 3px) / 1px 6px no-repeat,
     var(--raise-2);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, .45);
+  box-shadow: 0 12px 32px rgba(var(--shade-rgb), .45);
   opacity: 0; transform: translate(var(--tx, 0), calc(var(--ty, 0px) + var(--dy, 4px)));
   transition: opacity 160ms var(--ease), transform 160ms var(--ease-out);
 }

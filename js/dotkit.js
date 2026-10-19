@@ -9,12 +9,16 @@
      and beyond, smoothstep in between. Callers swell dots by up to 1.8x and brighten one ramp step with it:
        const k = DotKit.lensK(x - px, y - py, 120); r *= 1 + 0.8 * k; if (k > 0.35) row = brighter;
      Radius: 120 px (hero 160). Off with reduced motion (the caller skips it).
+   - COL: the dot colours; base, base2 and ink come from the colour tokens (--dot, --edge-2, --ink), read once at
+     load, and tok('--x', '#fallback') reads any other token, so a black palette reaches every canvas.
    Port: a plain TS module (lib/dotkit.ts) shared by the hero, the login field and the dashboard field. */
 (function () {
   'use strict';
   const ACC = window.YAccent;   // js/accent.js: the chosen accent and its ramp (default mint)
   const RAMP = ACC ? ACC.ramp.slice() : ['#284A50', '#2F7570', '#43AE94', '#6FEBC4', '#C2F3DF', '#F2EFE9'];   // dark tint, accent, bone
-  const COL = { base: '#26292C', base2: '#3A3E43', mid: '#96938C', bone: '#F2EFE9', live: ACC ? ACC.hex : '#6FEBC4', ink: '#0B0B0C' };
+  // a colour token from css/base.css :root (or the black palette on top of it), today's hex as the fallback
+  const tok = (name, fb) => (ACC && ACC.tok ? ACC.tok(name, fb) : fb);
+  const COL = { base: tok('--dot', '#26292C'), base2: tok('--edge-2', '#3A3E43'), mid: '#96938C', bone: '#F2EFE9', live: ACC ? ACC.hex : '#6FEBC4', ink: tok('--ink', '#0B0B0C') };
 
   function atlas(colors, maxR, levels, dpr) {
     const S = Math.ceil(maxR * 2 * dpr) + 2;
@@ -122,5 +126,5 @@
     return t * t * (3 - 2 * t);
   }
 
-  window.DotKit = { RAMP, COL, atlas, WORD, WORD_COLS, WORD_ROWS, wordDots, planet, planetWhen, PLANET: { R: R0, GAP, EXTENT }, hash, bayer, lensK };
+  window.DotKit = { RAMP, COL, tok, atlas, WORD, WORD_COLS, WORD_ROWS, wordDots, planet, planetWhen, PLANET: { R: R0, GAP, EXTENT }, hash, bayer, lensK };
 })();
