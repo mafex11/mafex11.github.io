@@ -124,20 +124,16 @@ html.fx-hover .links a:hover { background: rgba(242,239,233,.05); }
 .demo-sees [data-n] > .fx-ring { will-change: opacity, transform; }
 .tree { border: 1px solid var(--hair-2); border-radius: 12px; padding: 14px 14px 12px; background: var(--bg); }
 .tree-h { margin: 0 0 12px; font: 500 13px/1.3 var(--f-ui); color: var(--text-2); }
-.tr-list { list-style: none; margin: 0; padding: 0 0 0 14px; position: relative; display: grid; gap: 8px; }
-/* the depth guide: one dotted line, one dot per node */
-.tr-list::before { content: ''; position: absolute; left: 3px; top: 12px; bottom: 12px; width: 3px; background: radial-gradient(circle, var(--hair-2) 1px, transparent 1.3px) 0 0 / 3px 5px repeat-y; }
+/* nesting reads from the indent alone (19 Oct: no dotted depth guide, no node dots); the indent is wide enough
+   that the child rows' tags and values never line up with the window row's */
+.tr-list { list-style: none; margin: 0; padding: 0; position: relative; display: grid; gap: 8px; }
 .tr { position: relative; display: flex; align-items: baseline; gap: 9px; padding: 7px 9px; border-radius: 8px; font: 400 14px/1.35 var(--f-mono); color: var(--text-2); overflow-wrap: anywhere;
   opacity: 0; transform: translateY(6px); transition: opacity 260ms var(--ease), transform 260ms var(--ease-out), color var(--d-med), background var(--d-med); outline: none; cursor: default; }
-.tr.d1 { margin-left: 16px; }
+.tr.d1 { margin-left: 28px; }
 .tr > span { min-width: 0; }
-.tr::before { content: ''; position: absolute; left: -14px; top: 15px; width: 7px; height: 7px; margin-left: 1px; border-radius: 50%; background: var(--hair-2); transition: background var(--d-med); }
-.tr.d1::before { left: -30px; }
 .tr > i:not(.fx-ring) { flex: none; font: 500 12.5px/1 var(--f-mono); font-style: normal; letter-spacing: .05em; text-transform: uppercase; color: var(--text-2); padding: 4px 6px 3px; border: 1px solid var(--hair-2); border-radius: 5px; }
 .tr.read, .demo-sees.live .tr { opacity: 1; transform: none; }
-.tr.read::before { background: var(--text-3); }
 .tr.cur, .tr.is-lit { color: var(--text); background: var(--raise); }
-.tr.cur::before, .tr.is-lit::before { background: var(--lit); }
 .sees-out { display: grid; grid-template-columns: 1fr auto; gap: 16px; margin-top: 16px; align-items: stretch; }
 .noted { padding: 14px 16px; min-height: 112px; }
 .noted > :not(.wait):not(.fx-c) { opacity: 0; transform: translateY(6px); transition: opacity var(--d-slow) var(--ease), transform var(--d-slow) var(--ease); }
@@ -363,12 +359,12 @@ html.fx-touch .mobj.armed .fgt, html.fx-kb .mobj:focus-within .fgt { opacity: 1;
 .voice { position: relative; padding: 18px 20px 8px; border: 1px solid var(--hair-2); border-radius: 14px; background: var(--raise); }
 .v-top { display: flex; align-items: center; gap: 14px; padding-bottom: 12px; border-bottom: 1px solid var(--hair); }
 .leds { display: flex; flex-wrap: wrap; gap: 6px 18px; flex: 1; }
-.leds span { display: inline-flex; align-items: center; gap: 8px; font: 500 var(--t-lbl)/1 var(--f-mono); letter-spacing: .05em; text-transform: uppercase; color: var(--text-3); padding: 5px 0; transition: color var(--d-fast); }
-.leds > span > i { width: 7px; height: 7px; border-radius: 50%; background: var(--dot); transition: background var(--d-fast), box-shadow var(--d-fast); }
-.leds span.on { color: var(--text); }
-.leds span.on i { background: var(--live); box-shadow: 0 0 0 3px var(--live-dim); }
-.leds span[data-m="thinking"].on i { background: var(--lit); box-shadow: none; }
-.leds span:hover { color: var(--text-2); }
+/* the voice states: no dots (19 Oct), the label alone says which one is on. Live states light in the accent,
+   Thinking in --text, the rest stay --text-3 */
+.leds span { display: inline-flex; align-items: center; font: 500 var(--t-lbl)/1 var(--f-mono); letter-spacing: .05em; text-transform: uppercase; color: var(--text-3); padding: 5px 0; transition: color var(--d-fast); }
+.leds span.on { color: var(--live); }
+.leds span[data-m="thinking"].on { color: var(--text); }
+.leds span:not(.on):hover { color: var(--text-2); }
 .v-pause { flex: none; gap: 7px; }
 .v-pause[hidden] { display: none; }
 .v-pause .pz i { height: 9px; width: 2.5px; background: currentColor; }
@@ -465,9 +461,12 @@ html.fx-touch .mobj.armed .fgt, html.fx-kb .mobj:focus-within .fgt { opacity: 1;
 .knob-ticks i.major.on { background: var(--lit); }
 .knob-cap { position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle at 38% 30%, var(--dot), var(--raise) 62%, var(--k-well)); border: 1px solid var(--hair-2); box-shadow: 0 10px 24px rgba(var(--shade-rgb), .5), inset 0 1px 0 rgba(255,255,255,.05); transition: transform .5s var(--ease), box-shadow var(--d-fast); will-change: transform; }
 .knob-cap::before { content: ''; position: absolute; inset: 13px; border-radius: 50%; background: radial-gradient(circle, var(--hair-2) 1px, transparent 1.4px) 0 0 / 7px 7px; opacity: .8; }
-.knob-cap i { position: absolute; left: 50%; top: 10px; width: 8px; height: 8px; margin-left: -4px; border-radius: 50%; background: var(--lit); box-shadow: 0 0 0 3px rgba(242,239,233,.08); }
-html.fx-hover .knob:hover .knob-cap { box-shadow: 0 10px 24px rgba(var(--shade-rgb), .5), inset 0 1px 0 rgba(255,255,255,.08), 0 0 0 1px var(--edge-2); }
-.knob-labels { position: absolute; inset: 0; }
+.knob-cap i { position: absolute; left: 50%; top: 10px; width: 8px; height: 8px; margin-left: -4px; border-radius: 50%; background: var(--lit); }
+/* hover: one white ring on the cap's edge (the lit vocabulary) */
+html.fx-hover .knob:hover .knob-cap { box-shadow: 0 10px 24px rgba(var(--shade-rgb), .5), inset 0 1px 0 rgba(255,255,255,.08), 0 0 0 1.5px var(--lit-c); }
+/* the label layer covers the knob, so it lets the pointer through: only the labels themselves take it */
+.knob-labels { position: absolute; inset: 0; pointer-events: none; }
+.knob-labels .kl { pointer-events: auto; }
 .kl { position: absolute; left: 50%; top: 50%; padding: 6px 4px; border: 0; background: none; font: 500 13px/1 var(--f-mono); letter-spacing: .04em; text-transform: uppercase; color: var(--text-3); transform: translate(-50%, -50%); white-space: nowrap; transition: color var(--d-fast), translate var(--d-release) var(--ease-spring), scale var(--d-release) var(--ease-spring); }
 .kl:hover, .kl.pv { color: var(--text-2); }
 .kl.on { color: var(--text); }
@@ -668,9 +667,8 @@ html.fx-hover .knob:hover .knob-cap { box-shadow: 0 10px 24px rgba(var(--shade-r
   .tree-h { display: none; }
   .tr-list { gap: 3px; }
   .tr { font-size: 13px; line-height: 1.3; padding: 4px 8px; gap: 7px; }
-  .tr.d1 { margin-left: 10px; } .tr.d1::before { left: -24px; }
+  .tr.d1 { margin-left: 22px; }
   .tr > i:not(.fx-ring) { font-size: 11.5px; padding: 3px 5px 2px; }
-  .tr::before { top: 11px; }
   .sees-out { margin-top: 10px; gap: 10px; }
   .noted { padding: 10px 12px; min-height: 0; } .noted .nt { font-size: 14.5px; margin: 4px 0 6px; }
   .noted .chip { display: none; }

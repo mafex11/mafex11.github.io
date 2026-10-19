@@ -14,14 +14,13 @@
   @media (max-width: 900px) { body { grid-template-columns: 1fr; } .stage { height: 70vh; } }
   aside { padding: 28px 26px 40px; border-right: 1px solid var(--hair-2); display: flex; flex-direction: column; gap: 22px; overflow: auto; max-height: 100vh; box-sizing: border-box; }
   .brand { display: flex; align-items: center; gap: 10px; font: 600 15px/1 var(--f-mono); letter-spacing: .02em; }
-  .brand i { width: 10px; height: 10px; border-radius: 50%; background: var(--live); box-shadow: 0 0 14px 2px rgba(var(--live-rgb), .55); }
   h1 { font: 600 30px/1.08 var(--f-ui); margin: 0; letter-spacing: -.01em; }
   p.sub { margin: 0; color: var(--text-2); font-size: 15px; line-height: 1.5; }
   .lbl2 { font: 500 12.5px/1 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); margin-bottom: 10px; }
   .swatches { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
   .sw { position: relative; display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--hair-2); background: var(--raise); color: var(--text); cursor: pointer; text-align: left; font: 500 14px/1.2 var(--f-ui); transition: border-color .18s, transform .18s, background .18s; }
   .sw:hover, .sw:focus-visible { border-color: var(--c); transform: translateY(-1px); background: var(--raise-2); outline: none; }
-  .sw .dot { width: 18px; height: 18px; border-radius: 50%; background: var(--c); box-shadow: 0 0 12px 1px color-mix(in srgb, var(--c) 55%, transparent); flex: none; }
+  .sw .dot { width: 18px; height: 18px; border-radius: 50%; background: var(--c); flex: none; }
   .sw small { display: block; color: var(--text-3); font: 500 11.5px/1.3 var(--f-mono); margin-top: 2px; }
   .sw[aria-pressed="true"] { border-color: var(--c); background: color-mix(in srgb, var(--c) 10%, var(--raise)); }
   .sw[aria-pressed="true"]::after { content: '✓'; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: var(--c); font-size: 14px; }
@@ -31,8 +30,8 @@
   .custom input[type=text]:focus { outline: none; border-color: var(--live); }
   .sample { display: grid; gap: 10px; padding: 16px; border-radius: 12px; border: 1px solid var(--hair-2); background: var(--raise); }
   .row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 14px; color: var(--text-2); }
-  .live-chip { display: inline-flex; align-items: center; gap: 8px; height: 30px; padding: 0 12px; border-radius: 999px; border: 1px solid rgba(var(--live-rgb), .45); color: var(--live); font: 500 13px/1 var(--f-mono); }
-  .live-chip i { width: 7px; height: 7px; border-radius: 50%; background: var(--live); box-shadow: 0 0 0 4px var(--live-dim); }
+  /* like the site's live chips: no status dot (19 Oct) */
+  .live-chip { display: inline-flex; align-items: center; height: 30px; padding: 0 12px; border-radius: 999px; border: 1px solid rgba(var(--live-rgb), .45); color: var(--live); font: 500 13px/1 var(--f-mono); }
   .fill { display: inline-flex; align-items: center; height: 34px; padding: 0 14px; border-radius: 9px; background: var(--live); color: var(--live-ink); font: 600 14px/1 var(--f-ui); }
   .contrast { font: 500 12.5px/1.5 var(--f-mono); color: var(--text-3); }
   .contrast b { color: var(--text); font-weight: 600; }
@@ -55,7 +54,7 @@
 </head>
 <body>
 <aside>
-  <div class="brand"><i></i>yuki · accent</div>
+  <div class="brand">yuki · accent</div>
   <div>
     <h1>Pick the accent colour.</h1>
     <p class="sub">It is the one colour on the site, used only for live things: the dot on the i, live chips, pulses, focus rings. Pick one and the preview on the right follows. Save it and every page you open on this computer uses it.</p>
@@ -72,7 +71,7 @@
     </div>
   </div>
   <div class="sample" aria-label="How the accent looks">
-    <div class="row"><span class="live-chip"><i></i>Online · encrypted</span><span class="fill">Download</span></div>
+    <div class="row"><span class="live-chip">Online · encrypted</span><span class="fill">Download</span></div>
     <div class="contrast" id="contrast"></div>
   </div>
   <div class="acts">
@@ -99,7 +98,7 @@
   var PRESETS = [
     ['Ember orange', '#FF6A1A'], ['Fire red', '#FF3B30'], ['Forest green', '#2FA55A'], ['Moss', '#7DBA3A'],
     ['Signal amber', '#FFB020'], ['Hot coral', '#FF5A5F'], ['Acid lime', '#C6F432'], ['Magenta', '#FF2D95'],
-    ['Ultraviolet', '#8B5CFF'], ['Cobalt', '#3D6BFF'], ['Ice cyan', '#2EE6FF'], ['Mint (today)', '#6FEBC4']
+    ['Ultraviolet', '#8B5CFF'], ['Cobalt', '#3D6BFF'], ['Ice cyan', '#2EE6FF'], ['Mint', '#6FEBC4'], ['Warm mint (today)', '#7DE8AC']
   ];
   var cur = A.hex, page = 'index.html', timer = 0;
   var sw = document.getElementById('swatches'), picker = document.getElementById('picker'), hex = document.getElementById('hex');
@@ -149,7 +148,7 @@
   });
   document.getElementById('reset').addEventListener('click', function () {
     try { localStorage.removeItem(KEY); } catch (e) {}
-    set('#6FEBC4', true); saved.textContent = 'Back to mint.';
+    set('#7DE8AC', true); saved.textContent = 'Back to warm mint.';
   });
   Array.prototype.forEach.call(document.querySelectorAll('.tab'), function (t) {
     t.addEventListener('click', function () {

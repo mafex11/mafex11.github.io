@@ -432,6 +432,7 @@
     const PH = '<div class="ln narr ph"><span></span><span class="t">Waiting for “Yuki”</span></div>';
     tx.innerHTML = PH;
     const vis = watch(demo, '0px');
+    // the voice-state labels (#leds, no dots since 19 Oct): the current one gets .on and lights in CSS
     function setMode(mm) { mode = mm; leds.forEach((l) => l.classList.toggle('on', l.dataset.m === mm)); }
     function addLine(ev) {
       const ph = tx.querySelector('.ph'); if (ph) ph.remove();
@@ -581,7 +582,6 @@
       { t: 'B', side: 'r' });
     gWeb.innerHTML = slab(280, 196, 14, '#FBFAF7',
       `<rect x="-140" y="-98" width="280" height="24" fill="#E7E3DB" style="stroke: var(--ink)"/>` +
-      `<circle cx="-124" cy="-86" r="3.4" style="fill: var(--ink)"/><circle cx="-112" cy="-86" r="3.4" style="fill: var(--ink)" opacity=".4"/><circle cx="-100" cy="-86" r="3.4" style="fill: var(--ink)" opacity=".2"/>` +
       `<rect x="-80" y="-92" width="150" height="12" rx="6" fill="#FBFAF7" style="stroke: var(--ink)" stroke-width=".8"/>` +
       `<rect x="-124" y="-60" width="58" height="146" fill="url(#pdots)" style="stroke: var(--ink)" stroke-width=".6"/>` +
       `<rect x="-54" y="-60" width="180" height="30" rx="4" style="fill: var(--ink)"/><circle cx="110" cy="-45" r="4.5" fill="${(window.YAccent && YAccent.hex) || '#6FEBC4'}"/>` +

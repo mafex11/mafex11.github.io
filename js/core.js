@@ -204,7 +204,7 @@
     opt = opt || {};
     const tile = opt.tile === false ? '' : `<rect x=".5" y=".5" width="63" height="63" rx="13" style="fill: var(--bg); stroke: var(--hair-2)"/>`;   // the app icon's tile: the page black
     const ink = opt.ink || '#F2EFE9';
-    return `<svg class="${opt.cls || 'ymark'}" viewBox="0 0 64 64" aria-hidden="true">${tile}${Y_DOTS.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="3.5" fill="${ink}"/>`).join('')}<circle cx="31.5" cy="28.5" r="3.5" fill="${(window.YAccent && YAccent.hex) || '#6FEBC4'}"/></svg>`;
+    return `<svg class="${opt.cls || 'ymark'}" viewBox="0 0 64 64" aria-hidden="true">${tile}${Y_DOTS.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="3.5" fill="${ink}"/>`).join('')}<circle cx="31.5" cy="28.5" r="3.5" fill="${(window.YAccent && YAccent.hex) || '#7DE8AC'}"/></svg>`;
   }
   function fillMarks() { document.querySelectorAll('[data-ymark]').forEach((el) => { el.innerHTML = ymarkSVG({ tile: el.dataset.ymark !== 'bare', cls: el.dataset.cls || 'ymark' }); }); }
 

@@ -50,9 +50,9 @@
   --edge-2: #3E3934;
   --mark: #4C4742;
   --shade-rgb: 2, 1, 0;
-  --live: #6FEBC4;          /* the only colour, and only for live things (js/accent.js may change it) */
-  --live-rgb: 111, 235, 196;
-  --live-ink: #062419;
+  --live: #7DE8AC;          /* the only colour, and only for live things: warm mint, for the umber black (19 Oct; js/accent.js may change it) */
+  --live-rgb: 125, 232, 172;
+  --live-ink: #0F1C15;
   --live-dim: rgba(var(--live-rgb), .12);
   /* bone sections (for rhythm) */
   --bone: #F2EFE9;

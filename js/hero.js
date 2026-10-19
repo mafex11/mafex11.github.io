@@ -315,7 +315,7 @@
       if (v < 0.05) continue;
       const q = Math.max(0, Math.min(5, Math.round(tt * 5)));
       const R = rr * OP;
-      if (q >= 5 && v > 0.8) orbA.dot(ctx, x, y, R * 1.9, q, 0.08 * pfade);
+      // no halo behind the brightest dots (19 Oct: no glow on any dot)
       orbA.dot(ctx, x, y, R, q, (0.35 + 0.65 * Math.min(1, v)) * pfade);
     }
 

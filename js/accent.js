@@ -4,7 +4,8 @@
    The accent, first match wins:
      1. ?accent=FF6A1A in the address (any 3 or 6 digit hex, with or without #); ?accent=reset clears a saved one;
      2. the colour saved by accent.html (localStorage 'yuki-accent');
-     3. the default, mint #6FEBC4.
+     3. the default, warm mint #7DE8AC (19 Oct: mint #6FEBC4 read cool on the umber black; the dark tints now
+        mix toward umber, DARK, not a cool grey).
    It sets on <html>: --live, --live-rgb ("r, g, b", for rgba(var(--live-rgb), a)), --live-dim and --live-ink (dark or
    light text on an accent fill, whichever reads better), and window.YAccent = { hex, rgb, ramp } for the canvases
    (DotKit's COL.live and its 6-step RAMP: dark tint -> accent -> light tint -> bone).
@@ -20,7 +21,7 @@
    else (rgb(), color-mix(), oklch()) is resolved to a colour a canvas takes; no value or a bad one -> the fallback. */
 (function () {
   'use strict';
-  var DEF = '#6FEBC4', BONE = [242, 239, 233], DARK = [26, 29, 32], KEY = 'yuki-accent', BKEY = 'yuki-black';
+  var DEF = '#7DE8AC', BONE = [242, 239, 233], DARK = [26, 22, 19], KEY = 'yuki-accent', BKEY = 'yuki-black';
   function norm(v) {
     if (!v) return null;
     v = String(v).trim().replace(/^#/, '');
