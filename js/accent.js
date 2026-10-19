@@ -12,7 +12,7 @@
      1. ?black=NAME in the address, NAME one of BLACKS below (anything else is ignored), which is saved;
         ?black=reset clears the saved one;
      2. the name saved in localStorage 'yuki-black';
-     3. the default, obsidian (its tokens are css/base.css :root).
+     3. the default, umber (its tokens are css/base.css :root).
    The name is set as <html data-black="NAME">, which css/blacks.css matches (token overrides and depth rules).
    window.YAccent.black is the name.
    YAccent.tok('--x', '#fallback') reads a colour token at run time for canvases and JS-built colours (after the
@@ -51,8 +51,8 @@
   st.setProperty('--live-dim', 'rgba(' + rgb.join(', ') + ', .12)');
   st.setProperty('--live-ink', ink);
 
-  // the black palette: a name only (the colours live in css/blacks.css). obsidian is the default; flat is the old black
-  var BLACKS = ['obsidian', 'jet', 'ink', 'umber', 'flat'], BDEF = 'obsidian';
+  // the black palette: a name only (the colours live in css/blacks.css). umber is the default; flat is the old black
+  var BLACKS = ['umber', 'obsidian', 'jet', 'ink', 'flat'], BDEF = 'umber';
   function bname(v) { return v && BLACKS.indexOf(v) >= 0 ? v : null; }
   var black = null, bq = null;
   try { bq = new URLSearchParams(location.search).get('black'); } catch (e) { bq = null; }

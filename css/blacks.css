@@ -1,8 +1,8 @@
 /* =====================================================================
    Yuki website / blacks: the black palettes. Linked right after css/base.css in every page.
    19 Oct, the user: "the colour pallette of black feels too bland ... it should look rich black. not bland and dull
-   black". Four rich blacks were designed and judged (the judges picked jet); the user saw all five and said
-   "obsidian is good", so obsidian is the default. The others stay here to compare.
+   black". Four rich blacks were designed and judged (the judges picked jet); the user saw all five, tried
+   obsidian, then said "lets keep it as umber", so umber is the default. The others stay here to compare.
    The tokens (css/base.css :root, darkest first): --k-well, --bg + --bg-rgb, --raise, --raise-2, --raise-3, --hair,
    --dot, --hair-2, --edge, --edge-2, --mark, --shade-rgb, and --ink + --ink-rgb for black ink on the bone sections.
    Every black and dark grey on the site, the canvases included, comes from them, so a palette overrides them.
@@ -14,7 +14,7 @@
    Canvases read the tokens when they lay out (YAccent.tok in js/accent.js). The accent, bone, light text and status
    colours are not part of a palette.
    Picking one: ?black=jet | ink | umber | obsidian | flat on any page address. It is saved on this computer
-   (localStorage 'yuki-black') and every page uses it; ?black=reset goes back to the default (obsidian).
+   (localStorage 'yuki-black') and every page uses it; ?black=reset goes back to the default (umber).
    ===================================================================== */
 
 /* ---------- jet (the judges' pick): piano black. A near-pure black page (#050505), wide clear steps up to the
@@ -68,7 +68,7 @@ html[data-black="jet"] .lcd { box-shadow: inset 0 2px 8px rgba(0, 0, 0, .7); }
 html[data-black="jet"] :is(.runcard, .thread) { box-shadow: inset 0 1px 0 rgba(255, 255, 255, .07), 0 30px 70px rgba(0, 0, 0, .8); }
 html[data-black="jet"] :is(.ask-cap, .ask, .pcwin) { box-shadow: inset 0 1px 0 rgba(255, 255, 255, .07), 0 20px 50px rgba(0, 0, 0, .75); }
 
-/* ---------- ink, umber, obsidian (the default: its tokens are also the css/base.css :root values) ---------- */
+/* ---------- ink, umber (the default: its tokens are also the css/base.css :root values), obsidian ---------- */
 
 /* ink: rich black, the print kind (C60 M40 Y40 K100). A deep page with a cool lean you feel in the darkest tones only;
    the lifted steps stay near neutral so it never reads navy. Depth comes from light, not colour: each dark module is
