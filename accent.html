@@ -96,9 +96,9 @@
   'use strict';
   var A = window.YAccent, KEY = A.key, norm = A.norm;
   var PRESETS = [
-    ['Ember orange', '#FF6A1A'], ['Fire red', '#FF3B30'], ['Forest green', '#2FA55A'], ['Moss', '#7DBA3A'],
+    ['Ember orange (today)', '#FF6A1A'], ['Fire red', '#FF3B30'], ['Forest green', '#2FA55A'], ['Moss', '#7DBA3A'],
     ['Signal amber', '#FFB020'], ['Hot coral', '#FF5A5F'], ['Acid lime', '#C6F432'], ['Magenta', '#FF2D95'],
-    ['Ultraviolet', '#8B5CFF'], ['Cobalt', '#3D6BFF'], ['Ice cyan', '#2EE6FF'], ['Mint', '#6FEBC4'], ['Warm mint (today)', '#7DE8AC']
+    ['Ultraviolet', '#8B5CFF'], ['Cobalt', '#3D6BFF'], ['Ice cyan', '#2EE6FF'], ['Mint', '#6FEBC4'], ['Warm mint', '#7DE8AC']
   ];
   var cur = A.hex, page = 'index.html', timer = 0;
   var sw = document.getElementById('swatches'), picker = document.getElementById('picker'), hex = document.getElementById('hex');
@@ -148,7 +148,7 @@
   });
   document.getElementById('reset').addEventListener('click', function () {
     try { localStorage.removeItem(KEY); } catch (e) {}
-    set('#7DE8AC', true); saved.textContent = 'Back to warm mint.';
+    set('#FF6A1A', true); saved.textContent = 'Back to ember orange.';
   });
   Array.prototype.forEach.call(document.querySelectorAll('.tab'), function (t) {
     t.addEventListener('click', function () {

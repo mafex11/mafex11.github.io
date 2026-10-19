@@ -4,8 +4,8 @@
    The accent, first match wins:
      1. ?accent=FF6A1A in the address (any 3 or 6 digit hex, with or without #); ?accent=reset clears a saved one;
      2. the colour saved by accent.html (localStorage 'yuki-accent');
-     3. the default, warm mint #7DE8AC (19 Oct: mint #6FEBC4 read cool on the umber black; the dark tints now
-        mix toward umber, DARK, not a cool grey).
+     3. the default, ember orange #FF6A1A (the user's own pick on accent.html, made the default 19 Oct; the
+        dark tints mix toward umber, DARK, not a cool grey).
    It sets on <html>: --live, --live-rgb ("r, g, b", for rgba(var(--live-rgb), a)), --live-dim and --live-ink (dark or
    light text on an accent fill, whichever reads better), and window.YAccent = { hex, rgb, ramp } for the canvases
    (DotKit's COL.live and its 6-step RAMP: dark tint -> accent -> light tint -> bone).
@@ -21,7 +21,7 @@
    else (rgb(), color-mix(), oklch()) is resolved to a colour a canvas takes; no value or a bad one -> the fallback. */
 (function () {
   'use strict';
-  var DEF = '#7DE8AC', BONE = [242, 239, 233], DARK = [26, 22, 19], KEY = 'yuki-accent', BKEY = 'yuki-black';
+  var DEF = '#FF6A1A', BONE = [242, 239, 233], DARK = [26, 22, 19], KEY = 'yuki-accent', BKEY = 'yuki-black';
   function norm(v) {
     if (!v) return null;
     v = String(v).trim().replace(/^#/, '');
@@ -44,7 +44,8 @@
     return 0.2126 * s[0] + 0.7152 * s[1] + 0.0722 * s[2];
   }
   // text on an accent fill: a deep shade of the accent itself when the accent is light, bone when it is dark
-  var L = lum(rgb), ink = L > 0.36 ? toHex(mix(rgb, [0, 0, 0], 0.88)) : '#F2EFE9';
+  var L = lum(rgb), dk = mix(rgb, [0, 0, 0], 0.88);
+  var ink = (L + 0.05) / (lum(dk) + 0.05) >= (lum(BONE) + 0.05) / (L + 0.05) ? toHex(dk) : '#F2EFE9';   // the one that reads better (orange: dark)
   var ramp = [toHex(mix(rgb, DARK, 0.72)), toHex(mix(rgb, DARK, 0.5)), toHex(mix(rgb, DARK, 0.25)), hex, toHex(mix(rgb, BONE, 0.6)), toHex(BONE)];
   var root = document.documentElement, st = root.style;
   st.setProperty('--live', hex);
