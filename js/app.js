@@ -52,13 +52,13 @@
   /* ---------------- pages ---------------- */
   const sec = (label, n, aside, body, cls) => `<section class="sec clear ${cls || ''}" data-clear data-fx="crop"><div class="sec-h"><span class="label">${label}${n != null ? ` <span class="doto">${n}</span>` : ''}</span>${aside ? `<span class="aside">${aside}</span>` : ''}</div>${body}</section>`;
   const head = (title, meta, fig, cap) => `<div class="ph"><h1>${title}</h1><div class="meta">${meta}</div>${fig || ''}${cap ? `<div class="fig-cap">${cap}</div>` : ''}</div>`;
-  const liveMeta = () => S.online ? `<span class="live-only"><span class="live">●</span> live from <b>${D.pc.name}</b></span>` : `<span>as of <b>${D.pc.lastSeen}</b>, when your PC went off</span>`;
+  const liveMeta = () => S.online ? `<span class="live-only"><span class="live">live</span> from <b>${D.pc.name}</b></span>` : `<span>as of <b>${D.pc.lastSeen}</b>, when your PC went off</span>`;
   // the tick, drawn in five dots (the check glyph, short arm first); CSS lights them 30 ms apart
   const TICK = `<svg class="tk" viewBox="0 0 15 15" aria-hidden="true">${[[0, 3], [1, 4], [2, 3], [3, 2], [4, 1]].map(([x, y], i) => `<circle cx="${x * 3 + 1.5}" cy="${y * 3 + 1.5}" r="1.25" style="--i:${i}"/>`).join('')}</svg>`;
   const todoRows = (list) => list.map((t, i) => `<div class="todo" ${LIT} data-i="${i}"><button class="ck" type="button" data-fx="press" aria-pressed="false" aria-label="Done: ${esc(t.t)}">${TICK}</button><div><div class="tt">${esc(t.t)}</div><div class="src"><b class="${t.hot ? 'hot' : ''}">due ${t.due}</b> · ${esc(t.src)}</div></div></div>`).join('');
   const yourList = () => sec('Your list', D.list.length, 'due soonest first',
     `<label class="addrow">${dic('plus')}<input placeholder="${phoneMQ.matches ? 'Add to your list…' : 'Add to your list… “call the plumber on Friday”'}" aria-label="Add to your list"></label>${todoRows(D.list)}<div class="foot-row"><span>Recently done ${D.done.length}</span><span>synced to your PC</span></div>`);
-  const dayMini = () => D.day.map((b) => `<div class="pr tmr" ${LIT}><span class="tmc">${b.a}</span><div><div class="tt"><b>${esc(b.t)}</b></div><div class="src">${b.apps ? esc(b.apps) + ' · ' : ''}until ${b.b === 'now' ? (S.online ? 'now' : '14:06') : b.b}</div></div>${b.live && S.online ? '<span class="when"><span class="live">● now</span></span>' : ''}</div>`).join('');
+  const dayMini = () => D.day.map((b) => `<div class="pr tmr" ${LIT}><span class="tmc">${b.a}</span><div><div class="tt"><b>${esc(b.t)}</b></div><div class="src">${b.apps ? esc(b.apps) + ' · ' : ''}until ${b.b === 'now' ? (S.online ? 'now' : '14:06') : b.b}</div></div>${b.live && S.online ? '<span class="when"><span class="live">now</span></span>' : ''}</div>`).join('');
   const replies = () => sec('Needs your reply', D.replies.length, 'newest first', D.replies.map((r) => `<div class="pr" ${LIT}><span class="av">${r.who[0]}</span><div><div class="tt"><b>${esc(r.who)}</b> “${esc(r.t)}”</div><div class="src">${r.app}</div><div class="acts"><button class="key xs" data-q="Reply to ${esc(r.who.split(' ')[0])}">Reply on my PC</button></div></div><span class="when">${r.ago}</span></div>`).join(''));
   const said = () => sec('You said you’d', D.said.length, 'from your chats and calls', D.said.map((s) => `<div class="pr" ${LIT}><span class="av">${s.to[0]}</span><div><div class="tt"><b>${esc(s.t)}</b></div><div class="src">to ${esc(s.to)} · ${esc(s.src)}</div></div><span class="when">${s.when}</span></div>`).join(''));
   const waiting = () => sec('Waiting on', D.waiting.length, 'what others owe you', D.waiting.map((w) => `<div class="pr" ${LIT}><span class="av">${w.who[0]}</span><div><div class="tt"><b>${esc(w.who)}</b>: ${esc(w.t)}</div><div class="src">${esc(w.src)}</div></div><span class="when ${w.late ? 'late' : ''}">${w.since}</span></div>`).join(''));
@@ -115,7 +115,7 @@
     settings() {
       return head('Settings', `<span>Your account and your PC link</span><span>everything else lives in the app on your PC</span>`, '', '') +
         `<div class="cols"><div class="col">
-          ${sec('This PC', null, S.online ? '<span class="live">● online</span>' : 'offline', `
+          ${sec('This PC', null, S.online ? '<span class="live">online</span>' : 'offline', `
             <div class="srow"><span>Name<small>Set in Windows</small></span><span class="v">${D.pc.name}</span></div>
             <div class="srow"><span>System</span><span class="v">${D.pc.os} · ${D.pc.app}</span></div>
             <div class="srow"><span>Linked</span><span class="v">${D.pc.linked}</span></div>

@@ -163,7 +163,6 @@ html.fx-hover .links a:hover { background: rgba(242,239,233,.05); }
 .qkeys { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 20px; }
 .qkeys .key { height: 34px; padding: 0 13px; font-size: 13.5px; color: var(--text-2); }
 .qkeys .key[aria-pressed="true"] { color: var(--text); border-color: var(--text-3); background: var(--raise-2); }
-.qkeys .key[aria-pressed="true"]::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--lit); }
 .objs { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-rows: 150px 66px 150px; grid-template-areas: "a b" "a c" "d c"; gap: 14px; }
 .mslot { position: relative; min-width: 0; transition: opacity var(--d-med) var(--ease); will-change: transform; }
 .mslot::after { content: ''; position: absolute; z-index: -1; left: 6%; right: 6%; bottom: -9px; height: 18px; border-radius: 50%; background: radial-gradient(closest-side, rgba(var(--shade-rgb), .62), transparent); pointer-events: none; transition: opacity var(--d-med); }
@@ -320,12 +319,12 @@ html.fx-touch .mobj.armed .fgt, html.fx-kb .mobj:focus-within .fgt { opacity: 1;
 .rc-t em { font-style: normal; display: block; margin-top: 3px; font-size: 13px; line-height: 1.35; color: var(--text-2); }
 .rc-t .rc-sub { font: 500 12.5px/1.3 var(--f-mono); color: var(--text-3); margin-top: 6px; }
 .rc-steps { list-style: none; margin: 0; padding: 6px 0 0; }
-.rc-steps li { position: relative; display: grid; grid-template-columns: 12px 1fr; column-gap: 8px; padding: 5px 6px; margin: 0 -6px; border-radius: 7px; font-size: 14px; line-height: 1.35; color: var(--text-3); transition: color var(--d-med); outline: none; }
-.rc-steps li::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--hair-2); margin: 7px 0 0 2px; grid-row: span 2; transition: background var(--d-med); }
+.rc-steps li { position: relative; display: grid; grid-template-columns: 1fr; padding: 5px 6px; margin: 0 -6px; border-radius: 7px; font-size: 14px; line-height: 1.35; color: var(--text-3); transition: color var(--d-med); outline: none; }
 .rc-steps li.on { color: var(--text); }
-.rc-steps li.cur::before { background: var(--live); }
-.rc-steps li.ok::before { background: var(--text-2); }
-.rc-steps .chg { grid-column: 2; font: 500 13px/1.35 var(--f-mono); color: var(--text-2); display: none; margin-top: 2px; }
+/* no dot beside a step (20 Oct): the step in progress is lit in the accent, paused too (under 1440 px only the last
+   done step keeps its check line, so the accent is what tells the current step from the done ones) */
+.rc-steps li.cur { color: var(--live); }
+.rc-steps .chg { grid-column: 1; font: 500 13px/1.35 var(--f-mono); color: var(--text-2); display: none; margin-top: 2px; }
 .rc-steps li.ok .chg { display: block; }
 .rc-steps li.ok .chg::before { content: '\2713  '; color: var(--text); }
 .rc-pause, .rc-done { display: none; align-items: center; gap: 10px; margin-top: 8px; padding: 10px; border-radius: 10px; border: 1px solid var(--hair-2); background: var(--raise); }
